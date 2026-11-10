@@ -2,6 +2,8 @@
 
 2026-11-10、P2の最小HIDファームウェアをビルドし、全キー解放版・手動単キー版の書き込み・読み戻し検証・MacでのUSB列挙まで確認しました。以下は実行済みの設定と再現手順です。実キーの試験結果は [validation.md](validation.md) に記録します。
 
+通常使用の入口は [導入手順](getting-started.md) です。現在の通常版はSELECT→Tabの `sfc-keyboard` です。以下の最小HID・診断版の結果は開発履歴として区別します。
+
 ## 確認済みのサイズ
 
 | モード | BINのバイト数 | CLIのFlash表示 | 静的RAM |
@@ -9,7 +11,8 @@
 | 全キー解放 `neutral`（既定） | 3116 | 2956 | 156 |
 | 手動スイッチ `manual` | 4084 | 3924 | 176 |
 | SFC診断 `sfc-diagnostic` | 5536 | 5376 | 256 |
-| SFCキーボード `sfc-keyboard`（専用パッチ） | 5360 | 5200 | 188 |
+| SFCキーボード `sfc-keyboard`（現在のTab通常版） | 5496 | 5336 | 196 |
+| SFCキーボード（P3旧版の記録） | 5360 | 5200 | 188 |
 
 コアのサイズ集計式が `.init` を含めていないため、CLIのFlash表示はBINより160バイト少なくなります。ELFの `.init=160` と `.text`、BINサイズを照合しました。CLI表示だけでFlash使用量を判断しません。
 
@@ -102,7 +105,7 @@ bash scripts/build_firmware.sh sfc-keyboard
 FQBNのUSBは `usb=kbd`、フラグは `SNES_SFC_KEYBOARD=1`、診断と単キー入力は0です。
 `prepare_sfc_core.py` が元の730ファイルと配布物を検証し、専用コピーの `uiapusb.c/.h` と `usb_config.h` へ
 [2つの管理パッチ](../patches/README.md) を順に適用します。元の導入済みコアは保持します。
-P4の現在のビルドはGET_REPORT(Input)応答を加えた検証候補です。U04は現候補だけでは解消せず、本人同意で未解決のまま保留しています。
+現在の通常版はGET_REPORT(Input)応答とSELECT→Tabを含みます。書き込み・対象キー・iPhone回帰確認は今回の合意範囲で完了しています。U04・D09はユーザー裁定により未解決のまま許容しています。
 設定は `.local/sfc-arduino-cli.yaml`、生成先は `.local/build/sfc-keyboard/` です。
 この設定が指す `.local/sfc-arduino-data/` のコアで実際にコンパイルされたことも確認しています。
 起動・配線・実機確認は [統合版の手順](sfc-keyboard.md) を参照してください。

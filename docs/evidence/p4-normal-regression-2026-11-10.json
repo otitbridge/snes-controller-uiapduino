@@ -444,7 +444,7 @@
       "assessment": "User reports all three requested reconnect checks without problems. Recorded as successful operation/release and retained mapping under the requested all-released condition; not startup-held-input validation."
     }
   ],
-  "next_test": "P5 enclosure installation and post-assembly tests; U04/D09 remain accepted unresolved, and untested Delta six/seven-key / SNES gameplay / iPad scopes remain separate.",
+  "next_test": "P5 enclosure/post-assembly tests deferred by user on 2026-11-10; P6 documentation prepared first. U04/D09 remain accepted unresolved; deferred test scopes unchanged.",
   "remaining": [],
   "accepted_unresolved": [
     "U04",

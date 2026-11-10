@@ -1,0 +1,83 @@
+{
+  "stage": "P6 publication documentation, pre-enclosure scope",
+  "date": "2026-11-10",
+  "timezone": "Asia/Tokyo",
+  "status": "Documentation prepared; P5 and post-assembly testing deferred by user; photos unavailable; no publication performed",
+  "base_commit": "fb06b04b657f29f8d693da9edae3f3e2c97cc154",
+  "user_direction": {
+    "instruction": "次は「筐体への内蔵」でしょうか？この工程を保留とします。「公開用資料の仕上げ」に進みたいです",
+    "p5": "DEFERRED_BY_USER",
+    "p6_scope": "Finish available public text documentation now; retain missing photos and physical tests as explicit deferred/unavailable items"
+  },
+  "deliverables": {
+    "README.md": "Public entry point, current Tab firmware, key map, tested environment, firmware-specific results and known constraints",
+    "docs/getting-started.md": "Existing macOS setup/build/upload commands, target checks, Mac probe and Delta assignment",
+    "docs/hardware.md": "Known parts and five-signal wiring; unknown models/dimensions and missing photos distinguished",
+    "docs/publication.md": "Publication scope, deferred enclosure/photos, included files and remaining work"
+  },
+  "checks": [
+    {
+      "check": "Local Markdown file links and heading fragments",
+      "result": "PASS",
+      "links_checked": 143,
+      "scope": "Local targets in public Markdown; external URLs not re-fetched in this documentation pass"
+    },
+    {
+      "check": "JSON parse for public JSON files",
+      "result": "PASS"
+    },
+    {
+      "check": "README and getting-started shell examples parsed using bash -n",
+      "result": "PASS",
+      "scope": "Syntax only; setup, build, upload and probe commands not executed in this pass"
+    },
+    {
+      "check": "Public Markdown/JSON scan for user absolute paths, private-key headers and common GitHub token patterns",
+      "result": "PASS",
+      "scope": "Pattern scan; not a proof that every possible secret format is absent"
+    },
+    {
+      "check": "git diff --check",
+      "result": "PASS"
+    },
+    {
+      "check": "No changes under firmware/, scripts/, tests/ or patches/",
+      "result": "PASS",
+      "scope": "No new code tests or firmware build needed for these documentation-only changes"
+    },
+    {
+      "check": "Existing normal BIN size and SHA-256 match recorded tested artifact",
+      "result": "PASS",
+      "bytes": 5496,
+      "sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079"
+    }
+  ],
+  "firmware_or_hardware_actions_performed": false,
+  "publication_actions_performed": false,
+  "remaining": [
+    "P5 enclosure placement, fixation, insulation, cable strain, programming access and post-assembly operation/continuous-use tests deferred by user",
+    "Actual wiring/internal photos, controller model/PCB revision and voltage/continuity measurements unavailable",
+    "SNES actual gameplay, iPad, Delta six/seven-input and additional SNES partial-release conditions remain untested",
+    "U04 and D09 remain user-accepted unresolved limitations; no cause or fix newly established",
+    "Commit and remote publication are not part of this documentation pass"
+  ],
+  "reviewed_file_sha256": {
+    "docs/getting-started.md": "11c77016055b84ca7172488b103346c13269bc7918b9543b921963df5b3e6bb6",
+    "docs/hardware.md": "d609ad07ab3a79d9dc77b820035526b694fd2a79d2632bdd780e114a29a7c3c3",
+    "docs/publication.md": "cb98a4bdc36230e8be0ccf5f8799997c68869629bad6fc9a04396974c44df20d",
+    "README.md": "baad574398ba34bb42f9ebae765d722b2f29f0865dffbdac759fa31304b3661a",
+    "SNES_UIAPduino_CODEX_HANDOFF.md": "b6cb2d5e4120af258d21735d937bb58ea8b2ae4e9f203c6a9a9470255157aa61",
+    "docs/build.md": "235c3945a3f57fcf20ef610286fc39fa5a9e4f2b6e03151eab3055d615f1e5e1",
+    "docs/evidence/README.md": "fba2c357e5dda9c610806436f5181cebf834e8a730314aeae932b431be148472",
+    "docs/evidence/p4-iphone-delta-2026-11-10.json": "39b6411fbfd0b81ffcfd146f09702e3dd2612a5db9972b6e83ccdbd00f5bd7a2",
+    "docs/evidence/p4-normal-regression-2026-11-10.json": "f74b0d66d5860875ad9382ec9c06d43028bf76238bea64d066d830df8083c875",
+    "docs/known-issues.md": "b21a09a438df555a7e312a662d737d0d65f9fb562477677117f7387522f05ec6",
+    "docs/validation.md": "802f90f6e6a6547d77d47947dad88f29dcb89847290cf19660fab722afc093f0",
+    "docs/wiring.md": "2930c40fb2e7f12976110b4b652aead79ff73e364620b43754029c007196c342"
+  },
+  "publication": {
+    "raw_logs_and_binaries": "Remain under ignored .local/; not added to Git",
+    "personal_absolute_paths_or_device_ids": "Not included in this review record",
+    "photos": "No generated or substitute photos presented as hardware evidence"
+  }
+}

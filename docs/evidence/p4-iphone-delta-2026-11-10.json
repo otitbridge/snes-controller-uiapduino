@@ -2,7 +2,7 @@
   "stage": "P4 iPhone / Delta practical testing",
   "date": "2026-11-10",
   "timezone": "Asia/Tokyo",
-  "status": "Normal-firmware regression step 2 COMPLETE within agreed scope; P5 enclosure work next; U04/D09 accepted unresolved; deferred scopes retained",
+  "status": "Normal-firmware regression step 2 COMPLETE within agreed scope; P5 enclosure/post-assembly deferred by user; P6 documentation prepared; U04/D09 accepted unresolved",
   "firmware": {
     "commit": "8b456046f5fd361aea29bcfcd2445c4a4df88753",
     "mode": "sfc-keyboard",
@@ -2142,19 +2142,19 @@
     }
   ],
   "next_test": {
-    "scope": "P5 enclosure installation and post-assembly validation",
-    "result": "Step 2 normal-firmware checks complete within agreed scope; final phone simultaneous/partial-release and three reconnect checks PASS by user report",
+    "scope": "P5 deferred; P6 documentation prepared first",
+    "result": "User deferred enclosure installation and requested publication documentation finishing on 2026-11-10. Physical test results unchanged.",
     "collector": {
       "status": "STOPPED"
     },
-    "resume_point": "Plan enclosure fixation, insulation, clearance, cable strain relief and programming access, then verify operation after assembly. U04/D09 remain accepted unresolved; SNES gameplay, Delta six/seven-key and iPad are not newly passed."
+    "resume_point": "Review publication documentation. Wiring/internal photos remain unavailable; no enclosure work, upload, remote creation or publication was performed. Resume P5 when requested."
   },
   "remaining": [
     "D05 six/seven-key behavior in Delta when observable. Mac HID behavior was previously verified; do not infer Delta D05 from D03. If gameplay cannot distinguish inputs, keep Delta limitation explicit and use PC input display per original plan.",
     "D04 SNES right+Y+B partial-release example not tested; GBA right+B partial release already passed. New D03 report does not extend partial-release coverage.",
     "SNES in-game actions deferred because no ROM is available; all twelve inputs in Delta settings are confirmed",
     "Device-specific iPad testing remains unperformed; required before claiming iPad validation",
-    "Enclosure insulation, fixation, clearance, cable strain and post-assembly operation checks; wiring/internal photos and build/publication documentation",
+    "P5 enclosure insulation, fixation, clearance, cable strain and post-assembly operation checks deferred by user. Wiring/internal photos unavailable; P6 text documentation prepared separately",
     "U04/D09 retained as user-accepted unresolved limitations; further root-cause investigation is not a prerequisite"
   ],
   "publication": {
@@ -2206,5 +2206,12 @@
       "latest_diagnosis": "Tab workaround accepted by Delta; reconnect persistence still to be verified",
       "resolution": "SELECT mapped from Backspace (0x2A) to Tab (0x2B); verified upload, Mac Tab down/up and user-confirmed Delta Tab assignment / Cinnamon gameplay"
     }
-  ]
+  ],
+  "project_direction": {
+    "date": "2026-11-10",
+    "user_instruction": "筐体への内蔵を保留し、公開用資料の仕上げに進む",
+    "p5": "DEFERRED_BY_USER",
+    "p6": "Text documentation prepared for pre-enclosure prototype scope; photos unavailable",
+    "publication_performed": false
+  }
 }
