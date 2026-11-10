@@ -1,0 +1,218 @@
+{
+  "stage": "P4 SELECT compatibility workaround candidate",
+  "date": "2026-11-10",
+  "status": "PASS: SELECT Tab workaround and targeted normal-firmware regression completed in tested Mac / Delta GBA scope",
+  "observed_problem": "SELECT emits Backspace on Mac and iPhone Safari, but is not recognized by Delta assignment screen per user. Issue may predate normal-firmware switch.",
+  "safari_control": {
+    "id": "IPHONE-SAFARI-SELECT-BACKSPACE-CONTROL",
+    "result": "PASS, user reports both SELECT/Backspace and B/KeyZ keydown/keyup in iPhone Safari",
+    "user_report": "はい　出ました",
+    "requested_check": "USB retained on iPhone; W3C key-event viewer, Clear Table, focus input, press/release SELECT then B",
+    "scope": "User confirmation to a question asking both down/up pairs. No independent phone capture or timing. Shows a working iPhone browser path for both inputs; Delta assignment still fails. Not by itself proof of exact Delta/OS implementation cause."
+  },
+  "source_basis": {
+    "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Game%20Controllers/Keyboard/KeyboardGameController.swift",
+    "blob_sha": "c94e7593ea30650e44590429735110486bea6fc3",
+    "finding": "Modern handler explicitly maps GCKeyCode.tab to .tab; no explicit Backspace/Delete case, default requires one-character description token.",
+    "scope": "Source-supported workaround, subsequently accepted as Tab by Delta in user testing. Exact runtime cause of Backspace rejection remains undetermined."
+  },
+  "change": {
+    "button": "SELECT",
+    "old_usage": 42,
+    "new_usage": 43,
+    "old_key": "Backspace",
+    "new_key": "Tab",
+    "other_eleven_keys_unchanged": true,
+    "six_key_priority_unchanged": true,
+    "usb_core_changed_for_this_workaround": false,
+    "delta_action_after_upload": "Reassign SELECT only to Tab in each used emulated-system keyboard layout; verify recognition before gameplay."
+  },
+  "candidate": {
+    "mode": "sfc-keyboard",
+    "usb_trace_enabled": false,
+    "bin_bytes": 5496,
+    "static_ram_bytes": 196,
+    "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "build_directory": ".local/build/sfc-keyboard",
+    "build_log_sha256": "1bac7821ca72bd56b4c479bbe5f4b2555210beaa7527acbf20ca1ee34d6954e3"
+  },
+  "previous_installed_binary": {
+    "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+    "preserved_directory": ".local/build/sfc-keyboard-backspace"
+  },
+  "binary_comparison": {
+    "same_length": true,
+    "changed_byte_count": 1,
+    "offset_decimal": 4750,
+    "old_byte": 42,
+    "new_byte": 43
+  },
+  "validation": [
+    {
+      "command": "bash tests/run_host_tests.sh",
+      "result": "PASS"
+    },
+    {
+      "command": "SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh",
+      "result": "PASS"
+    },
+    {
+      "command": "bash scripts/build_firmware.sh sfc-keyboard",
+      "result": "PASS"
+    },
+    {
+      "check": "Python AST parse for collector; JavaScriptCore parse for updated probe",
+      "result": "PASS"
+    }
+  ],
+  "source_sha256": {
+    "firmware/snes_controller/snes_hid_report.h": "14487e1416d5a789b3e54f275f7af6a8705100618856599ce9256e2673b0fce9",
+    "tests/hid_report_test.cpp": "2034045be6b6643448daf117e10f48293c0d142ee2e8ac49e0df63dea1b8daf4",
+    "tests/sfc_keyboard_test.cpp": "596b8d3cd35a191c1103069779f95a8da45e21085214916a1637103eb2e0a4a0",
+    "tests/sfc_keyboard_probe.html": "717b25703b457c9800055233457a208be784548f4fc4c9ffea94207d0366f86c",
+    "scripts/serve_keyboard_probe.py": "21f14e2959d252461795cd089e878adac2ac1f55f677f01854aec837829ffa80"
+  },
+  "remaining": [],
+  "publication": {
+    "personal_paths_or_device_identifiers_included": false
+  },
+  "upload": {
+    "started_at": "2026-11-10T22:19:39.619943+09:00",
+    "finished_at": "2026-11-10T22:19:41.287167+09:00",
+    "command": [
+      ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+      "--verbose",
+      "--flash-size",
+      "16384",
+      ".local/build/sfc-keyboard/snes_controller.ino.bin"
+    ],
+    "matching_bootloaders": 1,
+    "target": {
+      "USB Product Name": "32V003",
+      "idVendor": 4617,
+      "idProduct": 47107,
+      "bcdDevice": 321
+    },
+    "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+    "exit_code": 0,
+    "padded_bytes": 5504,
+    "bootloader_written": false,
+    "readback_verified": true,
+    "application_started": true,
+    "after": {
+      "observed_at": "2026-11-10T22:19:45.343114+09:00",
+      "devices": [
+        {
+          "USB Product Name": "UIAPduino KBD+Mouse",
+          "idVendor": 4617,
+          "idProduct": 53252,
+          "bcdDevice": 1
+        }
+      ],
+      "same_usb_location_as_bootloader": true
+    }
+  },
+  "upload_log": {
+    "path": ".local/logs/p4-select-tab-upload-01.json",
+    "sha256": "0828f0f7a60848d6473c6d102f1cfa60075e5053d619ef02963478e07cf66c9f"
+  },
+  "mac_probe": {
+    "status": "STOPPED normally with SIGINT; exit code 0",
+    "log_path": ".local/logs/p4-select-tab-mac-2026-11-10-01.jsonl",
+    "requested_trial": "SELECT press/release three times, B press/release once; preserve focus and use SFC only",
+    "sha256": "be156d95acd7d77ae1a6ebb1cfcc17d6ff39fa3310c83d7bf2e1397de8cc28e7",
+    "bytes": 15866,
+    "lines": 77,
+    "observation": {
+      "id": "MAC-SELECT-TAB-THREE-AND-B-CONTROL",
+      "result": "PASS: SELECT produces Tab down/up three times and B produces KeyZ down/up once",
+      "user_report": "完了です",
+      "session": "2026-11-10T13:21:01.759Z",
+      "press_release_pairs": [
+        {
+          "code": "Tab",
+          "down_seconds": 1.246,
+          "up_seconds": 2.085,
+          "duration_seconds": 0.839
+        },
+        {
+          "code": "Tab",
+          "down_seconds": 3.369,
+          "up_seconds": 4.512,
+          "duration_seconds": 1.143
+        },
+        {
+          "code": "Tab",
+          "down_seconds": 5.496,
+          "up_seconds": 6.683,
+          "duration_seconds": 1.187
+        },
+        {
+          "code": "KeyZ",
+          "down_seconds": 7.599,
+          "up_seconds": 8.279,
+          "duration_seconds": 0.68
+        }
+      ],
+      "all_releases_neutral": true,
+      "focus_loss_during_scored_interval": false,
+      "excluded": "Earlier initial session contains exploratory Tab presses, excluded from scored three repetitions.",
+      "scope": "Browser key events correlated with requested physical SFC operation; not raw HID or independently identified physical input source."
+    }
+  },
+  "delta_confirmation": {
+    "id": "DELTA-GBA-SELECT-TAB-ACCEPTED",
+    "result": "PASS, user reports SELECT accepted as Tab in Delta and Cinnamon gameplay works",
+    "user_report": "認識されました　タブキーでした　シナモンでの動作も問題ないです",
+    "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+    "requested_procedure": "Connect all-released, select GBA SELECT mapping, press/release physical SELECT, confirm Tab label and save; other mappings unchanged",
+    "assessment": "SELECT compatibility workaround succeeds in this environment. Does not prove exact runtime cause of Backspace rejection, verify every gameplay action separately, or cover reconnect persistence / other emulated-system layouts. Targeted simultaneous/partial-release and reconnect checks follow."
+  },
+  "final_phone_regression": [
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-SIMULTANEOUS-PARTIAL-RELEASE",
+      "result": "PASS",
+      "user_report": "2点とも問題無しです",
+      "requested_procedure": "Verify diagonal / three or more simultaneous inputs; then hold RIGHT+B about 5 seconds, release B while retaining RIGHT about 5 seconds, then release all.",
+      "assessment": "Both requested checks reported normal. Exact diagonal / 3+ combination, maximum count and measured durations were not supplied. Does not establish Delta six/seven-key behavior."
+    },
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-RECONNECT-THREE",
+      "result": "PASS",
+      "user_report": "再接続 3回も問題無しです",
+      "requested_procedure": "All buttons released: disconnect iPhone USB about 3 seconds, reconnect normally and wait about 3 seconds, press/release LEFT, RIGHT, B and SELECT; repeat three cycles, no RESET or remapping.",
+      "cycles_reported": 3,
+      "assessment": "User reports all three requested reconnect checks without problems. Recorded as successful operation/release and retained mapping under the requested all-released condition; not startup-held-input validation."
+    }
+  ],
+  "backspace_assignment_display_followup": {
+    "user_report": "キー配置画面上だとセレクトボタンにバックスペースが選択されていました。",
+    "observation": "Backspace was displayed as the SELECT assignment, while physical SELECT/Backspace was not accepted in the tested Delta input/mapping flow.",
+    "distinction": "A displayed assignment does not establish successful live input handling. Whether this was a default or previously saved assignment, and whether Backspace worked previously in this environment, is unconfirmed.",
+    "source_history": [
+      {
+        "commit": "c7ee1f02855d1faf0fbab3c101ddd6211b7d8903",
+        "period": "2024-07",
+        "url": "https://github.com/rileytestut/DeltaCore/commit/c7ee1f02855d1faf0fbab3c101ddd6211b7d8903",
+        "finding": "Introduced modern GCKeyboard handling for Apple Silicon Macs; other platforms retained legacy handling."
+      },
+      {
+        "commit": "196afbcb03a0a06c9984b7d92a49049fcc2ff30a",
+        "period": "2025-09",
+        "url": "https://github.com/rileytestut/DeltaCore/commit/196afbcb03a0a06c9984b7d92a49049fcc2ff30a",
+        "finding": "Enabled modern handling on iOS 26 because legacy handling no longer worked."
+      }
+    ],
+    "inference": "A missing Backspace conversion in the modern path exposed by the iOS 26 switch is a leading hypothesis, rather than an established intentional prohibition of Backspace. Displayed mapping, working Safari input, and successful Tab workaround are consistent with this hypothesis.",
+    "limits": "No runtime button description/branch capture or comparison on older Delta/iOS versions. Does not prove exact cause, recent regression, previous Backspace success, or official acknowledgement of a bug.",
+    "action": "Keep the verified SELECT-to-Tab mapping; no firmware change or further physical test required for this documentation update."
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "stage": "P4 final normal-firmware switch",
+  "date": "2026-11-10",
+  "result": "PASS: upload, full readback verification, application start and macOS USB/HID enumeration; gameplay regression pending",
+  "user_authorization": "User requested remaining step 1: switch from trace v1 to normal sfc-keyboard",
+  "preparation": "Normal BIN and uploader hashes checked immediately before upload; reviewed patch/tool sources unchanged; non-trace build options verified. Previously completed tests/build in p4-commit-review-2026-11-10.json.",
+  "connection_history": [
+    "Initial preflight: no UIAPduino on Mac",
+    "After first user RESET/reconnect report: normal 1209:D004 observed, no write",
+    "After second user RESET/reconnect report: exactly one expected 1209:B803 / 32V003 / bcdDevice 0x0141 detected; one upload attempt succeeded"
+  ],
+  "mode": "sfc-keyboard",
+  "usb_trace_enabled": false,
+  "bin_bytes": 5496,
+  "static_ram_bytes": 196,
+  "upload": {
+    "started_at": "2026-11-10T21:58:28.896232+09:00",
+    "finished_at": "2026-11-10T21:58:34.097824+09:00",
+    "command": [
+      ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+      "--verbose",
+      "--flash-size",
+      "16384",
+      ".local/build/sfc-keyboard/snes_controller.ino.bin"
+    ],
+    "matching_bootloaders": 1,
+    "target": {
+      "USB Product Name": "32V003",
+      "idVendor": 4617,
+      "idProduct": 47107,
+      "bcdDevice": 321
+    },
+    "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+    "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+    "exit_code": 0,
+    "padded_bytes": 5504,
+    "bootloader_written": false,
+    "readback_verified": true,
+    "application_started": true,
+    "after": {
+      "observed_at": "2026-11-10T21:58:38.126477+09:00",
+      "devices": [
+        {
+          "USB Product Name": "UIAPduino KBD+Mouse",
+          "idVendor": 4617,
+          "idProduct": 53252,
+          "bcdDevice": 1
+        }
+      ],
+      "same_usb_location_as_bootloader": true
+    }
+  },
+  "readback_scope": "Application sectors padded to 64-byte boundary: 5,504 bytes. Uploader reported all sectors matched. Bootloader not written.",
+  "mac_hid_enumeration": {
+    "devices": [
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 2,
+        "MaxInputReportSize": 4,
+        "MaxOutputReportSize": 0,
+        "MaxFeatureReportSize": 0
+      },
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 6,
+        "MaxInputReportSize": 8,
+        "MaxOutputReportSize": 8,
+        "MaxFeatureReportSize": 0
+      }
+    ]
+  },
+  "local_logs": {
+    "upload": {
+      "path": ".local/logs/p4-final-normal-upload-01.json",
+      "sha256": "29cb283cde67b09888893a92294962bf520501eceba88d6becec0eaf67b3e132"
+    },
+    "hid": {
+      "path": ".local/logs/p4-final-normal-hid-after-upload.json",
+      "sha256": "451d35b7bfa9645b3212f63751fbde75fd6eae6b3d3eae128d0f6de44c951b66"
+    }
+  },
+  "collector_status": "Bounded upload watcher exited successfully; no active input collectors started",
+  "remaining": "Step 2 regression on normal firmware: twelve Mac keys, holds, partial release, 6/7/6 behavior, iPhone GBA operations/reconnection. Prior trace-v1 practical results remain historical and are not automatically normal-firmware PASS.",
+  "known_limits": "U04 and D09 remain user-accepted unresolved limitations; switching firmware is not a claim of fixing them.",
+  "publication": {
+    "raw_stdout_stderr_included": false,
+    "personal_paths_serials_location_ids_included": false,
+    "same_location_comparison_boolean_only": true
+  }
+}

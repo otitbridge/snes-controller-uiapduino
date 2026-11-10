@@ -1,0 +1,457 @@
+{
+  "stage": "P4 normal-firmware post-switch regression",
+  "date": "2026-11-10",
+  "status": "PASS within agreed scope: Backspace normal Mac full regression, Tab targeted Mac checks and Delta GBA operation / simultaneous / partial-release / three reconnect checks",
+  "firmware": {
+    "mode": "sfc-keyboard",
+    "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+    "upload_evidence": "p4-final-normal-upload-2026-11-10.json"
+  },
+  "mac_browser_log": {
+    "path": ".local/logs/p4-normal-regression-mac-2026-11-10-01.jsonl",
+    "status": "STOPPED normally with SIGINT; process exit code 0",
+    "sha256": "6298518d295370a0f17c14534fae2685449d6b506c4a40e2e9078b87ec62a7fb",
+    "bytes": 366958,
+    "lines": 1573,
+    "sessions": 3
+  },
+  "observations": [
+    {
+      "id": "MAC-TWELVE-SINGLE-BUTTONS",
+      "result": "PASS for twelve individual mapped keydown/keyup pairs",
+      "user_report": "12個完了",
+      "session": "2026-11-10T13:02:38.166Z",
+      "press_release_pairs": [
+        {
+          "button": "B",
+          "code": "KeyZ",
+          "down_seconds": 19.873,
+          "up_seconds": 20.692,
+          "hold_seconds": 0.819
+        },
+        {
+          "button": "Y",
+          "code": "KeyA",
+          "down_seconds": 21.155,
+          "up_seconds": 21.825,
+          "hold_seconds": 0.67
+        },
+        {
+          "button": "SELECT",
+          "code": "Backspace",
+          "down_seconds": 22.322,
+          "up_seconds": 23.104,
+          "hold_seconds": 0.782
+        },
+        {
+          "button": "START",
+          "code": "Enter",
+          "down_seconds": 23.688,
+          "up_seconds": 24.601,
+          "hold_seconds": 0.913
+        },
+        {
+          "button": "上",
+          "code": "ArrowUp",
+          "down_seconds": 25.288,
+          "up_seconds": 25.943,
+          "hold_seconds": 0.655
+        },
+        {
+          "button": "下",
+          "code": "ArrowDown",
+          "down_seconds": 26.501,
+          "up_seconds": 27.188,
+          "hold_seconds": 0.687
+        },
+        {
+          "button": "左",
+          "code": "ArrowLeft",
+          "down_seconds": 27.488,
+          "up_seconds": 28.013,
+          "hold_seconds": 0.525
+        },
+        {
+          "button": "右",
+          "code": "ArrowRight",
+          "down_seconds": 28.311,
+          "up_seconds": 28.701,
+          "hold_seconds": 0.39
+        },
+        {
+          "button": "A",
+          "code": "KeyX",
+          "down_seconds": 29.37,
+          "up_seconds": 29.952,
+          "hold_seconds": 0.582
+        },
+        {
+          "button": "X",
+          "code": "KeyS",
+          "down_seconds": 30.991,
+          "up_seconds": 31.798,
+          "hold_seconds": 0.807
+        },
+        {
+          "button": "L",
+          "code": "KeyQ",
+          "down_seconds": 32.338,
+          "up_seconds": 32.925,
+          "hold_seconds": 0.587
+        },
+        {
+          "button": "R",
+          "code": "KeyW",
+          "down_seconds": 33.419,
+          "up_seconds": 34.229,
+          "hold_seconds": 0.81
+        }
+      ],
+      "all_releases_return_to_neutral": true,
+      "focus_loss_during_scored_interval": false,
+      "first_focus_loss_seconds": 37.435,
+      "captured_prefix": {
+        "bytes": 13157,
+        "lines": 62,
+        "sha256": "eb22fd7da77fb1b46828180e3080e83603e9c297bd20dda286357fe15ff919f9",
+        "scope": "Exact log prefix at assessment; file continues growing"
+      },
+      "scope": "Browser events correlated with user SFC operation, not raw USB or independently identified input source. Recorded holds 0.390–0.913 seconds; one-second instruction was approximate. Only initial page session was recorded; no separate reset session observed, and it contained exactly the requested sequence."
+    },
+    {
+      "id": "MAC-HOLDS-PARTIAL-RELEASE-01",
+      "result": "RIGHT and partial release PASS; LEFT continuity observed but duration below 30-second criterion, retest required",
+      "user_report": "完了",
+      "session": "2026-11-10T13:04:23.166Z",
+      "requested_seconds": {
+        "left": 35,
+        "right": 35,
+        "triple": 5,
+        "partial": 5
+      },
+      "minimum_direction_hold_criterion_seconds": 30,
+      "measured_seconds": {
+        "left": 23.125,
+        "right": 32.622,
+        "right_y_b": 6.343,
+        "right_y_after_b_release": 2.254
+      },
+      "transitions": [
+        {
+          "event": "keydown",
+          "seconds": 3.875,
+          "code": "ArrowLeft",
+          "pressed": [
+            "ArrowLeft"
+          ]
+        },
+        {
+          "event": "keyup",
+          "seconds": 27,
+          "code": "ArrowLeft",
+          "pressed": []
+        },
+        {
+          "event": "keydown",
+          "seconds": 29.177,
+          "code": "ArrowRight",
+          "pressed": [
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keyup",
+          "seconds": 61.799,
+          "code": "ArrowRight",
+          "pressed": []
+        },
+        {
+          "event": "keydown",
+          "seconds": 63.647,
+          "code": "ArrowRight",
+          "pressed": [
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keydown",
+          "seconds": 64.442,
+          "code": "KeyA",
+          "pressed": [
+            "KeyA",
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keydown",
+          "seconds": 64.845,
+          "code": "KeyZ",
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keyup",
+          "seconds": 71.188,
+          "code": "KeyZ",
+          "pressed": [
+            "KeyA",
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keyup",
+          "seconds": 73.442,
+          "code": "KeyA",
+          "pressed": [
+            "ArrowRight"
+          ]
+        },
+        {
+          "event": "keyup",
+          "seconds": 73.45,
+          "code": "ArrowRight",
+          "pressed": []
+        }
+      ],
+      "focus_loss_during_scored_interval": false,
+      "first_focus_loss_seconds": 78.754,
+      "captured_prefix": {
+        "bytes": 185925,
+        "lines": 809,
+        "sha256": "11d50ce35e18f46528649cf9317fa5458a39e4f1af74d570ba286c3351d7d4c3"
+      },
+      "assessment": "Both direction intervals contain no intermediate release or other direction. RIGHT meets >=30 seconds. LEFT at 23.125 seconds is not a hardware failure but does not satisfy the duration requirement. RIGHT+Y+B remains for 6.343 seconds; after B release RIGHT+Y remains for 2.254 seconds, then full release. The approximately five-second partial-hold instruction was not met in duration, but functional partial release is observed; no separate minimum partial-hold acceptance duration was specified."
+    },
+    {
+      "id": "MAC-LEFT-RETEST-AND-SIX-SEVEN-SIX",
+      "result": "PASS: LEFT >=30 seconds and two complete 6/7/6 output-selection cycles",
+      "user_report": "完了です　期待した動作になっています",
+      "session": "2026-11-10T13:06:36.748Z",
+      "left_hold": {
+        "down_seconds": 3.857,
+        "up_seconds": 38.642,
+        "observed_duration_seconds": 34.785,
+        "criterion_seconds": 30
+      },
+      "six_seven_six": {
+        "scored_interval_seconds": [
+          79.766,
+          86.307
+        ],
+        "complete_cycles": 2,
+        "initial_six_output": [
+          "KeyZ",
+          "KeyA",
+          "Backspace",
+          "Enter",
+          "KeyQ",
+          "KeyW"
+        ],
+        "seven_physical_inputs_output": [
+          "KeyZ",
+          "KeyA",
+          "Backspace",
+          "Enter",
+          "ArrowUp",
+          "KeyQ"
+        ],
+        "transitions": [
+          {
+            "event": "keydown",
+            "seconds": 79.766,
+            "code": "KeyQ",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ]
+          },
+          {
+            "event": "keyup",
+            "seconds": 81.349,
+            "code": "KeyW",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keydown",
+            "seconds": 81.362,
+            "code": "ArrowUp",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keyup",
+            "seconds": 81.899,
+            "code": "ArrowUp",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keydown",
+            "seconds": 81.907,
+            "code": "KeyW",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ]
+          },
+          {
+            "event": "keyup",
+            "seconds": 82.967,
+            "code": "KeyW",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keydown",
+            "seconds": 82.978,
+            "code": "ArrowUp",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keyup",
+            "seconds": 86.299,
+            "code": "ArrowUp",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ]
+          },
+          {
+            "event": "keydown",
+            "seconds": 86.307,
+            "code": "KeyW",
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ]
+          }
+        ],
+        "cycle_seven_output_seconds": [
+          0.537,
+          3.321
+        ],
+        "restored_six_state_until_next_change_seconds": [
+          1.06,
+          1.556
+        ],
+        "scope": "Browser delivery separates R/W keyup and UP keydown by milliseconds; scoring uses settled states and user report that R stayed held. Earlier attempts lacked all six required held keys, especially START, and are not counted. A later third UP addition ended with other keys released, so it is not counted as a complete 6/7/6 cycle."
+      },
+      "final_neutral_seconds": 89.524,
+      "focus_loss_during_scored_intervals": false,
+      "first_focus_loss_seconds": 91.987,
+      "scope": "Browser key events correlated with physical user actions; not raw USB capture. Short setup/release transitions and earlier attempts remain in the complete log."
+    },
+    {
+      "id": "IPHONE-SELECT-NOT-RECOGNIZED",
+      "result": "OPEN: SELECT not recognized in Delta assignment screen per user",
+      "user_reports": [
+        "セレクトボタンが認識されないです　以前からかもしれません。",
+        "Deltaの割り当て画面でも認識されないです"
+      ],
+      "current_firmware_bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+      "mac_control": "Current normal-firmware Mac trial recorded SELECT as Backspace down at 22.322 s, up at 23.104 s, duration 0.782 s. This does not establish reception on iPhone.",
+      "source_review": {
+        "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Game%20Controllers/Keyboard/KeyboardGameController.swift",
+        "blob_sha": "c94e7593ea30650e44590429735110486bea6fc3",
+        "finding": "Modern GCKeyboard handler has explicit cases for Return, Tab, Space, arrows and others, but no explicit Backspace/Delete case. Default accepts only a one-character first token from buttonInput.description.",
+        "inference": "Backspace may be discarded by this conversion path. Runtime description/callback and installed binary not observed; not yet a proven root cause."
+      },
+      "assessment": "Do not infer a normal-firmware regression: user says it may predate this switch. Earlier reports of all-ten GBA and all-twelve SNES settings confirmation remain historical but do not establish current SELECT acceptance. Other requested iPhone regression items were not individually confirmed by this reply. U04/D09 acceptance does not apply to this separate SELECT issue.",
+      "next_check": "iPhone Safari key-event viewer: one physical SELECT press/release, then B press/release as control; inspect Backspace versus KeyZ before modifying firmware."
+    },
+    {
+      "id": "IPHONE-SAFARI-SELECT-BACKSPACE-CONTROL",
+      "result": "PASS, user reports both SELECT/Backspace and B/KeyZ keydown/keyup in iPhone Safari",
+      "user_report": "はい　出ました",
+      "requested_check": "USB retained on iPhone; W3C key-event viewer, Clear Table, focus input, press/release SELECT then B",
+      "scope": "User confirmation to a question asking both down/up pairs. No independent phone capture or timing. Shows a working iPhone browser path for both inputs; Delta assignment still fails. Not by itself proof of exact Delta/OS implementation cause."
+    },
+    {
+      "id": "DELTA-GBA-SELECT-TAB-ACCEPTED",
+      "result": "PASS, user reports SELECT accepted as Tab in Delta and Cinnamon gameplay works",
+      "user_report": "認識されました　タブキーでした　シナモンでの動作も問題ないです",
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "requested_procedure": "Connect all-released, select GBA SELECT mapping, press/release physical SELECT, confirm Tab label and save; other mappings unchanged",
+      "assessment": "SELECT compatibility workaround succeeds in this environment. Does not prove exact runtime cause of Backspace rejection, verify every gameplay action separately, or cover reconnect persistence / other emulated-system layouts. Targeted simultaneous/partial-release and reconnect checks follow."
+    },
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-SIMULTANEOUS-PARTIAL-RELEASE",
+      "result": "PASS",
+      "user_report": "2点とも問題無しです",
+      "requested_procedure": "Verify diagonal / three or more simultaneous inputs; then hold RIGHT+B about 5 seconds, release B while retaining RIGHT about 5 seconds, then release all.",
+      "assessment": "Both requested checks reported normal. Exact diagonal / 3+ combination, maximum count and measured durations were not supplied. Does not establish Delta six/seven-key behavior."
+    },
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-RECONNECT-THREE",
+      "result": "PASS",
+      "user_report": "再接続 3回も問題無しです",
+      "requested_procedure": "All buttons released: disconnect iPhone USB about 3 seconds, reconnect normally and wait about 3 seconds, press/release LEFT, RIGHT, B and SELECT; repeat three cycles, no RESET or remapping.",
+      "cycles_reported": 3,
+      "assessment": "User reports all three requested reconnect checks without problems. Recorded as successful operation/release and retained mapping under the requested all-released condition; not startup-held-input validation."
+    }
+  ],
+  "next_test": "P5 enclosure installation and post-assembly tests; U04/D09 remain accepted unresolved, and untested Delta six/seven-key / SNES gameplay / iPad scopes remain separate.",
+  "remaining": [],
+  "accepted_unresolved": [
+    "U04",
+    "D09"
+  ],
+  "publication": {
+    "personal_paths_or_unique_device_identifiers_included": false
+  },
+  "scope_note": "Full Mac suite used the preceding Backspace normal BIN. Tab changes one mapping byte; targeted Mac Tab/B and phone regression passed. Do not claim the full physical Mac suite or 30-minute test was repeated on Tab firmware."
+}

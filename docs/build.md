@@ -118,7 +118,7 @@ SNES_HOST_SANITIZERS=1 python3 tests/test_core_get_report.py
 
 ## PC上のロジックとバックエンドのテスト
 
-`bash scripts/build_firmware.sh sfc-keyboard-trace` は現在、未書き込みの履歴付き計測版（trace v2）を生成します。SETUP応答時間の懸念が解決するまで実機使用は保留です。基板上の初版（trace v1）を再生成するコマンドではありません。
+`bash scripts/build_firmware.sh sfc-keyboard-trace` は現在、未書き込みの履歴付き計測版（trace v2）を生成します。SETUP応答時間の懸念が解決するまで実機使用は保留です。過去に実機使用した初版（trace v1）を再生成するコマンドではありません。現在の基板は通常版 `sfc-keyboard` です。
 生成先は `.local/build/sfc-keyboard-trace/` で、通常版とは別です。
 `UIAP_SNES_USB_TRACE=1` をCとC++の両方へ渡し、[計測用の応答](../patches/README.md) を有効にします。
 Macでは `python3 scripts/read_keyboard_control.py 600` で現在のキーボードInput、

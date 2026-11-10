@@ -2,7 +2,7 @@
   "stage": "P4 iPhone / Delta practical testing",
   "date": "2026-11-10",
   "timezone": "Asia/Tokyo",
-  "status": "IN PROGRESS: D10 passed by user report; U04 deferred and D09 release-while-locked unresolved",
+  "status": "Normal-firmware regression step 2 COMPLETE within agreed scope; P5 enclosure work next; U04/D09 accepted unresolved; deferred scopes retained",
   "firmware": {
     "commit": "8b456046f5fd361aea29bcfcd2445c4a4df88753",
     "mode": "sfc-keyboard",
@@ -1986,12 +1986,131 @@
       "duration_minutes_user_reported": 30,
       "user_report": "実際のプレイ時間は30分ちょうど。異常や警告は発生していません。",
       "scope": "User report in response to the complete D10 procedure. Final left/right/B checks were requested but not individually described in the reply. No independent timing, USB, reboot-counter, or phone-screen capture. Does not cover lock/app switching, unresolved U04/D09 conditions, or a different firmware binary."
+    },
+    {
+      "id": "D03-GBA-DIAGONAL-THREE-PLUS-USER-CONFIRMATION",
+      "test_id": "D03",
+      "result": "PASS for user-reported diagonal and three-or-more simultaneous gameplay inputs",
+      "user_report": "Deltaでの斜め・3入力以上：「シナモン」で確認できています。",
+      "scope": "GBA シナモンふわふわ大作戦 in Delta. Exact combinations, maximum input count, timing and trial count not supplied. Does not establish D05 six/seven-key behavior or new D04 partial-release coverage. No independent capture or firmware identity check for this retrospective report."
+    },
+    {
+      "id": "D01-SNES-TWELVE-LAYOUT-USER-CONFIRMATION",
+      "test_id": "D01",
+      "result": "PASS for all twelve SNES inputs in Delta key-layout settings; gameplay NOT TESTED",
+      "user_report": "SNES全12入力の確認：Deltaのキーレイアウト設定画面で確認できています。実ゲームはROMがないため未完了です。",
+      "scope": "All twelve recognized in settings per user; no screen capture or per-key mapping transcript. No SNES ROM available; in-game actions remain unverified. No new upload performed."
+    },
+    {
+      "id": "USER-RULING-ACCEPT-U04-D09-UNRESOLVED",
+      "test_ids": [
+        "U04",
+        "D09"
+      ],
+      "result": "Accepted unresolved limitations by explicit user ruling; proceed without requiring their resolution",
+      "user_report": "U04（接続時保持）・D09（ロック中解放）の未解決事項：は未解決のままで良いです（ユーザー裁定）",
+      "supersedes": "Earlier D09 tolerance conditional on proving Delta-side causality is no longer a prerequisite for proceeding. Historical observations are retained.",
+      "scope": "Does not change failed test outcomes to PASS, establish a root cause, or claim a fix. No further U04/D09 investigation required for the current workflow unless user requests it."
+    },
+    {
+      "id": "FINAL-NORMAL-FIRMWARE-SWITCH",
+      "result": "PASS: upload, full readback verification, application start and macOS USB/HID enumeration; gameplay regression pending",
+      "evidence_record": "p4-final-normal-upload-2026-11-10.json",
+      "previous_device_firmware": {
+        "mode": "sfc-keyboard-trace",
+        "temporary_for": "U04 USB IN/ACK diagnosis",
+        "uploaded_at": "2026-11-10T18:02:43.725897+09:00",
+        "bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+        "keyboard_output": "Same SFC mapping with opt-in first-slot/counter instrumentation",
+        "restore_mode": "sfc-keyboard",
+        "restore_bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+        "original_verified_keyboard_bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+        "build_directory_for_exact_uploaded_bin": ".local/build/sfc-keyboard-trace-v1"
+      },
+      "firmware_bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+      "uploaded_at": "2026-11-10T21:58:34.097824+09:00",
+      "readback_bytes": 5504,
+      "physical_input_tests_performed": false
+    },
+    {
+      "id": "NORMAL-FIRMWARE-IPHONE-SELECT-ISSUE",
+      "result": "OPEN: SELECT not recognized in Delta assignment screen per user",
+      "evidence_record": "p4-normal-regression-2026-11-10.json",
+      "user_reports": [
+        "セレクトボタンが認識されないです　以前からかもしれません。",
+        "Deltaの割り当て画面でも認識されないです"
+      ],
+      "scope": "Do not infer a normal-firmware regression: user says it may predate this switch. Earlier reports of all-ten GBA and all-twelve SNES settings confirmation remain historical but do not establish current SELECT acceptance. Other requested iPhone regression items were not individually confirmed by this reply. U04/D09 acceptance does not apply to this separate SELECT issue."
+    },
+    {
+      "id": "IPHONE-SAFARI-SELECT-BACKSPACE-CONTROL",
+      "result": "PASS, user reports both SELECT/Backspace and B/KeyZ keydown/keyup in iPhone Safari",
+      "user_report": "はい　出ました",
+      "requested_check": "USB retained on iPhone; W3C key-event viewer, Clear Table, focus input, press/release SELECT then B",
+      "scope": "User confirmation to a question asking both down/up pairs. No independent phone capture or timing. Shows a working iPhone browser path for both inputs; Delta assignment still fails. Not by itself proof of exact Delta/OS implementation cause."
+    },
+    {
+      "id": "SELECT-TAB-CANDIDATE-UPLOAD",
+      "result": "PASS: verified upload, application start and same-position Mac USB re-enumeration; SELECT acceptance pending",
+      "previous_device_firmware": {
+        "mode": "sfc-keyboard",
+        "usb_trace_enabled": false,
+        "uploaded_at": "2026-11-10T21:58:34.097824+09:00",
+        "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+        "bin_bytes": 5496,
+        "static_ram_bytes": 196,
+        "build_directory": ".local/build/sfc-keyboard-backspace",
+        "evidence_record": "p4-final-normal-upload-2026-11-10.json",
+        "readback_verified": true,
+        "application_started": true,
+        "mac_usb_hid_enumerated": true,
+        "post_switch_gameplay_regression": "Mac PASS; iPhone SELECT assignment issue OPEN; other requested phone trials not individually confirmed",
+        "select_key": "Backspace"
+      },
+      "evidence_record": "p4-select-tab-2026-11-10.json",
+      "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "uploaded_at": "2026-11-10T22:19:41.287167+09:00"
+    },
+    {
+      "id": "SELECT-TAB-MAC-CONFIRMATION",
+      "result": "PASS: SELECT produces Tab down/up three times and B produces KeyZ down/up once",
+      "evidence_record": "p4-select-tab-2026-11-10.json"
+    },
+    {
+      "id": "DELTA-GBA-SELECT-TAB-ACCEPTED",
+      "result": "PASS, user reports SELECT accepted as Tab in Delta and Cinnamon gameplay works",
+      "user_report": "認識されました　タブキーでした　シナモンでの動作も問題ないです",
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "requested_procedure": "Connect all-released, select GBA SELECT mapping, press/release physical SELECT, confirm Tab label and save; other mappings unchanged",
+      "assessment": "SELECT compatibility workaround succeeds in this environment. Does not prove exact runtime cause of Backspace rejection, verify every gameplay action separately, or cover reconnect persistence / other emulated-system layouts. Targeted simultaneous/partial-release and reconnect checks follow."
+    },
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-SIMULTANEOUS-PARTIAL-RELEASE",
+      "result": "PASS",
+      "user_report": "2点とも問題無しです",
+      "requested_procedure": "Verify diagonal / three or more simultaneous inputs; then hold RIGHT+B about 5 seconds, release B while retaining RIGHT about 5 seconds, then release all.",
+      "assessment": "Both requested checks reported normal. Exact diagonal / 3+ combination, maximum count and measured durations were not supplied. Does not establish Delta six/seven-key behavior."
+    },
+    {
+      "firmware_bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same cable",
+      "evidence_type": "User report; no independent phone event capture or elapsed-time measurement",
+      "id": "DELTA-TAB-RECONNECT-THREE",
+      "result": "PASS",
+      "user_report": "再接続 3回も問題無しです",
+      "requested_procedure": "All buttons released: disconnect iPhone USB about 3 seconds, reconnect normally and wait about 3 seconds, press/release LEFT, RIGHT, B and SELECT; repeat three cycles, no RESET or remapping.",
+      "cycles_reported": 3,
+      "assessment": "User reports all three requested reconnect checks without problems. Recorded as successful operation/release and retained mapping under the requested all-released condition; not startup-held-input validation."
     }
   ],
   "open_issues": [
     {
       "test_id": "U04",
-      "status": "DEFERRED BY USER: unresolved; original acceptance criterion failed",
+      "status": "ACCEPTED UNRESOLVED BY USER: original criterion still failed; not a blocker for remaining work",
       "symptom": "Current trace v1: Delta requires release/repress for initially held RIGHT. Earlier Safari premature-keyup observation is preserved in history but did not reproduce in the current iPhone Safari comparison.",
       "root_cause": "UNDETERMINED",
       "latest_diagnosis": "Current trace v1: Mac native/browser held-connect succeeds after Karabiner quit. iPhone normal RIGHT/release works in Delta and Safari. iPhone held-connect requires release/repress in Delta, but Safari emits initial keydown and keyup only on physical release according to user. Focus investigation on Delta connection/input initialization path; no specific app/OS root cause proven. Original iPhone Safari premature-keyup symptom is not reproduced with current firmware.",
@@ -2009,33 +2128,34 @@
         ],
         "limitation": "Initial integrated-source assessment only; no raw keyboard/control request trace. A subsequent temporary diagnostic reflash and GET_REPORT candidate reflash are recorded separately."
       },
-      "user_decision": "Proceed with remaining practical tests using all-buttons-released connection procedure."
+      "user_decision": "Explicit user ruling accepts leaving this issue unresolved without proving Delta causality. Continue remaining work; do not pursue further diagnosis unless requested."
     },
     {
       "test_id": "D09",
-      "status": "OPEN: release-while-locked criterion failed",
+      "status": "ACCEPTED UNRESOLVED BY USER: original criterion still failed; not a blocker for remaining work",
       "symptom": "RIGHT remains after unlocking although released while locked; other-button operation suppresses it temporarily, then RIGHT returns after release.",
       "root_cause": "UNDETERMINED",
-      "user_preference": "Acceptable if established as Delta-side defect; not yet established.",
+      "user_preference": "Latest explicit ruling supersedes earlier conditional tolerance. Root cause remains undetermined and recovery/workaround remain documented.",
       "recovery": "User confirmed: with Delta foreground, press RIGHT once and fully release; stale RIGHT stops and does not return. USB connection retained, no RESET.",
-      "latest_diagnosis": "Delta 1.7.3 matched source has a focus guard that can discard release before emulator input is cleared. This is a strong conditional explanation consistent with press/release recovery, but runtime causality remains undetermined."
+      "latest_diagnosis": "Delta 1.7.3 matched source has a focus guard that can discard release before emulator input is cleared. This is a strong conditional explanation consistent with press/release recovery, but runtime causality remains undetermined.",
+      "user_decision": "Explicit user ruling accepts leaving this issue unresolved without proving Delta causality. Continue remaining work; do not pursue further diagnosis unless requested."
     }
   ],
   "next_test": {
-    "scope": "Remaining P4 coverage and eventual final normal-firmware validation",
-    "result": "D10 completed: user reports exactly 30 minutes with no abnormalities or warnings. No new physical trial requested.",
+    "scope": "P5 enclosure installation and post-assembly validation",
+    "result": "Step 2 normal-firmware checks complete within agreed scope; final phone simultaneous/partial-release and three reconnect checks PASS by user report",
     "collector": {
       "status": "STOPPED"
     },
-    "resume_point": "Remaining Delta diagonal / 3+ inputs and 6/7-key tests need observable game behavior; SNES 12-input coverage remains deferred while user prefers GBA. U04 is deferred by user and D09 remains open. Current device still runs trace v1; final normal firmware requires separate upload/validation."
+    "resume_point": "Plan enclosure fixation, insulation, clearance, cable strain relief and programming access, then verify operation after assembly. U04/D09 remain accepted unresolved; SNES gameplay, Delta six/seven-key and iPad are not newly passed."
   },
   "remaining": [
-    "Diagonal and higher-count simultaneous inputs; six/seven-key behavior in Delta when observable",
-    "U04 deferred by user, unresolved: use all-buttons-released connection. Other held-state recovery conditions remain to be tested.",
-    "D09 release-while-locked remains failed/open despite confirmed recovery. Released-button lock/unlock passed three cycles; held-through-unlock is untested. D08 released-button switching passed three cycles; D10 continuous use passed for exactly 30 minutes by user report.",
-    "SNES all-twelve mapping and gameplay, including physical X / Y",
-    "Device-specific iPad testing",
-    "Final normal-firmware upload and validation distinct from current trace v1 results"
+    "D05 six/seven-key behavior in Delta when observable. Mac HID behavior was previously verified; do not infer Delta D05 from D03. If gameplay cannot distinguish inputs, keep Delta limitation explicit and use PC input display per original plan.",
+    "D04 SNES right+Y+B partial-release example not tested; GBA right+B partial release already passed. New D03 report does not extend partial-release coverage.",
+    "SNES in-game actions deferred because no ROM is available; all twelve inputs in Delta settings are confirmed",
+    "Device-specific iPad testing remains unperformed; required before claiming iPad validation",
+    "Enclosure insulation, fixation, clearance, cable strain and post-assembly operation checks; wiring/internal photos and build/publication documentation",
+    "U04/D09 retained as user-accepted unresolved limitations; further root-cause investigation is not a prerequisite"
   ],
   "publication": {
     "evidence_type": "User hardware-operation reports, supplied iPhone screenshot, agent-observed Mac browser/vendor HID logs, source tests, build and verified upload records; scopes distinguished per observation",
@@ -2043,15 +2163,19 @@
     "personal_paths_or_device_identifiers_included": false
   },
   "current_device_firmware": {
-    "mode": "sfc-keyboard-trace",
-    "temporary_for": "U04 USB IN/ACK diagnosis",
-    "uploaded_at": "2026-11-10T18:02:43.725897+09:00",
-    "bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
-    "keyboard_output": "Same SFC mapping with opt-in first-slot/counter instrumentation",
-    "restore_mode": "sfc-keyboard",
-    "restore_bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
-    "original_verified_keyboard_bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
-    "build_directory_for_exact_uploaded_bin": ".local/build/sfc-keyboard-trace-v1"
+    "mode": "sfc-keyboard",
+    "select_key": "Tab",
+    "usb_trace_enabled": false,
+    "uploaded_at": "2026-11-10T22:19:41.287167+09:00",
+    "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "bin_bytes": 5496,
+    "static_ram_bytes": 196,
+    "build_directory": ".local/build/sfc-keyboard",
+    "evidence_record": "p4-select-tab-2026-11-10.json",
+    "readback_verified": true,
+    "application_started": true,
+    "mac_usb_enumerated": true,
+    "post_switch_gameplay_regression": "PASS by user report: Delta GBA SELECT Tab assignment/gameplay, diagonal/3+, RIGHT+B partial release, three all-released reconnect cycles. Mac targeted SELECT Tab x3 / B also PASS."
   },
   "evidence_organization": {
     "current_state_fields": [
@@ -2063,6 +2187,24 @@
     ],
     "history_field": "observations: ordered trial history; earlier RUNNING/planned states describe their observation time, not active processes now",
     "raw_artifacts": "Raw logs and BINs remain ignored under .local; public records contain selected observations and hashes, not independently downloadable full captures.",
-    "commit_review_record": "p4-commit-review-2026-11-10.json"
-  }
+    "commit_review_record": "p4-commit-review-2026-11-10.json",
+    "commit_review_scope": "p4-commit-review-2026-11-10.json is the immutable pre-commit snapshot for c2bfaf3; later documentation/user-ruling additions are outside its file hashes."
+  },
+  "candidate_firmware": {
+    "mode": "sfc-keyboard",
+    "select_key": "Tab",
+    "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "uploaded": true,
+    "evidence_record": "p4-select-tab-2026-11-10.json"
+  },
+  "resolved_issues": [
+    {
+      "test_id": "SELECT-IPHONE",
+      "status": "RESOLVED BY WORKAROUND for tested Delta GBA environment",
+      "symptom": "Physical SELECT not recognized by Delta assignment UI; may predate normal-firmware switch",
+      "root_cause": "Exact runtime cause not proven; modern Delta Backspace conversion remains source-supported explanation",
+      "latest_diagnosis": "Tab workaround accepted by Delta; reconnect persistence still to be verified",
+      "resolution": "SELECT mapped from Backspace (0x2A) to Tab (0x2B); verified upload, Mac Tab down/up and user-confirmed Delta Tab assignment / Cinnamon gameplay"
+    }
+  ]
 }

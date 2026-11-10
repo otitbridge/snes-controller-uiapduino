@@ -9,7 +9,7 @@ from pathlib import Path
 import sys
 
 ROOT = Path(__file__).resolve().parent.parent
-ALLOWED_CODES = {'KeyZ', 'KeyA', 'Backspace', 'Enter', 'ArrowUp', 'ArrowDown',
+ALLOWED_CODES = {'KeyZ', 'KeyA', 'Tab', 'Enter', 'ArrowUp', 'ArrowDown',
                  'ArrowLeft', 'ArrowRight', 'KeyX', 'KeyS', 'KeyQ', 'KeyW'}
 ALLOWED_EVENTS = {'start', 'keydown', 'keyup', 'focus_lost', 'window_blur'}
 

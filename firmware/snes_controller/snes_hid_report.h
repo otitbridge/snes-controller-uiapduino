@@ -39,9 +39,9 @@ static_assert(sizeof(Report) == 8, "Keyboard report must be exactly 8 bytes");
 // Recompute from the complete current state; no retained state or USB calls.
 // If more than six buttons are held, the first six in bit order take priority.
 inline Report makeReport(uint16_t buttons) {
-  // Raw HID usages: Z, A, Backspace, Enter, Up, Down, Left, Right, X, S, Q, W.
+  // Raw HID usages: Z, A, Tab, Enter, Up, Down, Left, Right, X, S, Q, W.
   constexpr uint8_t usages[] = {
-      0x1D, 0x04, 0x2A, 0x28, 0x52, 0x51,
+      0x1D, 0x04, 0x2B, 0x28, 0x52, 0x51,
       0x50, 0x4F, 0x1B, 0x16, 0x14, 0x1A};
   static_assert(sizeof(usages) == kButtonCount, "Every button needs a usage");
 
