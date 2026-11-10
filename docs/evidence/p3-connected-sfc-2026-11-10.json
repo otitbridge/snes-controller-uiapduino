@@ -1,0 +1,439 @@
+{
+  "stage": "P3 connected SFC input diagnosis",
+  "recorded_at": "2026-11-10T15:47:40.276281+09:00",
+  "base_commit": "dd5d9352ce2cebb1d754a8f48b47cad606eb017d",
+  "firmware": {
+    "mode": "sfc-diagnostic",
+    "source_commit": "dd5d9352ce2cebb1d754a8f48b47cad606eb017d",
+    "source_sha256": {
+      "firmware/snes_controller/board_config.h": "c34bbc0576d5ac73711bb2a35ab90303f6661f797f9b09ec941c3bcc1ba7ade1",
+      "firmware/snes_controller/snes_controller.ino": "74b517f46f5872b0c612b0e01b944de15653ff3aba48d637d08781280459adcd",
+      "firmware/snes_controller/snes_diagnostic.cpp": "62888b606054d5f07a8a0672617eeec89f369461bae64dfeed8ada3a394ff320",
+      "firmware/snes_controller/snes_diagnostic.h": "9604b44bf738121c041671f49721694d72688fcb659af1077891932b3458bbe7",
+      "firmware/snes_controller/snes_hid_report.h": "5ef5b2e278c329673e164e6c7193d63b4b104a99a8cc0924c0e7a938fc68a77e",
+      "firmware/snes_controller/snes_reader.cpp": "e30478fe90d38fee3802812a1c9dc3cceb74ee0d5b45e3f158fa59c2f37ca9e0",
+      "firmware/snes_controller/snes_reader.h": "c6f5216af83a06dc30fe1062751090c7d9b22334f364d8fb86cd3a57971b1c0a",
+      "firmware/snes_controller/usb_backend.cpp": "2ed1c2c0c78a536ed24fd46820f9a76bbed6a9b79055e1df7892eb86b76d9d7e",
+      "firmware/snes_controller/usb_backend.h": "67767c9a9eb8c2fe620a3190227c4c5f856a1a51cf1a6139ec63658d5673225b",
+      "scripts/build_firmware.sh": "e5b43a148362ef1c83e84e58ab0fcf22bc15af801885fb03d0fdbe5c12df2793",
+      "scripts/read_sfc_hid.c": "4722966e695ee75adcc0c757225e4903dccd177a0abd3894a5343b6bbce3a77f",
+      "scripts/read_sfc_hid.sh": "ebb9517e7c5982d6dec418077f3564f97d28dd758786389b8fe2dd2fc2cdb339",
+      "tests/fakes/Arduino.h": "2897415c7183f5d25faddafea995782615f007d73bac6c42e29de5d7f730263a",
+      "tests/fakes/uiapusb.h": "161bf663ba9f26a0ca4fe5420d41e60bc7fb6ff60ffd3e5c0c4536061844d21f",
+      "tests/run_host_tests.sh": "94596fdff8190d6cd520452b73b2168e1080a30d1db908b3504f7cf436ea82a6",
+      "tests/snes_reader_test.cpp": "433f166daeb28ed765a096b2c4b0bfc71752d74efe6bbf604056f04f63e3cf0e"
+    },
+    "bin_bytes": 5536,
+    "bin_sha256": "6d777773dab78f47c1ca1d42d1ddb67605a95e3be64af1bfdc72c2755ff9faeb",
+    "new_upload_performed": false,
+    "identification_limit": "Previously flashed diagnostic BIN retained; local source and BIN match prior verified evidence. Flash was not read back again during this test."
+  },
+  "mac_reader": {
+    "source": "scripts/read_sfc_hid.c",
+    "binary_sha256": "8f33c3821a07ae48e59c875714a0b40aadf349ae42c31540d96e44ed1f67d6af",
+    "operation": "Input reports from vendor HID only; no HID writes"
+  },
+  "user_report": {
+    "controller_wiring": "User reports physical wiring completed and USB reconnected",
+    "board": "Previously reported UIAPduino V1.4 at default 5V setting; voltage not measured",
+    "button_sequence": "User reports B, Y, SELECT, START, UP, DOWN, LEFT, RIGHT, A, X, L, R completed; each press slightly shorter than one second",
+    "follow_up": "User reports approximately ten-second B hold and release completed",
+    "contact_actuation_method": "Controller case assembled; normal buttons pressed",
+    "actual_five_connections": "User found a discrepancy against docs/wiring.md, corrected wiring and reconnected USB; specific incorrect connection not reported"
+  },
+  "hid_snapshot": {
+    "observed_at": "2026-11-10T15:38:02.447540+09:00",
+    "hid_interfaces": [
+      {
+        "Product": "UIAPduino KBD+Mouse+Web",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 2,
+        "MaxInputReportSize": 4,
+        "Transport": "USB"
+      },
+      {
+        "Product": "UIAPduino KBD+Mouse+Web",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 6,
+        "MaxInputReportSize": 8,
+        "Transport": "USB"
+      },
+      {
+        "Product": "UIAPduino KBD+Mouse+Web",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 65280,
+        "PrimaryUsage": 1,
+        "MaxInputReportSize": 8,
+        "Transport": "USB"
+      }
+    ]
+  },
+  "baseline_capture": {
+    "raw_log_path": ".local/logs/p3-connected-baseline-2026-11-10.jsonl",
+    "raw_log_sha256": "bea3f1f2858a689ec8c92e60ade1514e3b239b1c125cba7cb93869aebef6a0de",
+    "samples": 494,
+    "first_seconds": 0.011652,
+    "last_seconds": 5.075862,
+    "states": [
+      {
+        "raw": 65535,
+        "pressed": 0,
+        "samples": 494
+      }
+    ],
+    "invalid_frames": 0,
+    "sequence_step_counts_modulo_256": {
+      "1": 493
+    }
+  },
+  "button_capture": {
+    "started_at": "2026-11-10T15:37:40.421985+09:00",
+    "command": [
+      ".local/bin/read_sfc_hid",
+      "240"
+    ],
+    "finished_at": "2026-11-10T15:40:08.320411+09:00",
+    "exit_code": 0,
+    "raw_log_path": ".local/logs/p3-connected-buttons-2026-11-10.jsonl",
+    "raw_log_sha256": "7621909a7658f546caab191dfacdf042b89dbdb3507cf7da5bf4b73c48ef64a7",
+    "samples": 14378,
+    "first_seconds": 0.00138,
+    "last_seconds": 147.875691,
+    "states": [
+      {
+        "raw": 65535,
+        "pressed": 0,
+        "samples": 14378
+      }
+    ],
+    "invalid_frames": 0,
+    "sequence_step_counts_modulo_256": {
+      "1": 14377
+    }
+  },
+  "publication": {
+    "raw_logs": ".local/logs/ (ignored)",
+    "omitted": "Absolute home/project paths, USB locations and transient process/device identifiers are omitted."
+  },
+  "wiring_correction": {
+    "source": "User report after the initial no-response capture",
+    "power_off_instruction": "USB removal requested before comparing or changing wiring",
+    "report": "相違がありました　修正し直して再接続してます",
+    "individual_connection_changed": "NOT REPORTED",
+    "retest": "PASS: all 12 individual buttons, left/right holds, three-button hold and partial/full release"
+  },
+  "initial_results": {
+    "vendor_hid_reception": "PASS: valid continuous diagnostic reports",
+    "physical_button_response": "NOT DETECTED: all raw=0xFFFF / pressed=0 during reported individual buttons and B hold",
+    "twelve_button_mapping": "NOT VERIFIED",
+    "cause": "NOT DETERMINED: all-HIGH DATA alone does not distinguish wiring, power, contact actuation, controller or signal-generation faults",
+    "sfc_keyboard_output": "NOT INTEGRATED",
+    "iphone_delta": "DEFERRED BY USER"
+  },
+  "corrected_retest": {
+    "user_report": "User confirmed completion of the prescribed 12-button order after wiring correction",
+    "single_buttons": [
+      {
+        "pressed": 1,
+        "buttons": [
+          "B"
+        ],
+        "first_seconds": 19.298085,
+        "last_seconds": 19.554245,
+        "samples": 26,
+        "next_state_seconds": 19.56225,
+        "observed_press_to_release_seconds": 0.264165,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 2,
+        "buttons": [
+          "Y"
+        ],
+        "first_seconds": 20.194107,
+        "last_seconds": 20.4023,
+        "samples": 21,
+        "next_state_seconds": 20.410233,
+        "observed_press_to_release_seconds": 0.216126,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 4,
+        "buttons": [
+          "SELECT"
+        ],
+        "first_seconds": 21.41028,
+        "last_seconds": 21.682234,
+        "samples": 28,
+        "next_state_seconds": 21.698164,
+        "observed_press_to_release_seconds": 0.287884,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 8,
+        "buttons": [
+          "START"
+        ],
+        "first_seconds": 22.170285,
+        "last_seconds": 22.346397,
+        "samples": 18,
+        "next_state_seconds": 22.354313,
+        "observed_press_to_release_seconds": 0.184028,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 16,
+        "buttons": [
+          "UP"
+        ],
+        "first_seconds": 22.682179,
+        "last_seconds": 22.874295,
+        "samples": 20,
+        "next_state_seconds": 22.890328,
+        "observed_press_to_release_seconds": 0.208149,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 32,
+        "buttons": [
+          "DOWN"
+        ],
+        "first_seconds": 23.138097,
+        "last_seconds": 23.330228,
+        "samples": 20,
+        "next_state_seconds": 23.338093,
+        "observed_press_to_release_seconds": 0.199996,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 64,
+        "buttons": [
+          "LEFT"
+        ],
+        "first_seconds": 23.794243,
+        "last_seconds": 23.986323,
+        "samples": 20,
+        "next_state_seconds": 24.002259,
+        "observed_press_to_release_seconds": 0.208016,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 128,
+        "buttons": [
+          "RIGHT"
+        ],
+        "first_seconds": 24.362344,
+        "last_seconds": 24.578282,
+        "samples": 22,
+        "next_state_seconds": 24.587339,
+        "observed_press_to_release_seconds": 0.224995,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 256,
+        "buttons": [
+          "A"
+        ],
+        "first_seconds": 25.250426,
+        "last_seconds": 25.642168,
+        "samples": 39,
+        "next_state_seconds": 25.6582,
+        "observed_press_to_release_seconds": 0.407774,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 512,
+        "buttons": [
+          "X"
+        ],
+        "first_seconds": 26.250481,
+        "last_seconds": 26.78617,
+        "samples": 53,
+        "next_state_seconds": 26.794207,
+        "observed_press_to_release_seconds": 0.543726,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 1024,
+        "buttons": [
+          "L"
+        ],
+        "first_seconds": 27.266367,
+        "last_seconds": 27.482399,
+        "samples": 22,
+        "next_state_seconds": 27.498453,
+        "observed_press_to_release_seconds": 0.232086,
+        "returned_to_released": true
+      },
+      {
+        "pressed": 2048,
+        "buttons": [
+          "R"
+        ],
+        "first_seconds": 27.898727,
+        "last_seconds": 28.154187,
+        "samples": 26,
+        "next_state_seconds": 28.162332,
+        "observed_press_to_release_seconds": 0.263605,
+        "returned_to_released": true
+      }
+    ],
+    "twelve_button_mapping": "PASS: one matching bit per button, all returned to zero",
+    "timing_definition": "Host reception timestamps, from first observed pressed sample to first following released sample; not a physical contact duration or latency measurement",
+    "holds_and_partial_release": "PASS with the separate right-only retest; initial RIGHT+DOWN observation retained above",
+    "user_report_holds": "User reported completing left and right holds, right+Y+B, B-only release, then full release",
+    "capture": {
+      "started_at": "2026-11-10T15:42:14.921066+09:00",
+      "command": [
+        ".local/bin/read_sfc_hid",
+        "240"
+      ],
+      "finished_at": "2026-11-10T15:45:30.631928+09:00",
+      "exit_code": 0,
+      "raw_log_path": ".local/logs/p3-corrected-buttons-2026-11-10.jsonl",
+      "raw_log_sha256": "6533e7f54e0478d3d6c6aac33e7945ce2d4184e62210e576c4f0b76ddc2c7bbd",
+      "samples": 19026,
+      "first_seconds": 0.001807,
+      "last_seconds": 195.692628,
+      "invalid_frames": 0,
+      "sequence_step_counts_modulo_256": {
+        "1": 19025
+      }
+    },
+    "left_hold": {
+      "pressed": 64,
+      "buttons": [
+        "LEFT"
+      ],
+      "first_seconds": 72.147285,
+      "last_seconds": 111.195528,
+      "samples": 3797,
+      "next_state_seconds": 111.203601,
+      "duration_to_next_seconds": 39.056316,
+      "result": "PASS: LEFT only for more than 30 seconds, then all released"
+    },
+    "first_right_hold": {
+      "first_seconds": 113.539627,
+      "released_seconds": 144.939881,
+      "continuous_right_bit_seconds": 31.400254,
+      "state_sample_counts": {
+        "128": 1707,
+        "160": 1346
+      },
+      "result": "RIGHT bit remained set, but DOWN was also present during portions of the hold; not accepted as right-only hold",
+      "user_clarification": "User reports possibly touching the DOWN side of the directional pad",
+      "cause": "Not measured; right-only retest requested"
+    },
+    "compound_hold": {
+      "pressed": 131,
+      "buttons": [
+        "B",
+        "Y",
+        "RIGHT"
+      ],
+      "first_seconds": 151.157447,
+      "last_seconds": 157.804414,
+      "samples": 648,
+      "next_state_seconds": 157.820617,
+      "duration_to_next_seconds": 6.66317,
+      "result": "PASS: B+Y+RIGHT stable"
+    },
+    "partial_release": {
+      "pressed": 130,
+      "buttons": [
+        "Y",
+        "RIGHT"
+      ],
+      "first_seconds": 157.820617,
+      "last_seconds": 162.476285,
+      "samples": 454,
+      "next_state_seconds": 162.484403,
+      "duration_to_next_seconds": 4.663786,
+      "result": "PASS: B cleared while Y+RIGHT remained set"
+    },
+    "final_release": {
+      "first_seconds": 162.55627,
+      "last_seconds": 195.692628,
+      "samples": 3222,
+      "result": "PASS: all released; a brief Y-only state appeared while releasing the remaining two buttons"
+    }
+  },
+  "results": {
+    "vendor_hid_reception": "PASS: all captures valid; sequence advanced by one modulo 256 throughout each capture",
+    "twelve_button_mapping": "PASS after user-reported wiring correction",
+    "left_only_hold": "PASS: 39.056316 seconds to first observed release",
+    "right_only_hold": "PASS on retest: 41.288577 seconds to first observed release",
+    "simultaneous_hold": "PASS: RIGHT+Y+B for 6.663170 seconds to first B release",
+    "partial_release": "PASS: RIGHT+Y remained for 4.663786 seconds after B release, then full release observed",
+    "sfc_keyboard_output": "NOT INTEGRATED: diagnostic keyboard interface remains neutral",
+    "iphone_delta": "DEFERRED BY USER"
+  },
+  "right_only_retest": {
+    "user_report": "User confirmed completion of right-only hold and release, avoiding the UP/DOWN sides of the directional pad",
+    "capture": {
+      "started_at": "2026-11-10T15:45:59.986650+09:00",
+      "command": [
+        ".local/bin/read_sfc_hid",
+        "120"
+      ],
+      "finished_at": "2026-11-10T15:47:14.378492+09:00",
+      "exit_code": 0,
+      "raw_log_path": ".local/logs/p3-right-only-retest-2026-11-10.jsonl",
+      "raw_log_sha256": "83c994a8022a34c699850c229a872560a17677b2fed59c9f77587224fa0b9ecc",
+      "samples": 7232,
+      "first_seconds": 0.006156,
+      "last_seconds": 74.383223,
+      "invalid_frames": 0,
+      "sequence_step_counts_modulo_256": {
+        "1": 7231
+      }
+    },
+    "state_runs": [
+      {
+        "pressed": 0,
+        "buttons": [],
+        "first_seconds": 0.006156,
+        "last_seconds": 5.36647,
+        "samples": 522,
+        "next_state_seconds": 5.374417,
+        "duration_to_next_seconds": 5.368261
+      },
+      {
+        "pressed": 128,
+        "buttons": [
+          "RIGHT"
+        ],
+        "first_seconds": 5.374417,
+        "last_seconds": 46.646944,
+        "samples": 4014,
+        "next_state_seconds": 46.662994,
+        "duration_to_next_seconds": 41.288577
+      },
+      {
+        "pressed": 0,
+        "buttons": [],
+        "first_seconds": 46.662994,
+        "last_seconds": 74.383223,
+        "samples": 2696
+      }
+    ],
+    "result": "PASS: RIGHT only continuously for more than 30 seconds, then all released; no extra button bit observed"
+  },
+  "limitations": [
+    "Physical wiring, correction and assembled-controller operation are user reports; no photos or continuity records captured. The particular incorrect connection was not reported.",
+    "Timing uses host callback timestamps; continuous observed states do not guarantee retention of pulses between samples or measure contact-to-host latency.",
+    "CLOCK/LATCH waveform and VDD/VCC were not measured.",
+    "The initial RIGHT hold included DOWN. User reports possible contact with the DOWN side; causality was not measured. A separate RIGHT-only hold passed.",
+    "These are vendor HID diagnostic results, not SFC keyboard output or Delta game-operation results."
+  ],
+  "next_steps": [
+    "Address coherent multi-key keyboard report publication and integrate the verified SFC input with USB keyboard output",
+    "Verify actual multi-key keyboard press, hold, partial release and six-key recovery on Mac",
+    "Perform deferred iPhone/Delta tests with device and software versions recorded"
+  ]
+}
