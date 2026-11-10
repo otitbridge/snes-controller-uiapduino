@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UIAPduino 単キー試験</title>
+<style>
+  body { max-width: 800px; margin: 32px auto; padding: 0 20px; font: 18px/1.6 system-ui; }
+  #status { font-size: 32px; font-weight: bold; }
+  #pad { padding: 24px; border: 3px solid #777; border-radius: 8px; }
+  #pad:focus { outline: 4px solid #1769aa; }
+  button { font: inherit; padding: 8px 16px; }
+  textarea { box-sizing: border-box; width: 100%; height: 220px; font: 13px monospace; }
+</style>
+<h1>UIAPduino 単キー試験</h1>
+<p>下の枠をクリックし、PC5とGNDをジャンパ線で接続・開放してください。
+  接続中は「Z：押下中」、開放すると「Z：解放」になります。
+  試験中はパソコン側のZキーを押さず、この画面を表示したままにしてください。</p>
+<div id="pad" tabindex="0" role="region" aria-label="入力確認枠">
+  <p id="status">Z：解放</p>
+  <p id="focus">入力確認枠をクリックしてください</p>
+  <p id="held">保持時間：0.0秒</p>
+  <p id="summary">押下 0回／解放 0回／フォーカス喪失 0回</p>
+</div>
+<p><button id="reset" type="button">記録を消して開始</button></p>
+<p id="session"></p>
+<ol id="cycles" aria-label="押下と解放の履歴"></ol>
+<label for="log">試験記録（ブラウザのキーイベント。Raw HIDレポートではありません）</label>
+<textarea id="log" readonly></textarea>
+<script>
+'use strict';
+const pad = document.getElementById('pad');
+const status = document.getElementById('status');
+const held = document.getElementById('held');
+const summary = document.getElementById('summary');
+const focus = document.getElementById('focus');
+const log = document.getElementById('log');
+const cycles = document.getElementById('cycles');
+let started, pressedAt, downs, ups, blurs, records;
+function reset() {
+  started = performance.now(); pressedAt = null;
+  downs = ups = blurs = 0; records = [];
+  cycles.replaceChildren();
+  document.getElementById('session').textContent = `試験開始：${new Date().toISOString()}`;
+  status.textContent = 'Z：解放';
+  held.textContent = '保持時間：0.0秒';
+  record('start', {at: new Date().toISOString(), user_agent: navigator.userAgent});
+  pad.focus();
+}
+function record(event, extra = {}) {
+  records.push({event, seconds: +( (performance.now() - started) / 1000).toFixed(3), ...extra});
+  log.value = JSON.stringify(records, null, 2);
+  summary.textContent = `押下 ${downs}回／解放 ${ups}回／フォーカス喪失 ${blurs}回`;
+}
+pad.addEventListener('keydown', e => {
+  if (e.code !== 'KeyZ') return;
+  e.preventDefault();
+  if (pressedAt !== null) return; // OS repeats are not additional physical presses.
+  pressedAt = performance.now(); ++downs;
+  status.textContent = 'Z：押下中';
+  record('keydown', {code: e.code, key: e.key, trusted: e.isTrusted, repeat: e.repeat});
+});
+pad.addEventListener('keyup', e => {
+  if (e.code !== 'KeyZ') return;
+  e.preventDefault();
+  const duration = pressedAt === null ? null : +( (performance.now() - pressedAt) / 1000).toFixed(3);
+  pressedAt = null; ++ups;
+  status.textContent = 'Z：解放';
+  held.textContent = `直前の保持時間：${duration === null ? '不明' : duration}秒`;
+  record('keyup', {code: e.code, key: e.key, trusted: e.isTrusted, held_seconds: duration});
+  const item = document.createElement('li');
+  item.textContent = duration === null ? '保持時間不明 → 解放（判定中断）'
+    : `Zを${duration}秒保持 → 解放`;
+  cycles.appendChild(item);
+});
+pad.addEventListener('focus', () => { focus.textContent = '入力受付中'; });
+function loseFocus() {
+  ++blurs;
+  record('focus_lost', {was_pressed: pressedAt !== null});
+  pressedAt = null;
+  status.textContent = '判定中断：入力確認枠をクリックしてください';
+  focus.textContent = 'フォーカスが外れました。この間の保持・解放は判定できません';
+}
+pad.addEventListener('blur', loseFocus);
+window.addEventListener('blur', () => {
+  if (document.activeElement === pad) loseFocus();
+});
+setInterval(() => {
+  if (pressedAt !== null) held.textContent = `保持時間：${((performance.now() - pressedAt) / 1000).toFixed(1)}秒`;
+}, 100);
+document.getElementById('reset').addEventListener('click', reset);
+reset();
+</script>
+</html>

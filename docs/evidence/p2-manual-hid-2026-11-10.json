@@ -1,0 +1,161 @@
+{
+  "stage": "P2 manual single-key firmware upload and macOS browser key trial",
+  "started_at": "2026-11-10T14:50:01.776191+09:00",
+  "binary": {
+    "path": ".local/build/manual/snes_controller.ino.bin",
+    "bytes": 4084,
+    "sha256": "254251c3e42635c5795f7e42b8e94872541dd205eb29f0f32330f4e182a7c00d",
+    "build_record": "p2-build-2026-11-10.json"
+  },
+  "target_before_upload": {
+    "USB Product Name": "32V003",
+    "idVendor": 4617,
+    "idProduct": 47107,
+    "bcdDevice": 321
+  },
+  "matching_bootloaders": 1,
+  "user_report": {
+    "board_revision": "V1.4",
+    "voltage_setting": "5V, factory default",
+    "test_input": "Initially reported PC5 to GND; user later corrected that the jumper was connected to board label 5 and GND, rather than 7 and GND. Jumper was open before upload.",
+    "bootloader_connection": "User released RESET immediately after USB connection",
+    "corrected_test_input": "Board label 7 (PC5 / GPIO_PIN_7) to GND, jumper wire; pin headers soldered (user report)"
+  },
+  "command": [
+    "<PROJECT_DIR>/.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+    "--verbose",
+    "--flash-size",
+    "16384",
+    "<PROJECT_DIR>/.local/build/manual/snes_controller.ino.bin"
+  ],
+  "finished_at": "2026-11-10T14:50:07.145031+09:00",
+  "exit_code": 0,
+  "stdout": "uiapflash: <PROJECT_DIR>/.local/build/manual/snes_controller.ino.bin (4084 バイト -> 4096 バイトにパディング)\n  書き込み中... 1024 / 4096 バイト\n  書き込み中... 2048 / 4096 バイト\n  書き込み中... 3072 / 4096 バイト\n  書き込み中... 4096 / 4096 バイト\nベリファイ OK (4096 バイト)\nアプリを起動しました\n書き込み完了\n",
+  "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+  "transient_zero_length_read_diagnostics": 25,
+  "verification": {
+    "padded_bytes": 4096,
+    "all_sectors_matched": true,
+    "readback_verified": true,
+    "application_started": true
+  },
+  "write_range": {
+    "start": "0x08000000",
+    "end_inclusive": "0x08000FFF",
+    "sector_bytes": 64,
+    "bootloader_written": false
+  },
+  "after_upload": {
+    "observed_at": "2026-11-10T14:50:09.198284+09:00",
+    "devices": [
+      {
+        "USB Product Name": "UIAPduino KBD+Mouse",
+        "idVendor": 4617,
+        "idProduct": 53252,
+        "bcdDevice": 1
+      }
+    ],
+    "same_usb_location_as_bootloader": true
+  },
+  "results": {
+    "firmware_upload": "PASS",
+    "readback_verification": "PASS",
+    "mac_key_press_hold_release": "PASS (browser events and user physical trial confirmation)",
+    "iphone_delta": "NOT TESTED: deferred by user",
+    "sfc_input": "NOT IMPLEMENTED",
+    "ipad": "NOT TESTED"
+  },
+  "base_commit": "0c38a21",
+  "uploader": {
+    "name": "uiapflash",
+    "version": "1.0.0",
+    "source_commit": "085bbf60e5c0450157d0c8fcf60800fecbd0f673",
+    "binary_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210"
+  },
+  "pre_upload_mode_checks": {
+    "initial_state": "Runtime HID 1209:D004; no bootloader detected, flashing not started",
+    "successful_entry": "1209:B803 detected after user reconnected USB and immediately released RESET"
+  },
+  "mac_hid_probe": {
+    "exclusive_open": "FAILED: 0xe00002c1 (kIOReturnNotPrivileged)",
+    "nonexclusive_open": "FAILED: 0xe00002c5 (kIOReturnExclusiveAccess)",
+    "raw_reports_observed": false,
+    "fallback": "tests/keyboard_probe.html: browser KeyboardEvent observations; no raw HID capture"
+  },
+  "keyboard_probe": {
+    "path": "tests/keyboard_probe.html",
+    "sha256": "dc137b2166a634b3cc5a8767419aba88777a2b74aab09ab90b11dcca17c149cb",
+    "automated_key_injection": false,
+    "results": "PASS for the three intended press/hold/release cycles in the macOS browser"
+  },
+  "publication": {
+    "redactions": "Project paths replaced with <PROJECT_DIR>; transient device handle and USB location omitted.",
+    "raw_logs": "Retained under ignored .local/logs/"
+  },
+  "source_urls": [
+    "https://www.uiap.jp/uiapduino/pro-micro/ch32v003/v1dot4",
+    "https://github.com/tarosay/uiapflash/blob/085bbf60e5c0450157d0c8fcf60800fecbd0f673/src/uiapflash.c",
+    "https://www.uiap.jp/img/UIAPduino-Pro-Micro-CH32V003-V1dot4-Pinout-Diagram-s.avif",
+    "https://faq.deltaemulator.com/using-delta/controllers"
+  ],
+  "initial_manual_trial": {
+    "result": "No Z input reported",
+    "wiring_correction": "User corrected the earlier statement: board label 5 had been connected to GND. Retest used board label 7 (PC5) to GND and succeeded without firmware changes.",
+    "browser_control_trial": "User pressed the PC keyboard Z key; browser recorded keydown/keyup (0.125 s). This is not UIAPduino input evidence.",
+    "browser_probe_sha256": "e4ec7cca1422901accccec91cde462d7aa207a1c535a40007101675dff29aead"
+  },
+  "mac_single_key_trial": {
+    "date": "2026-11-10",
+    "host_os": "macOS 26.7.1 (sw_vers verified)",
+    "browser": "Safari 27.0 (browser user-agent)",
+    "session_started_at": "2026-11-10T05:58:08.724Z",
+    "firmware_changed_for_wiring_correction": false,
+    "operator": "User physically operated the jumper; Codex observed the Safari accessibility tree",
+    "observations": "Browser KeyboardEvent keydown/keyup and visible hold/release history; not raw HID reports",
+    "intended_trial_cycles": [
+      {
+        "key": "Z",
+        "held_seconds": 6.084,
+        "released": true
+      },
+      {
+        "key": "Z",
+        "held_seconds": 6.121,
+        "released": true
+      },
+      {
+        "key": "Z",
+        "held_seconds": 30.908,
+        "released": true
+      }
+    ],
+    "all_recorded_hold_durations_seconds": [
+      0.06,
+      0.007,
+      6.084,
+      6.121,
+      30.908
+    ],
+    "total_keydowns": 5,
+    "total_keyups": 5,
+    "focus_loss_events": 2,
+    "focus_loss_interpretation": "All five visible cycle entries have numeric hold durations. The page invalidates a duration on pad/window blur during a hold; no cycle was displayed as interrupted. Focus losses outside a hold do not establish USB reconnection or resume behavior.",
+    "additional_short_cycles": "Two additional short transitions were visible before the three intended holds. Cause was not measured; debounce and minimum pulse width are not validated.",
+    "user_confirmation": "User confirmed all three intended jumper trials pressed, held and released normally, with no PC Z-key operation requested during this retest.",
+    "input_source_limitation": "Browser events do not identify the originating USB device; association relies on the instructed jumper-only user procedure.",
+    "raw_hid_capture": false,
+    "cable_model_and_length": "NOT RECORDED",
+    "result": "PASS: single-key press, hold and release for these three macOS browser trials"
+  },
+  "iphone_delta_trial": {
+    "status": "DEFERRED BY USER",
+    "reason": "User requested iPhone verification on a later date",
+    "device_intended": "iPhone 17",
+    "ios_version": "NOT RECORDED",
+    "delta_version": "NOT RECORDED",
+    "cable": "NOT RECORDED",
+    "key_assignment": "NOT TESTED",
+    "game_operation": "NOT TESTED"
+  },
+  "record_updated_at": "2026-11-10T15:01:01.489837+09:00"
+}
