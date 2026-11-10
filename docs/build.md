@@ -1,6 +1,6 @@
 # ビルド環境の準備方針と設定候補
 
-2026-11-10のP0調査結果です。以下はソースで確認した設定と、後続のP2で実行する手順です。CLI・コアの導入、`board details`、コンパイルはまだ実施していません。
+2026-11-10のP0調査結果と、P1のホストテスト手順です。MCU用の設定はソースで確認した候補と、後続のP2で実行する手順です。CLI・コアの導入、`board details`、MCU向けのコンパイルはまだ実施していません。
 
 ## 使用する環境
 
@@ -9,6 +9,19 @@
 コア1.2.15の依存コンパイラはxPack RISC-V GCC 14.2.0-2です。[パッケージ索引](https://github.com/tarosay/board_manager_files/blob/main/package_uiap_hid_index.json) にはmacOS向けGCC・openocd・beforeinstall・minichlinkはx86_64用、uiapflashはx86_64／arm64用のエントリがあります。Apple Silicon向けの依存解決と実行は導入時の確認事項です。Intelバイナリの実行自体はこのMacで確認できています。
 
 P2ではCLI本体の版とCPU種別も記録し、x86_64版CLIを使うなど、索引のツール構成に合う方法を選びます。RISC-Vという名前だけを理由に、既存ESP32用コンパイラを代用しません。
+
+## P1のPC上のテスト
+
+この部分は実装・実行済みです。プロジェクトのルートから次を実行できます。
+
+```sh
+bash tests/run_host_tests.sh
+SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh
+```
+
+既定のコンパイラは `c++` です。変更する場合は `CXX=clang++ bash tests/run_host_tests.sh` のように実行ファイルを指定します。通常はC++14／警告をエラー扱い／`-DNDEBUG -O2`、sanitizer指定時はAddressSanitizer／UndefinedBehaviorSanitizerを有効にします。sanitizer指定には、それらを利用できるホスト用ClangまたはGCCが必要です。
+
+生成物はGit対象外の `.local/host-tests/` に置きます。Arduino・USB・MCUのヘッダや別プロジェクトのソースは不要です。確認済みの環境・結果・対象範囲は [validation.md](validation.md) に記録しています。
 
 ## ソースで確認したボード設定
 

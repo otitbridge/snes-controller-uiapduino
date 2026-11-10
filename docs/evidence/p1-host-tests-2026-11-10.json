@@ -1,0 +1,108 @@
+{
+  "recorded_at": "2026-11-10T14:20:25.193997+09:00",
+  "stage": "P1 host report generation tests",
+  "base_commit": "112a816d9a225e09d2c5977b6f07eb92ba9e42de",
+  "source_state": "Uncommitted P1 working tree; exact tested files identified by SHA-256 below",
+  "compiler": {
+    "command": [
+      "c++",
+      "--version"
+    ],
+    "output": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin"
+  },
+  "platform": {
+    "system": "Darwin arm64",
+    "os": "26.7.1"
+  },
+  "sources": [
+    {
+      "path": "LICENSE",
+      "sha256": "6152c77324bf665a4fce84d324a2ac8e09ae898373b96d03754730e7e37a1b5b"
+    },
+    {
+      "path": "firmware/snes_controller/snes_hid_report.h",
+      "sha256": "5ef5b2e278c329673e164e6c7193d63b4b104a99a8cc0924c0e7a938fc68a77e"
+    },
+    {
+      "path": "tests/hid_report_test.cpp",
+      "sha256": "c3df399d3fa4750b50b827920891fa79eeac4ad4cfda4e29126d7479c2e7174e"
+    },
+    {
+      "path": "tests/run_host_tests.sh",
+      "sha256": "a3fee3376b04df71ffad5f6ee00fc762aa017d8d9363685529faacdd83582e91"
+    }
+  ],
+  "host_binaries": [
+    {
+      "path": ".local/host-tests/hid_report_test",
+      "sha256": "40a6a0a83fa07c7162af0ea03f88101a5fb108d40a8d691a88a96f9eec59a00c",
+      "description": "Host test executable, not MCU firmware"
+    },
+    {
+      "path": ".local/host-tests/hid_report_test_sanitized",
+      "sha256": "67c941b1f87b0525b1b49cb5f8bb9fb204d943be48f6b607ba83c65f40eb3470",
+      "description": "Host test executable, not MCU firmware"
+    }
+  ],
+  "tests": {
+    "single_buttons": 12,
+    "lower_12_bit_combinations": 4096,
+    "uint16_inputs_with_unused_bits": 65536,
+    "single_button_release_transitions": 24576,
+    "hold_cases": 3,
+    "repeat_calls_per_hold": 3000,
+    "history_independence_cases": 4096
+  },
+  "hardware_scope": {
+    "usb_or_mcu_headers_used": false,
+    "mcu_firmware_compiled": false,
+    "usb_transfers_tested": false,
+    "device_flashed": false,
+    "physical_button_timing_measured": false
+  },
+  "runs": [
+    {
+      "command": [
+        "bash",
+        "tests/run_host_tests.sh"
+      ],
+      "environment": {},
+      "compiler_flags": [
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-DNDEBUG",
+        "-O2"
+      ],
+      "exit_code": 0,
+      "combined_output": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\n"
+    },
+    {
+      "command": [
+        "bash",
+        "tests/run_host_tests.sh"
+      ],
+      "environment": {
+        "SNES_HOST_SANITIZERS": "1"
+      },
+      "compiler_flags": [
+        "-std=c++14",
+        "-Wall",
+        "-Wextra",
+        "-Werror",
+        "-pedantic",
+        "-DNDEBUG",
+        "-O2",
+        "-O1",
+        "-g",
+        "-fsanitize=address,undefined",
+        "-fno-omit-frame-pointer"
+      ],
+      "exit_code": 0,
+      "combined_output": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\n"
+    }
+  ],
+  "record_note": "Tool captures combine standard output and error; no diagnostics appeared in either run."
+}
