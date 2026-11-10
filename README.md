@@ -1,8 +1,11 @@
 # SFCコントローラー用UIAPduino USBキーボード
 
-SFC／SNESコントローラーの12ボタンをUIAPduino V1.4で読み取り、USB HIDキーボードとして送るファームウェアです。iPhone 17のDeltaでGBAゲームの操作を確認しています。SELECTは**Tab**を送ります。
+SFC／SNESコントローラーの12ボタンを税込290円のUIAPduino V1.4で読み取り、USB HIDキーボードとして送るファームウェアです。iPhone 17のDeltaでGBAゲームの操作を確認しています。SELECTは**Tab**を送ります。
 
-**現状は内蔵前の配線・動作検証段階です。** 2026-11-10、ユーザーの判断で筐体への内蔵と組み立て後の試験（P5）を保留し、公開用資料（P6）を先に整理しました。内蔵済みの完成品や、iPadでの動作確認済みとしては扱いません。
+**ブレッドボードでの動作検証は、今回の合意範囲ですべて完了しています。** 全12ボタン、長押し・同時押し・部分解放、iPhoneのDeltaでの操作と再接続を確認しました。U04・D09は既知の制約としてユーザー裁定で許容し、未確認の別条件は [確認した環境と範囲](#確認した環境と範囲) に記載しています。
+
+2026-11-10、ユーザーの判断で筐体への内蔵と組み立て後の試験（P5）を保留し、公開用資料（P6）を先に整理しました。現在は内蔵前の構成で、内蔵済みの完成品や、iPadでの動作確認済みとしては扱いません。
+
 
 ## はじめに
 
@@ -13,11 +16,24 @@ SFC／SNESコントローラーの12ボタンをUIAPduino V1.4で読み取り、
 
 開発・書き込み手順はmacOS向けです。このリポジトリではArduino CLIを使い、PlatformIO用のプロジェクト設定は提供していません。
 
+## 機器構成図
+
+SFCコントローラーとUIAPduinoをブレッドボード上で5本の配線により接続し、USB-CでiPhoneまたはMacへつなぎます。接続先のUSBからUIAPduinoへ給電し、UIAPduinoの5V端子からSFCコントローラーへ給電します。
+
 ```mermaid
 flowchart LR
-    SFC["SFCコントローラー・12ボタン"] -->|"CLOCK / LATCH / DATA・5V / GND"| MCU["UIAPduino V1.4・5V設定"]
-    MCU -->|"USB HIDキーボード"| Host["Macで入力確認 / iPhoneのDelta"]
+    Controller["SNES / スーパーファミコン<br/>有線コントローラー・12ボタン"]
+    Board["UIAPduino Pro Micro CH32V003 V1.4"]
+    Delta["iPhone 17 / Delta<br/>USBキーボードとして操作"]
+
+    Board -->|"白：5V / 黄：CLOCK（7）/ 橙：LATCH（8）"| Controller
+    Controller -->|"赤：DATA（9）"| Board
+    Board ---|"茶：共通GND"| Controller
+    Board -->|"USB-C：HIDキーボード入力"| Delta
+    Delta -->|"USB給電"| Board
 ```
+
+括弧内の7・8・9はUIAPduinoの端子表示です。線色は今回のSFC個体のもので、詳しい番号対応は [配線表](docs/wiring.md#接続表) を参照してください。
 
 ## キー割り当て
 
