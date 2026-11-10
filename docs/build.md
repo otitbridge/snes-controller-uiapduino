@@ -8,12 +8,15 @@
 | --- | ---: | ---: | ---: |
 | 全キー解放 `neutral`（既定） | 3116 | 2956 | 156 |
 | 手動スイッチ `manual` | 4084 | 3924 | 176 |
+| SFC診断 `sfc-diagnostic` | 5536 | 5376 | 256 |
 
 コアのサイズ集計式が `.init` を含めていないため、CLIのFlash表示はBINより160バイト少なくなります。ELFの `.init=160` と `.text`、BINサイズを照合しました。CLI表示だけでFlash使用量を判断しません。
 
 ボード定義上の容量はFlash 16,384バイト／RAM 2,048バイトです。静的RAMの残量は、実際のスタック・ヒープ余裕を測った値ではありません。ブートローダの配置と実物の利用可能領域は書き込み前の確認事項です。
 
 コマンド・バージョン・ソースと成果物のSHA-256は [P2のビルド記録](evidence/p2-build-2026-11-10.json) に保存しています。
+
+SFC診断版の設定・成果物・試験結果は [P3の記録](evidence/p3-sfc-diagnostic-2026-11-10.json) に保存します。P3の互換性ビルドでも `neutral` と `manual` のBINはP2で実機確認したものとSHA-256が一致しました。
 
 ## 開発環境
 
@@ -71,9 +74,23 @@ CLIの `board details` と実際のビルドで照合したFQBN：
 UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash
 ```
 
-48MHz内部クロック、UARTなし、`-Os -flto`、C++14です。スクリプトはモードに応じて `compiler.cpp.extra_flags=-DSNES_HID_TEST_INPUT=0` または `1` を追加します。
+48MHz内部クロック、UARTなし、`-Os -flto`、C++14です。この2構成では `SNES_SFC_DIAGNOSTIC=0` とし、モードに応じて `SNES_HID_TEST_INPUT=0` または `1` を追加します。
 
 生成先は `.local/build/neutral/` と `.local/build/manual/` です。各ディレクトリに `snes_controller.ino.bin`、`.elf`、`.hex`、`.map`、`build.options.json`、`compile_commands.json` を保持します。
+
+## SFC診断版をビルドする
+
+```sh
+bash scripts/build_firmware.sh sfc-diagnostic
+```
+
+FQBNは次のとおりです。フラグは `SNES_HID_TEST_INPUT=0`／`SNES_SFC_DIAGNOSTIC=1`、生成先は `.local/build/sfc-diagnostic/` です。コアは同じ未改変の1.2.15を使用します。
+
+```text
+UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbdweb,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash
+```
+
+SFCを読むのはこの明示的な診断ビルドだけです。キーボード側には全解放だけを設定し、16ビットの読み取り結果はvendor HIDへ出します。Macでの取得は `bash scripts/read_sfc_hid.sh 180` です。端子と線色の対応、単独vendor HID設定を使わない理由、現在の基板の状態は [配線・診断手順](wiring.md) を参照してください。
 
 ## PC上のロジックとバックエンドのテスト
 
@@ -85,6 +102,8 @@ SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh
 既定コンパイラは `c++` です。`CXX=clang++ bash tests/run_host_tests.sh` のように実行ファイルを変更できます。C++14、`-Wall -Wextra -Werror -pedantic -DNDEBUG` を指定し、通常は `-O2`、sanitizer指定時は `-O1` とAddressSanitizer／UndefinedBehaviorSanitizerを使います。
 
 P1の全組み合わせテストに加え、P2ではUSB APIのテストダブルを使い、開始前の全解放、保持・解放・部分解放、Raw Usage IDの受け渡しを確認します。これは実際のUSB転送や割り込みのテストではありません。実際のコアAPIとの適合はMCU向けビルドで確認しています。
+
+P3では全65,536通りのシリアル入力をシフトレジスタモデルへ与え、16回のサンプル順・要求待機時間・反転・マスク、Arduinoアダプターの端子、診断APIのbusy中の上書き防止を確認します。
 
 ## USB契約と確認済みの書き込み方法
 

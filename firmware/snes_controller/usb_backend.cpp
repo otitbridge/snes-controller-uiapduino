@@ -2,6 +2,11 @@
 // Copyright (c) 2026 otitbridge
 #include "usb_backend.h"
 
+#ifndef SNES_SFC_DIAGNOSTIC
+#define SNES_SFC_DIAGNOSTIC 0
+#endif
+#if !SNES_SFC_DIAGNOSTIC
+
 #include <uiapusb.h>
 
 #include "snes_hid_report.h"
@@ -26,3 +31,4 @@ void stageButtons(uint16_t buttons) {
 }
 
 }  // namespace UsbBackend
+#endif

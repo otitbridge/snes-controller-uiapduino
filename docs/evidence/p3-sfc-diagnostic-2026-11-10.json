@@ -1,0 +1,412 @@
+{
+  "stage": "P3 SFC reader, diagnostic upload and unconnected macOS reception",
+  "recorded_at": "2026-11-10T15:13:48.952201+09:00",
+  "base_commit": "2205a47",
+  "user_report": {
+    "controller": "Same physical controller used successfully with M5StickS3 reference project",
+    "five_connections": "VCC, GND, CLOCK, LATCH and DATA identified",
+    "board": "UIAPduino V1.4 at factory-default 5V setting",
+    "controller_model_and_board_markings": "NOT RECORDED",
+    "measured_vdd_and_vcc": "NOT RECORDED",
+    "wiring_status": "PCB number/color/signal mapping supplied by user; actual controller wiring and button tests are still deferred",
+    "test_jumper": "User confirmed removal from board",
+    "controller_pcb_contacts": [
+      {
+        "controller_pcb_number": 1,
+        "wire_color_ja": "茶",
+        "signal": "GND",
+        "uiapduino_label": "GND"
+      },
+      {
+        "controller_pcb_number": 2,
+        "wire_color_ja": "赤",
+        "signal": "DATA",
+        "uiapduino_label": "9",
+        "mcu_port": "PC7"
+      },
+      {
+        "controller_pcb_number": 3,
+        "wire_color_ja": "橙",
+        "signal": "LATCH",
+        "uiapduino_label": "8",
+        "mcu_port": "PC6"
+      },
+      {
+        "controller_pcb_number": 4,
+        "wire_color_ja": "黄",
+        "signal": "CLOCK",
+        "uiapduino_label": "7",
+        "mcu_port": "PC5"
+      },
+      {
+        "controller_pcb_number": 5,
+        "wire_color_ja": "白",
+        "signal": "VCC",
+        "uiapduino_label": "5V"
+      }
+    ],
+    "controller_pcb_contacts_source": "User report on 2026-11-10; see p3-wiring-reference-2026-11-10.json",
+    "wiring_history": [
+      "User initially deferred physical SFC wiring because cable colors were not matched",
+      "User subsequently supplied the controller PCB number / color / signal mapping; docs/wiring.md updated",
+      "Actual controller wiring and button test remain unperformed"
+    ]
+  },
+  "source_sha256": {
+    "firmware/snes_controller/board_config.h": "c34bbc0576d5ac73711bb2a35ab90303f6661f797f9b09ec941c3bcc1ba7ade1",
+    "firmware/snes_controller/snes_controller.ino": "74b517f46f5872b0c612b0e01b944de15653ff3aba48d637d08781280459adcd",
+    "firmware/snes_controller/snes_diagnostic.cpp": "62888b606054d5f07a8a0672617eeec89f369461bae64dfeed8ada3a394ff320",
+    "firmware/snes_controller/snes_diagnostic.h": "9604b44bf738121c041671f49721694d72688fcb659af1077891932b3458bbe7",
+    "firmware/snes_controller/snes_hid_report.h": "5ef5b2e278c329673e164e6c7193d63b4b104a99a8cc0924c0e7a938fc68a77e",
+    "firmware/snes_controller/snes_reader.cpp": "e30478fe90d38fee3802812a1c9dc3cceb74ee0d5b45e3f158fa59c2f37ca9e0",
+    "firmware/snes_controller/snes_reader.h": "c6f5216af83a06dc30fe1062751090c7d9b22334f364d8fb86cd3a57971b1c0a",
+    "firmware/snes_controller/usb_backend.cpp": "2ed1c2c0c78a536ed24fd46820f9a76bbed6a9b79055e1df7892eb86b76d9d7e",
+    "firmware/snes_controller/usb_backend.h": "67767c9a9eb8c2fe620a3190227c4c5f856a1a51cf1a6139ec63658d5673225b",
+    "scripts/build_firmware.sh": "e5b43a148362ef1c83e84e58ab0fcf22bc15af801885fb03d0fdbe5c12df2793",
+    "scripts/read_sfc_hid.c": "4722966e695ee75adcc0c757225e4903dccd177a0abd3894a5343b6bbce3a77f",
+    "scripts/read_sfc_hid.sh": "ebb9517e7c5982d6dec418077f3564f97d28dd758786389b8fe2dd2fc2cdb339",
+    "tests/fakes/Arduino.h": "2897415c7183f5d25faddafea995782615f007d73bac6c42e29de5d7f730263a",
+    "tests/fakes/uiapusb.h": "161bf663ba9f26a0ca4fe5420d41e60bc7fb6ff60ffd3e5c0c4536061844d21f",
+    "tests/run_host_tests.sh": "94596fdff8190d6cd520452b73b2168e1080a30d1db908b3504f7cf436ea82a6",
+    "tests/snes_reader_test.cpp": "433f166daeb28ed765a096b2c4b0bfc71752d74efe6bbf604056f04f63e3cf0e"
+  },
+  "reference_reader": {
+    "project": "snes-controller-m5stick-s3",
+    "commit": "21b7ba91c6428b25d7b7ab116052443a9aced965",
+    "path": "src/main.cpp",
+    "sha256": "097824655f4a875ffe616e7f73edaa9f64d0b376da41d42fc3ea87541e847473"
+  },
+  "core": {
+    "package": "UIAP_HID:ch32v@1.2.15",
+    "source_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+    "patches": false,
+    "verification": "All 730 package files and 12 reference blobs match; six archive hashes verified"
+  },
+  "build": {
+    "fqbn": "UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbdweb,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash",
+    "command": [
+      "bash",
+      "scripts/build_firmware.sh",
+      "sfc-diagnostic"
+    ],
+    "extra_flags": "-DSNES_HID_TEST_INPUT=0 -DSNES_SFC_DIAGNOSTIC=1",
+    "exit_code": 0,
+    "binary_path": ".local/build/sfc-diagnostic/snes_controller.ino.bin",
+    "bin_bytes": 5536,
+    "sha256": "6d777773dab78f47c1ca1d42d1ddb67605a95e3be64af1bfdc72c2755ff9faeb",
+    "elf_sha256": "c9789b8fa719db08f1b21de7abf883c28b16884066c1a9b16b84eecf6a400c31",
+    "cli_flash_bytes": 5376,
+    "init_bytes": 160,
+    "static_ram_bytes": 256,
+    "nominal_flash_bytes": 16384,
+    "nominal_ram_bytes": 2048,
+    "stack_margin_measured": false,
+    "stdout": "Sketch uses 5376 bytes (32%) of program storage space. Maximum is 16384 bytes.\nGlobal variables use 256 bytes (12%) of dynamic memory, leaving 1792 bytes for local variables. Maximum is 2048 bytes.\n",
+    "final_comment_review_rebuild_matches_flashed_binary": true
+  },
+  "compatibility_builds": {
+    "neutral": {
+      "exit_code": 0,
+      "sha256": "27f8d5e11dca454433b8b6eccff781035236165d22fe5e462c79b2b9841233bd",
+      "matches_verified_p2_binary": true
+    },
+    "manual": {
+      "exit_code": 0,
+      "sha256": "254251c3e42635c5795f7e42b8e94872541dd205eb29f0f32330f4e182a7c00d",
+      "matches_verified_p2_binary": true
+    }
+  },
+  "host_tests": {
+    "normal": {
+      "command": "bash tests/run_host_tests.sh",
+      "exit_code": 0,
+      "stdout": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\nPASS: initial neutral staged before USB begins\nPASS: manual B/Z press, hold, release; no extra release between holds\nPASS: current-state mapping and partial release reach the setter\nPASS: six-key selection and recovery; no ASCII or Report ID added\nPASS: USB backend API contract only; no real USB transfer observed\nPASS: all 65536 serial frames, sample order, active LOW, tail masking and requested timing\nPASS: Arduino adapter pin roles and B-bit decoding\nPASS: diagnostic busy-buffer preservation and bounded sequence; no USB transfer claimed\n"
+    },
+    "sanitized": {
+      "command": "SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh",
+      "exit_code": 0,
+      "stdout": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\nPASS: initial neutral staged before USB begins\nPASS: manual B/Z press, hold, release; no extra release between holds\nPASS: current-state mapping and partial release reach the setter\nPASS: six-key selection and recovery; no ASCII or Report ID added\nPASS: USB backend API contract only; no real USB transfer observed\nPASS: all 65536 serial frames, sample order, active LOW, tail masking and requested timing\nPASS: Arduino adapter pin roles and B-bit decoding\nPASS: diagnostic busy-buffer preservation and bounded sequence; no USB transfer claimed\n"
+    },
+    "new_reader_coverage": "All 65536 raw serial words: rising-edge shift model, sample order, active-LOW decoding, four tail bits retained in raw and masked from pressed, requested 12/6 us delays, 16 clock cycles; Arduino pin adapter; diagnostic busy buffer and modulo-256 sequence",
+    "not_covered": "Physical SFC levels, actual timing, USB reception, device enumeration and game input"
+  },
+  "compile_guards": [
+    {
+      "case": "manual_and_sfc_conflict",
+      "exit_code": 1,
+      "stderr": "In file included from <stdin>:2:\nfirmware/snes_controller/board_config.h:21:2: error: \"Remove the PC5/GND jumper before using PC5 as the SFC CLOCK output.\"\n   21 | #error \"Remove the PC5/GND jumper before using PC5 as the SFC CLOCK output.\"\n      |  ^\n1 error generated.\n"
+    },
+    {
+      "case": "invalid_diagnostic_flag",
+      "exit_code": 1,
+      "stderr": "In file included from <stdin>:2:\nfirmware/snes_controller/board_config.h:18:2: error: \"SNES_SFC_DIAGNOSTIC must be 0 or 1.\"\n   18 | #error \"SNES_SFC_DIAGNOSTIC must be 0 or 1.\"\n      |  ^\n1 error generated.\n"
+    },
+    {
+      "case": "diagnostic_with_keyboard_only",
+      "exit_code": 1,
+      "stderr": "firmware/snes_controller/snes_diagnostic.cpp:11:2: error: \"SFC diagnostics require Keyboard+Mouse+WebHID (usb=kbdweb).\"\n   11 | #error \"SFC diagnostics require Keyboard+Mouse+WebHID (usb=kbdweb).\"\n      |  ^\n1 error generated.\n"
+    },
+    {
+      "case": "diagnostic_with_vendor_only",
+      "exit_code": 1,
+      "stderr": "firmware/snes_controller/snes_diagnostic.cpp:11:2: error: \"SFC diagnostics require Keyboard+Mouse+WebHID (usb=kbdweb).\"\n   11 | #error \"SFC diagnostics require Keyboard+Mouse+WebHID (usb=kbdweb).\"\n      |  ^\n1 error generated.\n"
+    }
+  ],
+  "mac_reader": {
+    "source": "scripts/read_sfc_hid.c",
+    "build_exit_code": 0,
+    "binary_sha256": "8f33c3821a07ae48e59c875714a0b40aadf349ae42c31540d96e44ed1f67d6af",
+    "match": {
+      "vid": "0x1209",
+      "pid": "0xD004",
+      "usage_page": "0xFF00",
+      "usage": 1
+    },
+    "actual_device_capture": "PASS: vendor HID input callbacks received and validated"
+  },
+  "diagnostic_contract": {
+    "usb_mode": "Keyboard+Mouse+WebHID (usb=kbdweb); keyboard stages neutral only, vendor interface carries SFC diagnostics",
+    "frame": "53 46 01 sequence raw_lo raw_hi pressed_lo pressed_hi",
+    "producer": "One main-loop producer; skip send when upstream tx_busy is nonzero",
+    "sequence": "Count of staged frames modulo 256; not host acknowledgements",
+    "no_usb_interrupt_masking": true,
+    "minimum_pulse_retention_guaranteed": false
+  },
+  "results": {
+    "host_reader_logic": "PASS",
+    "diagnostic_firmware_build": "PASS",
+    "mac_reader_build": "PASS",
+    "actual_sfc_wiring": "NOT PERFORMED: PCB/color/signal mapping documented from user report; physical connection and button test remain deferred",
+    "firmware_upload": "PASS",
+    "actual_12_button_test": "NOT TESTED: SFC wiring deferred by user",
+    "sfc_keyboard_output": "NOT INTEGRATED",
+    "iphone_delta": "DEFERRED BY USER",
+    "diagnostic_usb_reception": "PASS: SFC disconnected, all received raw=0xFFFF / pressed=0"
+  },
+  "publication": {
+    "redactions": "Absolute project/home paths omitted or replaced with <PROJECT_DIR>/<HOME>; USB locations and transient handles omitted.",
+    "raw_logs": ".local/logs/ (ignored)"
+  },
+  "initial_vendor_only_attempt": {
+    "build": {
+      "fqbn": "UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=webhid,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash",
+      "command": [
+        "bash",
+        "scripts/build_firmware.sh",
+        "sfc-diagnostic"
+      ],
+      "extra_flags": "-DSNES_HID_TEST_INPUT=0 -DSNES_SFC_DIAGNOSTIC=1",
+      "exit_code": 0,
+      "binary_path": ".local/build/sfc-diagnostic/snes_controller.ino.bin",
+      "bin_bytes": 5204,
+      "sha256": "b77a600f864cecd002abcf6538252ed0517f86a3bf1e0d8c7a872914c8b7e494",
+      "elf_sha256": "fcff096a8e29ba7787ea6b16dba67331b5c7e620bf8c54ecda37f271c74ebe49",
+      "cli_flash_bytes": 5044,
+      "init_bytes": 160,
+      "static_ram_bytes": 176,
+      "nominal_flash_bytes": 16384,
+      "nominal_ram_bytes": 2048,
+      "stack_margin_measured": false,
+      "stdout": "Sketch uses 5044 bytes (30%) of program storage space. Maximum is 16384 bytes.\nGlobal variables use 176 bytes (8%) of dynamic memory, leaving 1872 bytes for local variables. Maximum is 2048 bytes.\n"
+    },
+    "upload": {
+      "started_at": "2026-11-10T15:15:19.642533+09:00",
+      "target": {
+        "USB Product Name": "32V003",
+        "idVendor": 4617,
+        "idProduct": 47107,
+        "bcdDevice": 321
+      },
+      "matching_bootloaders": 1,
+      "sfc_connected": false,
+      "jumper_removed": "User confirmed removal of the manual PC5/GND test jumper",
+      "uploader_version": "1.0.0",
+      "command": [
+        "<PROJECT_DIR>/.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+        "--verbose",
+        "--flash-size",
+        "16384",
+        "<PROJECT_DIR>/.local/build/sfc-diagnostic/snes_controller.ino.bin"
+      ],
+      "finished_at": "2026-11-10T15:15:26.289543+09:00",
+      "exit_code": 0,
+      "stdout": "uiapflash: <PROJECT_DIR>/.local/build/sfc-diagnostic/snes_controller.ino.bin (5204 バイト -> 5248 バイトにパディング)\n  書き込み中... 1024 / 5248 バイト\n  書き込み中... 2048 / 5248 バイト\n  書き込み中... 3072 / 5248 バイト\n  書き込み中... 4096 / 5248 バイト\n  書き込み中... 5120 / 5248 バイト\nベリファイ OK (5248 バイト)\nアプリを起動しました\n書き込み完了\n",
+      "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+      "transient_zero_length_read_diagnostics": 19,
+      "verification": {
+        "padded_bytes": 5248,
+        "readback_verified": true,
+        "all_sectors_matched": true,
+        "application_started": true
+      },
+      "write_range": {
+        "start": "0x08000000",
+        "end_inclusive": "0x0800147F",
+        "sector_bytes": 64,
+        "bootloader_written": false
+      },
+      "after": {
+        "observed_at": "2026-11-10T15:15:28.989474+09:00",
+        "devices": [
+          {
+            "USB Product Name": "UIAPduino WebHID",
+            "idVendor": 4617,
+            "idProduct": 53252,
+            "bcdDevice": 1
+          }
+        ],
+        "same_usb_location_as_bootloader": true,
+        "hid_interfaces": []
+      }
+    },
+    "result": "FLASH VERIFIED, BUT MAC EXPOSED NO USB INTERFACE / NO HID COLLECTION",
+    "reader_exit_code": 3,
+    "reader_stderr": "Expected one UIAPduino vendor HID interface; found 0",
+    "descriptor_finding": "In usb=webhid, config descriptor declares 41 bytes but the array contains 34 bytes. No IOUSBHostInterface was observed. Causality is not proven independently; switching to bundled usb=kbdweb (84 bytes declared/actual) for diagnostics.",
+    "preserved_build_path": ".local/build/sfc-diagnostic-vendor-only",
+    "archived_sketch_sha256": {
+      "snes_reader.h": "3bced4886ee0355dd1c5e4c1101fafcda121d941518b74f891acb6c616229ec6",
+      "usb_backend.cpp": "97c5769180ee4f82be2590ac6bda4b8fae54fd2a85d14de96c76f1d01c5523d4",
+      "board_config.h": "4b473fd1541c17a5a2ac2ab0e59daa435b7a2ad20fd00aae2f9d843c45252342",
+      "snes_diagnostic.h": "7550e52dd8938753aea496a846d73e8c0b5cc1c64020ad39de75537c32d582c9",
+      "snes_diagnostic.cpp": "7cb985ac25cc914e02f6e1a66d398dce9268123b2949d2251e9e692fbcdad2c8",
+      "snes_reader.cpp": "b05792060bb4f23413323692e6e14a6b76931d5c1fc2e3833f624431dabe78e8",
+      "snes_hid_report.h": "6c0183409ee46c9ede6a9100d2e2df9b7015af1de6b29e44ecd896d7b455c7b6",
+      "usb_backend.h": "1620fa80b69c502af64433e2fbb8fa7c75019a5c95f20295f43b1580f5138321",
+      "snes_controller.ino.cpp": "afb8a42b0d31a2d3e097e4c68890aefe5cbb5b5413f7322f9b4043cff80e47c9"
+    }
+  },
+  "upload": {
+    "started_at": "2026-11-10T15:22:09.924808+09:00",
+    "target": {
+      "USB Product Name": "32V003",
+      "idVendor": 4617,
+      "idProduct": 47107,
+      "bcdDevice": 321
+    },
+    "matching_bootloaders": 1,
+    "sfc_connected": false,
+    "jumper_removed": "User confirmed manual test jumper was removed",
+    "uploader_version": "1.0.0",
+    "command": [
+      "<PROJECT_DIR>/.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+      "--verbose",
+      "--flash-size",
+      "16384",
+      "<PROJECT_DIR>/.local/build/sfc-diagnostic/snes_controller.ino.bin"
+    ],
+    "finished_at": "2026-11-10T15:22:15.499990+09:00",
+    "exit_code": 0,
+    "stdout": "uiapflash: <PROJECT_DIR>/.local/build/sfc-diagnostic/snes_controller.ino.bin (5536 バイト -> 5568 バイトにパディング)\n  書き込み中... 2560 / 5568 バイト\n  書き込み中... 3584 / 5568 バイト\n  書き込み中... 4608 / 5568 バイト\nベリファイ OK (5568 バイト)\nアプリを起動しました\n書き込み完了\n",
+    "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+    "transient_zero_length_read_diagnostics": 19,
+    "verification": {
+      "padded_bytes": 5568,
+      "readback_verified": true,
+      "all_sectors_matched": true,
+      "application_started": true
+    },
+    "write_range": {
+      "start": "0x08000000",
+      "end_inclusive": "0x080015BF",
+      "sector_bytes": 64,
+      "bootloader_written": false
+    },
+    "after": {
+      "observed_at": "2026-11-10T15:22:18.186172+09:00",
+      "devices": [
+        {
+          "USB Product Name": "UIAPduino KBD+Mouse+Web",
+          "idVendor": 4617,
+          "idProduct": 53252,
+          "bcdDevice": 1
+        }
+      ],
+      "same_usb_location_as_bootloader": true,
+      "hid_interfaces": [],
+      "hid_interfaces_after_enumeration": [
+        {
+          "Product": "UIAPduino KBD+Mouse+Web",
+          "VendorID": 4617,
+          "ProductID": 53252,
+          "PrimaryUsagePage": 1,
+          "PrimaryUsage": 2,
+          "MaxInputReportSize": 4,
+          "Transport": "USB"
+        },
+        {
+          "Product": "UIAPduino KBD+Mouse+Web",
+          "VendorID": 4617,
+          "ProductID": 53252,
+          "PrimaryUsagePage": 1,
+          "PrimaryUsage": 6,
+          "MaxInputReportSize": 8,
+          "Transport": "USB"
+        },
+        {
+          "Product": "UIAPduino KBD+Mouse+Web",
+          "VendorID": 4617,
+          "ProductID": 53252,
+          "PrimaryUsagePage": 65280,
+          "PrimaryUsage": 1,
+          "MaxInputReportSize": 8,
+          "Transport": "USB"
+        }
+      ]
+    }
+  },
+  "descriptor_host_inspection": {
+    "host_inspection_note": "Section attributes omitted for Mach-O host compilation; uint8_t configuration descriptor bytes are unchanged.",
+    "sizes": {
+      "webhid": "actual=34 declared=41",
+      "kbdweb": "actual=84 declared=84"
+    }
+  },
+  "unconnected_capture": {
+    "command": [
+      ".local/bin/read_sfc_hid",
+      "15"
+    ],
+    "exit_code": 0,
+    "sfc_connected": false,
+    "raw_log_path": ".local/logs/p3-unconnected-kbdweb-hid.jsonl",
+    "raw_log_sha256": "edf9331efcdc9795d361b5d5dbb2990e5a6be8cb301daca818ce5aa58992ae54",
+    "samples": 1476,
+    "first_seconds": 0.011415,
+    "last_seconds": 15.179558,
+    "raw_values": [
+      65535
+    ],
+    "pressed_values": [
+      0
+    ],
+    "invalid_frames": 0,
+    "sequence_step_values_modulo_256": [
+      1
+    ],
+    "first_report": {
+      "event": "sample",
+      "seconds": 0.011415,
+      "sequence": 61,
+      "raw": 65535,
+      "pressed": 0,
+      "buttons": []
+    },
+    "last_report": {
+      "event": "sample",
+      "seconds": 15.179558,
+      "sequence": 0,
+      "raw": 65535,
+      "pressed": 0,
+      "buttons": []
+    },
+    "interpretation": "PASS for diagnostic USB reception with SFC disconnected. All-HIGH DATA is expected with INPUT_PULLUP but does not prove a connected/released controller or functioning SFC buttons."
+  },
+  "record_updated_at": "2026-11-10T15:23:24.785211+09:00",
+  "next_steps": [
+    "With power removed, connect identified controller PCB contacts per docs/wiring.md and the latest user mapping",
+    "Test all 12 physical buttons, holds and partial release using diagnostic raw samples",
+    "Address coherent multi-key keyboard buffer publication before integrating SFC keyboard output",
+    "Resume iPhone/Delta single-key verification when requested; reflash manual mode first"
+  ]
+}

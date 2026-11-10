@@ -10,4 +10,6 @@ void uiapusb_begin(void);
 void uiapkbd_keyboard_set(uint8_t modifier,
                           uint8_t k0, uint8_t k1, uint8_t k2,
                           uint8_t k3, uint8_t k4, uint8_t k5);
+void uiapwebhid_send(const uint8_t* buf, uint8_t len);
+uint8_t uiapwebhid_tx_busy(void);
 }

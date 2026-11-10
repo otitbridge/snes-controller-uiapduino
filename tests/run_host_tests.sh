@@ -28,3 +28,13 @@ fi
   tests/usb_backend_test.cpp firmware/snes_controller/usb_backend.cpp \
   -o "$snes_usb_binary"
 "$snes_usb_binary"
+
+snes_reader_binary="${snes_binary%hid_report_test*}snes_reader_test"
+if [[ "${SNES_HOST_SANITIZERS:-0}" == 1 ]]; then
+  snes_reader_binary+=_sanitized
+fi
+"$snes_cxx" "${snes_flags[@]}" -DSNES_SFC_DIAGNOSTIC=1 -DUIAP_COMPOSITE_HID -DUIAP_WEBHID \
+  -Itests/fakes -Ifirmware/snes_controller \
+  tests/snes_reader_test.cpp firmware/snes_controller/snes_reader.cpp \
+  firmware/snes_controller/snes_diagnostic.cpp -o "$snes_reader_binary"
+"$snes_reader_binary"

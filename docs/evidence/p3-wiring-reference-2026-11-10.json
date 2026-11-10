@@ -1,0 +1,128 @@
+{
+  "stage": "P3 controller PCB contact mapping and independent wiring reference comparison",
+  "date": "2026-11-10",
+  "user_report": {
+    "source": "User message in this project session",
+    "controller": "Same physical controller as the working M5StickS3 reference project",
+    "numbering_scope": "Connection numbers on the owned controller PCB, not the external 7-contact cable connector, UIAPduino GPIO labels, or IC package pin numbers",
+    "contacts": [
+      {
+        "controller_pcb_number": 1,
+        "wire_color_ja": "茶",
+        "signal": "GND",
+        "uiapduino_label": "GND"
+      },
+      {
+        "controller_pcb_number": 2,
+        "wire_color_ja": "赤",
+        "signal": "DATA",
+        "uiapduino_label": "9",
+        "mcu_port": "PC7"
+      },
+      {
+        "controller_pcb_number": 3,
+        "wire_color_ja": "橙",
+        "signal": "LATCH",
+        "uiapduino_label": "8",
+        "mcu_port": "PC6"
+      },
+      {
+        "controller_pcb_number": 4,
+        "wire_color_ja": "黄",
+        "signal": "CLOCK",
+        "uiapduino_label": "7",
+        "mcu_port": "PC5"
+      },
+      {
+        "controller_pcb_number": 5,
+        "wire_color_ja": "白",
+        "signal": "VCC",
+        "uiapduino_label": "5V"
+      }
+    ],
+    "raw_mapping": "5=白=VCC、1=茶=GND、4=黄=CLOCK、3=橙=LATCH、2=赤=DATA",
+    "photograph_reviewed": false,
+    "continuity_measurement_recorded": false,
+    "controller_model_and_pcb_revision": "NOT RECORDED"
+  },
+  "independent_sources": [
+    {
+      "title": "Bob Taylor: SNES Controller PCB Instructions",
+      "url": "https://taylormadeak.bitbucket.io/posts/2023/snes-controller-pcb-instructions/",
+      "section": "5. Wire-to-Board Header / Option 2 / Assembly Steps",
+      "source_type": "First-party assembly instructions for the author's controller PCB",
+      "finding": "White +5V; yellow CLK; orange LAT; red DAT; brown GND. All five color/signal associations match the user report. The replacement five-contact connector ordering is not evidence for the numbering printed on the user's PCB."
+    },
+    {
+      "title": "Jim Christy: Super Nintendo Entertainment System: pinouts & protocol",
+      "url": "https://www.repairfaq.org/REPAIR/F_SNES.html",
+      "section": "4. SNES Controller cable connector pins",
+      "source_type": "Original hardware investigation; author reports measuring his SNES connectors",
+      "numbering_scope": "External cable connector viewed into its contacts; explicitly author-assigned numbering, not an identified Nintendo numbering scheme",
+      "connector_pin_by_signal": {
+        "VCC": 1,
+        "CLOCK": 2,
+        "LATCH": 3,
+        "DATA": 4,
+        "GND": 7
+      },
+      "finding": "Color/signal associations match. This document's external connector pin numbers differ from the reported controller PCB contacts."
+    }
+  ],
+  "comparison": [
+    {
+      "controller_pcb_number": 1,
+      "wire_color_ja": "茶",
+      "signal": "GND",
+      "uiapduino_label": "GND",
+      "external_connector_number_in_christy_article": 7,
+      "color_signal_match": true
+    },
+    {
+      "controller_pcb_number": 2,
+      "wire_color_ja": "赤",
+      "signal": "DATA",
+      "uiapduino_label": "9",
+      "mcu_port": "PC7",
+      "external_connector_number_in_christy_article": 4,
+      "color_signal_match": true
+    },
+    {
+      "controller_pcb_number": 3,
+      "wire_color_ja": "橙",
+      "signal": "LATCH",
+      "uiapduino_label": "8",
+      "mcu_port": "PC6",
+      "external_connector_number_in_christy_article": 3,
+      "color_signal_match": true
+    },
+    {
+      "controller_pcb_number": 4,
+      "wire_color_ja": "黄",
+      "signal": "CLOCK",
+      "uiapduino_label": "7",
+      "mcu_port": "PC5",
+      "external_connector_number_in_christy_article": 2,
+      "color_signal_match": true
+    },
+    {
+      "controller_pcb_number": 5,
+      "wire_color_ja": "白",
+      "signal": "VCC",
+      "uiapduino_label": "5V",
+      "external_connector_number_in_christy_article": 1,
+      "color_signal_match": true
+    }
+  ],
+  "assessment": {
+    "color_signal_mapping": "MATCH: all five associations in the checked independent references",
+    "pcb_vs_external_connector_numbers": "Different scopes and numbering schemes; numeric differences alone do not establish an electrical wiring discrepancy",
+    "independent_confirmation_of_same_controller_pcb_revision": "NOT ESTABLISHED: model/revision and PCB photographs are unavailable; retain 1..5 as a user report for this individual controller",
+    "physical_wiring_and_power_test": "NOT PERFORMED; documentation update only",
+    "firmware_change_needed_for_this_mapping": false
+  },
+  "publication": {
+    "personal_paths": "None included",
+    "third_party_material": "Source URLs and paraphrased factual mappings only; no copied images or source code"
+  }
+}
