@@ -1,0 +1,2068 @@
+{
+  "stage": "P4 iPhone / Delta practical testing",
+  "date": "2026-11-10",
+  "timezone": "Asia/Tokyo",
+  "status": "IN PROGRESS: D10 passed by user report; U04 deferred and D09 release-while-locked unresolved",
+  "firmware": {
+    "commit": "8b456046f5fd361aea29bcfcd2445c4a4df88753",
+    "mode": "sfc-keyboard",
+    "prior_upload_record": "p3-sfc-keyboard-2026-11-10.json",
+    "previously_verified_bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+    "binary_read_back_from_iphone": false,
+    "scope": "Integrated firmware used for initial gameplay tests and browser comparisons; current temporary diagnostic firmware is recorded separately",
+    "reflashed_for_initial_gameplay_tests": false
+  },
+  "environment": {
+    "device": "iPhone 17 (session test target)",
+    "ios_version": "26.2",
+    "delta_version": "1.7.3",
+    "emulated_system": "GBA",
+    "game_title_as_reported": "シナモンふわふわ大作戦",
+    "cable_same_as_reference_m5sticks3_test": true,
+    "cable_model": null,
+    "cable_length": null,
+    "metadata_source": "User report; prior M5StickS3 OS / Delta versions were not reused"
+  },
+  "observations": [
+    {
+      "id": "GBA-B-INITIAL",
+      "result": "PASS (user-reported GBA B operation only)",
+      "trials": 3,
+      "user_report": "GBA ROMですが、 3回とも正常に操作できました",
+      "requested_procedure": "Normal USB connection to iPhone; select keyboard in Delta; map B; press and release the physical SFC B button three times in a game",
+      "requested_press_seconds": 1,
+      "requested_release_seconds": 2,
+      "actual_timings_measured": false,
+      "expected_firmware_key": "Z",
+      "displayed_mapping_label_independently_confirmed": false,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "assessment": "User reports successful B gameplay through the current controller. USB descriptor details, the exact Delta mapping label, and key release timing were not independently observed."
+    },
+    {
+      "id": "GBA-TEN-INPUT-MAPPING",
+      "result": "PASS (user-reported mapping of ten GBA inputs and normal actions used in this game)",
+      "user_report": "10入力を登録でき、ゲームで使う操作も正常",
+      "requested_procedure": "In Delta's GBA keyboard mapping, register four directions, A, B, L, R, SELECT and START using the corresponding physical SFC inputs; save and try each applicable action individually in the game",
+      "expected_keys": {
+        "UP": "ArrowUp",
+        "DOWN": "ArrowDown",
+        "LEFT": "ArrowLeft",
+        "RIGHT": "ArrowRight",
+        "A": "X",
+        "B": "Z",
+        "L": "Q",
+        "R": "W",
+        "SELECT": "Backspace",
+        "START": "Enter"
+      },
+      "all_ten_mappings_successful_as_reported": true,
+      "applicable_gameplay_actions_normal_as_reported": true,
+      "game_unused_controls_identified_by_user": null,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "assessment": "All ten GBA inputs were registered according to the user. Normal gameplay applies to the actions used by this game; the user did not name unused controls or provide per-input traces. SNES X / Y and long holds or simultaneous inputs are outside this result."
+    },
+    {
+      "id": "GBA-HOLDS-AND-PARTIAL-RELEASE",
+      "test_ids": [
+        "D02",
+        "D03 (right plus B only)",
+        "D04 (right plus B only)"
+      ],
+      "result": "PASS (user-reported gameplay for all three requested trials)",
+      "user_report": "3試験とも確認でき、正常だった",
+      "requested_sequence": [
+        "Hold left alone for at least 35 seconds, release, wait 2 seconds",
+        "Hold right alone for at least 35 seconds, release, wait 2 seconds",
+        "Hold right plus B for about 5 seconds; release B and retain right for about 5 seconds; release all"
+      ],
+      "requested_checks": [
+        "Direction input continues while held and does not remain after release",
+        "B works while right is held",
+        "Right input continues after only B is released, followed by all release"
+      ],
+      "actual_hold_durations_measured": false,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "unobservable_sections_reported_by_user": false,
+      "assessment": "User confirmed all three gameplay trials as observable and normal. Durations are requested targets, not instrumented measurements. Simultaneous input and partial release cover right plus B only; diagonals, three or more inputs, and the SNES right plus Y plus B procedure were not tested here."
+    },
+    {
+      "id": "GBA-SHORT-REPEATED-B",
+      "test_ids": [
+        "D06"
+      ],
+      "result": "PASS (user-reported for the requested manual presses)",
+      "user_report": "両方とも10回反応し、右の保持・全解放も正常",
+      "requested_sequence": [
+        "Briefly press and fully release B ten times, at about one cycle per second; release all",
+        "Keep right held and briefly press and fully release B ten times at a similar pace; release all"
+      ],
+      "reported_responses": {
+        "b_alone": 10,
+        "b_while_right_held": 10,
+        "right_continues": true,
+        "all_release_normal": true
+      },
+      "actual_tap_duration_or_rate_measured": false,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "unobservable_sections_reported_by_user": false,
+      "assessment": "User reports all 20 B responses, continued right input, and normal final release. This is evidence for these manual gameplay trials; it does not establish a guaranteed minimum pulse width or lossless handling of arbitrary rapid input."
+    },
+    {
+      "id": "GBA-TEN-USB-RECONNECTS",
+      "test_ids": [
+        "U02"
+      ],
+      "result": "PASS (user-reported ten reconnect cycles)",
+      "user_report": "10回すべて、再割り当てせず正常に操作・解放できた",
+      "requested_sequence": [
+        "Leave Delta's GBA game open with iPhone unlocked and release all SFC inputs",
+        "Disconnect the cable at the iPhone, wait about 3 seconds, reconnect in the same orientation without RESET, and wait about 3 seconds",
+        "Press and release left, right and B once each, without remapping; check response and final release",
+        "Repeat for a total of ten disconnect/reconnect/input-check cycles"
+      ],
+      "reported_completed_cycles": 10,
+      "reported_all_cycles_normal": true,
+      "reported_remapping_required": false,
+      "reported_input_remained_after_release": false,
+      "all_inputs_released_during_reconnect_as_instructed": true,
+      "raw_hid_or_usb_enumeration_log_captured": false,
+      "assessment": "User reports ten successful cycles with the same cable and requested plug orientation. This covers gameplay response and release after normal all-released reconnects. Held-input startup, changing input while unplugged, plug orientation combinations, and other cables remain separate tests."
+    },
+    {
+      "id": "GBA-USB-C-ORIENTATIONS",
+      "test_ids": [
+        "U03"
+      ],
+      "result": "PASS (user-reported three additional combinations, plus U02 baseline)",
+      "user_report": "3組み合わせとも正常に操作・解放できた",
+      "baseline_evidence": "GBA-TEN-USB-RECONNECTS covers both plugs in the baseline orientation",
+      "requested_additional_combinations": [
+        {
+          "number": 1,
+          "iphone_plug": "180 degrees from baseline",
+          "uiapduino_plug": "baseline"
+        },
+        {
+          "number": 2,
+          "iphone_plug": "180 degrees from baseline",
+          "uiapduino_plug": "180 degrees from baseline"
+        },
+        {
+          "number": 3,
+          "iphone_plug": "baseline",
+          "uiapduino_plug": "180 degrees from baseline"
+        }
+      ],
+      "requested_procedure": "Release all inputs and disconnect at the iPhone before changing plug orientation; keep each cable end assigned to its device, reconnect without RESET, wait about 3 seconds, and check left/right/B response and release without remapping",
+      "reported_all_three_additional_combinations_normal": true,
+      "physical_orientation_images_or_usb_trace_captured": false,
+      "assessment": "User reports normal operation and release in all three additional combinations. Together with the U02 baseline this covers all four orientation combinations for this cable and device pair. Other cables and electrical measurements are outside this result."
+    },
+    {
+      "id": "GBA-HELD-RIGHT-STARTUP",
+      "test_ids": [
+        "U04"
+      ],
+      "result": "FAIL (user-reported; held input was not reflected until released and pressed again)",
+      "user_report": "接続時は反応せず、離して押し直すと反応した",
+      "requested_procedure": "Release all inputs, unplug at the iPhone for about 3 seconds, hold right while reconnecting without RESET, keep holding for about 5 seconds after connection, then release",
+      "expected": "Right is reflected without releasing/repressing and clears on release",
+      "reported_response_while_initially_held": false,
+      "reported_response_after_release_and_repress": true,
+      "actual_hold_duration_measured": false,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "assessment": "The current-state startup acceptance criterion is not met in this gameplay trial. The report does not identify whether the cause is firmware, USB/OS handling, Delta controller activation, or game state. No USB-standard explanation is established."
+    },
+    {
+      "id": "GBA-RELEASE-WHILE-UNPLUGGED",
+      "test_ids": [
+        "D07"
+      ],
+      "result": "PASS (user-reported release-while-unplugged case)",
+      "user_report": "再接続後に右入力は残らず、操作・解放も正常",
+      "requested_procedure": "While connected, hold right and confirm response; unplug at the iPhone while retaining right; release right while unplugged, wait about 3 seconds, reconnect with all inputs released, wait about 3 seconds, and test left/right/B without remapping",
+      "reported_old_right_input_remained": false,
+      "reported_left_right_b_operation_and_release_normal": true,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "assessment": "User reports no stale right input after reconnect and normal operation/release. This covers releasing right while unplugged; reconnecting with a different input held is outside this result."
+    },
+    {
+      "id": "GBA-HELD-RIGHT-STARTUP-15S-AND-B",
+      "test_ids": [
+        "U04 diagnosis"
+      ],
+      "result": "FAIL (held right still requires a release/repress)",
+      "user_report": "15秒後も右は反応せず、Bは反応した。右は押し直すと反応した",
+      "requested_sequence": [
+        "Disconnect at the iPhone for about 3 seconds, then hold right while reconnecting without RESET",
+        "Keep right continuously held for about 15 seconds, then press and release B without releasing right",
+        "Finally release right and press it again to check recovery"
+      ],
+      "reported_right_response_after_wait": false,
+      "reported_b_response_while_right_retained": true,
+      "reported_right_response_after_release_and_repress": true,
+      "actual_hold_duration_measured": false,
+      "raw_hid_or_keyboard_event_log_captured": false,
+      "assessment": "Waiting about 15 seconds and adding B did not recover the initially held right; B was nevertheless accepted by the game. The symptom is not resolved by this extra wait. This does not identify whether the missing right originates in controller input, firmware, USB/OS event handling, Delta, or the game."
+    },
+    {
+      "id": "IPHONE-SAFARI-HELD-RIGHT",
+      "test_ids": [
+        "U04 diagnostic comparison"
+      ],
+      "result": "ABNORMAL HOLD (initial keydown followed by keyup while physical right remained held, per user)",
+      "user_reports": [
+        "通常押下も、右を押したままの接続もキーダウンが出ました。ただ後者の場合は、ほんの一瞬（6キー分）です。その後はキーアップが入力されました",
+        "添付画像の通りです。正しくは7キー分でした",
+        "Safariで接続時のkeydownの後にkeyupが出た際、実物の右は押し続けていました"
+      ],
+      "viewer": {
+        "name": "W3C UI Events Keyboard Event Viewer",
+        "url": "https://w3c.github.io/uievents/tools/key-event-viewer.html",
+        "source_html_url": "https://github.com/w3c/uievents/blob/main/tools/key-event-viewer.html",
+        "source_html_blob_sha_inspected": "037664cf45a49b1527868081ec3770b954e9fc79",
+        "source_js_url": "https://github.com/w3c/uievents/blob/main/tools/key-event-viewer.js",
+        "source_js_blob_sha_inspected": "020238d7af88c781d34933d454ebb7a01d8bbd38",
+        "measures": "Browser keyboard events in the focused text input; not USB reports",
+        "iphone_safari_version": null
+      },
+      "requested_sequence": [
+        "With the controller normally connected, open the viewer in Safari on the same iPhone and tap its text input",
+        "Press and release physical right once; confirm keydown and keyup with key/code ArrowRight before proceeding",
+        "Use Clear Table and tap the text input again to confirm focus",
+        "Unplug at the iPhone for about 3 seconds, then retain right while reconnecting without RESET; keep Safari and the text input active and hold for about 15 seconds",
+        "Observe whether keydown/ArrowRight is recorded before releasing right",
+        "Release right, press and release it again, and confirm the viewer still logs normal events; report any loss of input focus or inability to use the viewer"
+      ],
+      "normal_press_keydown_reported": true,
+      "initially_held_right_keydown_reported": true,
+      "keyup_while_physical_right_held_reported": true,
+      "normal_press_after_reconnect_separately_confirmed": null,
+      "screenshot": {
+        "source": "User-provided cropped chat image, visually inspected by Codex; no local image copy available",
+        "visible_rows": [
+          {
+            "number": 56,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": false
+          },
+          {
+            "number": 57,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 58,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 59,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 60,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 61,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 62,
+            "event": "keydown",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": true
+          },
+          {
+            "number": 63,
+            "event": "keyup",
+            "key": "ArrowRight",
+            "code": "ArrowRight",
+            "repeat": false
+          }
+        ],
+        "interpretation": "Seven keydown events for the same ArrowRight: one initial event and six repeat events, followed by one keyup. This is not seven distinct simultaneous keys or a count of USB packets.",
+        "event_timestamps_visible": false,
+        "measured_duration_seconds": null,
+        "location_label_as_displayed": "NUMPAD; a browser field, not a verified physical keypad configuration"
+      },
+      "physical_hold_source": "User explicitly confirmed continuing to hold right when keyup appeared",
+      "focus_continuity_independently_verified": false,
+      "raw_hid_or_usb_trace_captured": false,
+      "assessment": "Safari receives an initial right keydown, so the comparison is not a complete absence of startup events. The user reports a subsequent keyup despite continued physical holding. Delta-only causation is not established. Controller input, firmware/USB behavior, OS handling, and focus remain to be distinguished."
+    },
+    {
+      "id": "MAC-SAFARI-NORMAL-VS-HELD-CONNECTION",
+      "test_ids": [
+        "U04 diagnostic comparison"
+      ],
+      "result": "Normal hold observed; initially held connection produces no keyboard events (user report and browser log)",
+      "user_report": "通常接続後の長押しは正常　押したまま接続しても、全開放のままだった",
+      "collector": {
+        "command": "python3 -u scripts/serve_keyboard_probe.py p4-u04-mac-comparison-2026-11-10-02.jsonl",
+        "bind_address": "127.0.0.1",
+        "browser_page": "tests/sfc_keyboard_probe.html",
+        "log_path": ".local/logs/p4-u04-mac-comparison-2026-11-10-02.jsonl",
+        "capture_status": "STOPPED normally after comparison; process exit code 0",
+        "log_sha256": "50e2f003f394576a5db17a2fa8325e1618b1f804e3b46fc54e5ea255e87a698c",
+        "initial_page_session_at": "2026-11-10T08:17:09.979Z",
+        "initial_page_user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15",
+        "total_events": 13
+      },
+      "requested_sequence": [
+        "Release all inputs and move the USB connection from iPhone to Mac; do not press RESET",
+        "Normal-hold control: in the Mac Safari probe click the start/reset button, hold physical right for 15 seconds, then release",
+        "Held-connection comparison: release all inputs, unplug at the Mac for about 3 seconds, click the probe start/reset button while disconnected, hold right while reconnecting, retain it for 15 seconds, then release",
+        "Keep Safari and the probe focused; use only the SFC controller; even if the display changes to neutral early, retain physical right until the instructed 15 seconds elapse"
+      ],
+      "normal_control": {
+        "session": "2026-11-10T08:18:41.777Z",
+        "events": [
+          {
+            "session": "2026-11-10T08:18:41.777Z",
+            "event": "start",
+            "seconds": 0,
+            "pressed": [],
+            "at": "2026-11-10T08:18:41.777Z",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+          },
+          {
+            "session": "2026-11-10T08:18:41.777Z",
+            "event": "keydown",
+            "seconds": 1.477,
+            "pressed": [
+              "ArrowRight"
+            ],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true
+          },
+          {
+            "session": "2026-11-10T08:18:41.777Z",
+            "event": "keyup",
+            "seconds": 16.163,
+            "pressed": [],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true,
+            "held_seconds": 14.686
+          },
+          {
+            "session": "2026-11-10T08:18:41.777Z",
+            "event": "focus_lost",
+            "seconds": 22.354,
+            "pressed": [],
+            "was_pressed": false
+          }
+        ],
+        "observed_hold_seconds": 14.686,
+        "focus_loss_during_hold": false
+      },
+      "held_connection": {
+        "session": "2026-11-10T08:19:04.290Z",
+        "events": [
+          {
+            "session": "2026-11-10T08:19:04.290Z",
+            "event": "start",
+            "seconds": 0,
+            "pressed": [],
+            "at": "2026-11-10T08:19:04.290Z",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+          },
+          {
+            "session": "2026-11-10T08:19:04.290Z",
+            "event": "focus_lost",
+            "seconds": 30.379,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:19:04.290Z",
+            "event": "window_blur",
+            "seconds": 30.38,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:19:04.290Z",
+            "event": "focus_lost",
+            "seconds": 107.505,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:19:04.290Z",
+            "event": "window_blur",
+            "seconds": 107.505,
+            "pressed": [],
+            "was_pressed": false
+          }
+        ],
+        "keydown_count": 0,
+        "keyup_count": 0,
+        "first_focus_loss_seconds": 30.379,
+        "requested_physical_hold_seconds": 15,
+        "physical_hold_source": "User-confirmed requested procedure"
+      },
+      "excluded_session": "2026-11-10T08:17:09.979Z: initial page session with an extra 0.207-second right press, not the requested control",
+      "assessment": "Normal right was held for 14.686 seconds in the focused Mac Safari probe and then released. The held-connection session had no keyboard events before the first focus loss at 30.379 seconds; the user reports the display stayed fully released. This is not a raw input/USB capture and does not isolate controller input versus firmware or host handling."
+    },
+    {
+      "id": "TEMPORARY-SFC-DIAGNOSTIC-UPLOAD",
+      "result": "UPLOAD PASS; diagnostic acquisition subsequently completed",
+      "record": {
+        "started_at": "2026-11-10T17:27:34.636300+09:00",
+        "command": [
+          ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+          "--verbose",
+          "--flash-size",
+          "16384",
+          ".local/build/sfc-diagnostic/snes_controller.ino.bin"
+        ],
+        "matching_bootloaders": 1,
+        "target": {
+          "USB Product Name": "32V003",
+          "idVendor": 4617,
+          "idProduct": 47107,
+          "bcdDevice": 321
+        },
+        "sfc_connected": true,
+        "bin_sha256": "6d777773dab78f47c1ca1d42d1ddb67605a95e3be64af1bfdc72c2755ff9faeb",
+        "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+        "finished_at": "2026-11-10T17:27:41.523556+09:00",
+        "exit_code": 0,
+        "stdout": "uiapflash: .local/build/sfc-diagnostic/snes_controller.ino.bin (5536 バイト -> 5568 バイトにパディング)\n  書き込み中... 1024 / 5568 バイト\n  書き込み中... 2048 / 5568 バイト\n  書き込み中... 3072 / 5568 バイト\n  書き込み中... 4096 / 5568 バイト\n  書き込み中... 5120 / 5568 バイト\nベリファイ OK (5568 バイト)\nアプリを起動しました\n書き込み完了\n",
+        "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+        "padded_bytes": 5568,
+        "bootloader_written": false,
+        "readback_verified": true,
+        "application_started": true,
+        "after": {
+          "observed_at": "2026-11-10T17:27:45.574460+09:00",
+          "devices": [
+            {
+              "USB Product Name": "UIAPduino KBD+Mouse+Web",
+              "idVendor": 4617,
+              "idProduct": 53252,
+              "bcdDevice": 1
+            }
+          ],
+          "same_usb_location_as_bootloader": true
+        }
+      },
+      "raw_log": ".local/logs/p4-u04-diagnostic-upload.json",
+      "raw_log_sha256": "ac5ae9540acd2b4c2681c39e2a8b9104843a1c9802e8c4ea0a64a2a0fd6ae1ce",
+      "write_range": {
+        "start": "0x08000000",
+        "end_inclusive": "0x080015BF",
+        "padded_bytes": 5568
+      },
+      "source_changes": false,
+      "notes": "The initially reported boot-mode operation was still observed as normal D004; a repeated operation was detected as one B803/32V003/0x0141 and uploaded successfully. No failed flash attempt occurred in this diagnostic switch."
+    },
+    {
+      "id": "SFC-RAW-STARTUP-CAPTURE-01",
+      "result": "INCONCLUSIVE: requested operation not correlated with capture",
+      "user_report": "指示どおり完了し、接続時の右も20秒間押し続けた",
+      "log_path": ".local/logs/p4-u04-sfc-startup-2026-11-10-01.jsonl",
+      "log_sha256": "4bee2b630af195f4db75fbb5dc30b91390cfbada9eaa8a94e91bde6ec44d6d9e",
+      "reader_exit_code": 0,
+      "samples": 23346,
+      "invalid": 0,
+      "observed_pressed_values": [
+        0
+      ],
+      "last_sample_seconds": 240.129387,
+      "maximum_sample_gap_seconds": 0.082066,
+      "capture_finished_at_from_file_mtime": "2026-11-10T17:32:49.845405+09:00",
+      "assessment": "No right transition or USB-unplug gap occurred in the 240-second recording. It had finished before this result was inspected. The user reports completing the procedure, but operation timing is not independently recorded; these released samples cannot diagnose held-input startup. Retry first with a normal right press and confirm acquisition before requesting the reconnect trial."
+    },
+    {
+      "id": "SFC-RAW-NORMAL-RIGHT-CONTROL-02",
+      "result": "PASS: normal physical right press and release captured in vendor HID samples",
+      "user_report": "右を5秒ほど押して離しました",
+      "log_path": ".local/logs/p4-u04-sfc-startup-2026-11-10-02.jsonl",
+      "log_status": "Stopped with SIGINT; reader exit code 0",
+      "press": {
+        "seconds": 33.483129,
+        "raw": 65407,
+        "pressed": 128,
+        "buttons": [
+          "RIGHT"
+        ]
+      },
+      "release": {
+        "seconds": 38.459188,
+        "raw": 65535,
+        "pressed": 0,
+        "buttons": []
+      },
+      "observed_duration_seconds": 4.976059,
+      "right_samples_observed_in_control": 484,
+      "assessment": "Normal right state is observable through this reader and diagnostic firmware. This confirms acquisition for the normal control; it does not establish held-input startup behavior.",
+      "log_sha256": "00c34fcc85eb3cc284e1f256f831ad01ff050d657937c6c2ff142562a923b9d8"
+    },
+    {
+      "id": "SFC-RAW-HELD-CONNECTION-02",
+      "result": "PASS for observed diagnostic input continuity; U04 keyboard acceptance remains open",
+      "user_report": "完了し、接続時の右も20秒間押し続けた",
+      "log_path": ".local/logs/p4-u04-sfc-startup-2026-11-10-02.jsonl",
+      "log_sha256": "00c34fcc85eb3cc284e1f256f831ad01ff050d657937c6c2ff142562a923b9d8",
+      "log_bytes": 2537382,
+      "reader_exit_code": 0,
+      "samples": 27656,
+      "invalid": 0,
+      "transitions": [
+        {
+          "event": "sample",
+          "seconds": 0.003656,
+          "sequence": 79,
+          "raw": 65535,
+          "pressed": 0,
+          "buttons": []
+        },
+        {
+          "event": "sample",
+          "seconds": 33.483129,
+          "sequence": 6,
+          "raw": 65407,
+          "pressed": 128,
+          "buttons": [
+            "RIGHT"
+          ]
+        },
+        {
+          "event": "sample",
+          "seconds": 38.459188,
+          "sequence": 234,
+          "raw": 65535,
+          "pressed": 0,
+          "buttons": []
+        },
+        {
+          "event": "sample",
+          "seconds": 94.753337,
+          "sequence": 0,
+          "raw": 65407,
+          "pressed": 128,
+          "buttons": [
+            "RIGHT"
+          ]
+        },
+        {
+          "event": "sample",
+          "seconds": 105.769172,
+          "sequence": 47,
+          "raw": 65535,
+          "pressed": 0,
+          "buttons": []
+        },
+        {
+          "event": "sample",
+          "seconds": 108.473303,
+          "sequence": 54,
+          "raw": 65407,
+          "pressed": 128,
+          "buttons": [
+            "RIGHT"
+          ]
+        },
+        {
+          "event": "sample",
+          "seconds": 109.3532,
+          "sequence": 140,
+          "raw": 65535,
+          "pressed": 0,
+          "buttons": []
+        }
+      ],
+      "usb_gap": {
+        "before_seconds": 87.138854,
+        "after_seconds": 94.753337,
+        "gap_seconds": 7.614483,
+        "sequence_before": 103,
+        "sequence_after": 0
+      },
+      "normal_control_observed_seconds": 4.976059,
+      "right_from_first_received_frame_after_connection_seconds": 11.015835,
+      "later_repress_seconds": 0.879897,
+      "sequence_discontinuities": 1,
+      "sequence_assessment": "The only sequence discontinuity coincides with the unplug/reconnect gap and reset to sequence 0; all other increments are one modulo 256.",
+      "requested_physical_hold_seconds": 20,
+      "physical_hold_timing_independently_measured": false,
+      "assessment": "After reconnect, the first received vendor report has RIGHT pressed. RIGHT remains continuously present until the observed release 11.015835 seconds later; a later repress and release are also captured. This is not a measurement of the entire user-operated 20-second hold or USB recognition delay. Diagnostic firmware uses the same SFC reader/pins but a different USB configuration and traffic; it does not establish correct keyboard reports in the integrated firmware."
+    },
+    {
+      "id": "GET-REPORT-INPUT-CANDIDATE",
+      "result": "Host tests and MCU build PASS; Mac U04 retest FAIL (recorded separately)",
+      "base_commit": "8b456046f5fd361aea29bcfcd2445c4a4df88753",
+      "uncommitted_candidate": true,
+      "rationale": "Pure KBD+Mouse usb=kbd sets RV003USB_HID_FEATURES=0, compiling out GET_REPORT routing. Add Input retrieval on interface 1 (keyboard, 8 bytes) and interface 0 (mouse, 4 bytes), report ID 0. Hold a dedicated EP0 snapshot between SETUP and control IN.",
+      "causal_link_to_U04": "UNPROVEN: no host control request trace was obtained",
+      "specification": {
+        "url": "https://www.usb.org/sites/default/files/hid1_11.pdf",
+        "sections": [
+          "7.2",
+          "7.2.1",
+          "Appendix C"
+        ]
+      },
+      "core_manifest": {
+        "base_package": "UIAP_HID:ch32v@1.2.15",
+        "source_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+        "patches": [
+          {
+            "path": "patches/uiap-1.2.15-coherent-keyboard.patch",
+            "sha256": "365757368d92b2425e3c3b786d65d3d498dc74d00a66a17f0d1c0bfed41a8e5f"
+          },
+          {
+            "path": "patches/uiap-1.2.15-input-get-report.patch",
+            "sha256": "c64a434235d2806e5590ec5b82aed3f16e0209755dd13b0a4b656c8cae73380a"
+          }
+        ],
+        "unchanged_files": 728,
+        "changed_files": {
+          "cores/arduino/uiapusb.c": {
+            "original_sha256": "433239df8cb14219d0c633a2265e73d200e3aa4160ab4aee92fcbb683a7ade93",
+            "patched_sha256": "bc5378264313829368738539336319c8efb4a53aee0d791a049e6c4aa8949923"
+          },
+          "cores/arduino/uiapusb.h": {
+            "original_sha256": "1f891b6ebae695a52c1335037be16540a61a24417734f1368665622d7d4bf528",
+            "patched_sha256": "8063bdc0dff2ba25014cb7c2c44583dd0952cc39a8859745ae1ef8ad99eaea9f"
+          },
+          "cores/arduino/usb_config.h": {
+            "original_sha256": "ddbdd13c53ad3b81aaa75095f88d4230cea667927c566772d3aacdfd4fbc0993",
+            "patched_sha256": "94b5eba56c97b0e7bf6e88b8de2805e4a7b2c26d703f40d1a75b35415ee25025"
+          }
+        }
+      },
+      "source_sha256": {
+        "scripts/prepare_sfc_core.py": "4ac150aa870db15b87d837653e32ec9ae4b753e75b232dbb210e31cbb377a6a8",
+        "tests/test_core_get_report.py": "99c284e21928ab59e2338e55b9c6df16c70a621812e2bb9c587d32922cb27ab0",
+        "tests/core_get_report_test.c": "151c386911a4f2cc7f6bd08e461e72594baeb7ab7d6e7736512eb6e562f4f1a9"
+      },
+      "tests": [
+        {
+          "command": "python3 tests/test_core_get_report.py",
+          "result": "PASS: actual upstream routing returns no keyboard state; patched actual routing returns correct input snapshots, handles lengths/interfaces/report types/IDs, and retains ignored SET_REPORT behavior"
+        },
+        {
+          "command": "SNES_HOST_SANITIZERS=1 python3 tests/test_core_get_report.py",
+          "result": "PASS with AddressSanitizer and UndefinedBehaviorSanitizer"
+        },
+        {
+          "command": "python3 tests/test_core_keyboard.py",
+          "result": "PASS: upstream mixed-state regression reproduced; patched complete old/new state at 147456 interruptions"
+        },
+        {
+          "command": "SNES_HOST_SANITIZERS=1 python3 tests/test_core_keyboard.py",
+          "result": "PASS"
+        },
+        {
+          "command": "bash tests/run_host_tests.sh",
+          "result": "PASS: report mapping, reader, backend and actual sketch paths"
+        },
+        {
+          "command": "SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh",
+          "result": "PASS"
+        }
+      ],
+      "build": {
+        "command": "bash scripts/build_firmware.sh sfc-keyboard",
+        "exit_code": 0,
+        "bin_bytes": 5496,
+        "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+        "elf_sha256": "936af26368d453a60daee0c257c627721e6e844ddea12c5cb741b1bf60d93b02",
+        "cli_text_bytes": 5336,
+        "init_bytes": 160,
+        "static_ram_bytes": 196,
+        "core_variant_compiler_inputs": 70,
+        "all_core_variant_inputs_from_derived_copy": true,
+        "machine_code_inspection": "Keyboard getter in usb_pid_handle_data loads keyboard_active once, copies 8 bytes to control_report.0 and assigns its address/limited length to EP0; coherent setter and interrupt IN paths remain present."
+      },
+      "unchanged_scope": "Original installed core, firmware SFC reader, key mapping, six-key selection, WebHID callbacks, and core reboot feature handling are unchanged. SET_REPORT LEDs remain ignored; unsupported control requests retain empty responses, without new STALL or protocol-state support.",
+      "original_keyboard_build_preserved": {
+        "directory": ".local/build/sfc-keyboard-before-get-report",
+        "bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674"
+      }
+    },
+    {
+      "id": "GET-REPORT-INPUT-CANDIDATE-UPLOAD",
+      "result": "PASS: application write, full readback verification and start",
+      "record": {
+        "started_at": "2026-11-10T17:48:12.844098+09:00",
+        "command": [
+          ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+          "--verbose",
+          "--flash-size",
+          "16384",
+          ".local/build/sfc-keyboard/snes_controller.ino.bin"
+        ],
+        "matching_bootloaders": 1,
+        "target": {
+          "USB Product Name": "32V003",
+          "idVendor": 4617,
+          "idProduct": 47107,
+          "bcdDevice": 321
+        },
+        "sfc_connected": true,
+        "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+        "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+        "finished_at": "2026-11-10T17:48:19.782383+09:00",
+        "exit_code": 0,
+        "stdout": "uiapflash: .local/build/sfc-keyboard/snes_controller.ino.bin (5496 バイト -> 5504 バイトにパディング)\n  書き込み中... 1024 / 5504 バイト\n  書き込み中... 2048 / 5504 バイト\n  書き込み中... 3072 / 5504 バイト\n  書き込み中... 4096 / 5504 バイト\n  書き込み中... 5120 / 5504 バイト\nベリファイ OK (5504 バイト)\nアプリを起動しました\n書き込み完了\n",
+        "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+        "padded_bytes": 5504,
+        "bootloader_written": false,
+        "readback_verified": true,
+        "application_started": true,
+        "after": {
+          "observed_at": "2026-11-10T17:48:23.848163+09:00",
+          "devices": [
+            {
+              "USB Product Name": "UIAPduino KBD+Mouse",
+              "idVendor": 4617,
+              "idProduct": 53252,
+              "bcdDevice": 1
+            }
+          ],
+          "same_usb_location_as_bootloader": true
+        }
+      },
+      "raw_log": ".local/logs/p4-u04-get-report-upload.json",
+      "raw_log_sha256": "72403bf9bf3cd3cbd0aaffe1e31c024b34edc2500ad8309aecfd38b771028a19",
+      "write_range": {
+        "start": "0x08000000",
+        "end_inclusive": "0x0800157F",
+        "padded_bytes": 5504
+      },
+      "note": "Four zero-length receive diagnostics precede the final successful all-sector readback match; uploader exit code is 0."
+    },
+    {
+      "id": "GET-REPORT-CANDIDATE-MAC-RETEST",
+      "result": "U04 FAIL: unexpected keyup while physical right was retained",
+      "log_path": ".local/logs/p4-u04-get-report-mac-2026-11-10-01.jsonl",
+      "log_sha256": "f9ba9377866dc2281352b31ae98bf5d8ea011d99cd3ed3e1d93bdeb9f25fcb99",
+      "collector_exit_code": 0,
+      "normal_control": {
+        "session": "2026-11-10T08:50:39.954Z",
+        "observed_hold_seconds": 4.286,
+        "user_report_paraphrase": "Right held about 5 seconds and released; display normal",
+        "events": [
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "start",
+            "seconds": 0,
+            "pressed": [],
+            "at": "2026-11-10T08:50:39.954Z",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+          },
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "keydown",
+            "seconds": 0.694,
+            "pressed": [
+              "ArrowRight"
+            ],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true
+          },
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "keyup",
+            "seconds": 4.98,
+            "pressed": [],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true,
+            "held_seconds": 4.286
+          },
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "focus_lost",
+            "seconds": 9.712,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "window_blur",
+            "seconds": 9.712,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:50:39.954Z",
+            "event": "focus_lost",
+            "seconds": 47.864,
+            "pressed": [],
+            "was_pressed": false
+          }
+        ]
+      },
+      "held_connection": {
+        "session": "2026-11-10T08:51:28.040Z",
+        "observed_keydown_seconds": 9.702,
+        "observed_keyup_seconds": 10.714,
+        "browser_held_seconds": 1.012,
+        "first_focus_loss_seconds": 35.653,
+        "user_report_paraphrase": "Initially pressed, then released in the display while physical right remained held",
+        "requested_physical_hold_seconds": 20,
+        "events": [
+          {
+            "session": "2026-11-10T08:51:28.040Z",
+            "event": "start",
+            "seconds": 0,
+            "pressed": [],
+            "at": "2026-11-10T08:51:28.040Z",
+            "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+          },
+          {
+            "session": "2026-11-10T08:51:28.040Z",
+            "event": "keydown",
+            "seconds": 9.702,
+            "pressed": [
+              "ArrowRight"
+            ],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true
+          },
+          {
+            "session": "2026-11-10T08:51:28.040Z",
+            "event": "keyup",
+            "seconds": 10.714,
+            "pressed": [],
+            "code": "ArrowRight",
+            "key": "ArrowRight",
+            "trusted": true,
+            "held_seconds": 1.012
+          },
+          {
+            "session": "2026-11-10T08:51:28.040Z",
+            "event": "focus_lost",
+            "seconds": 35.653,
+            "pressed": [],
+            "was_pressed": false
+          },
+          {
+            "session": "2026-11-10T08:51:28.040Z",
+            "event": "window_blur",
+            "seconds": 35.654,
+            "pressed": [],
+            "was_pressed": false
+          }
+        ]
+      },
+      "excluded_session": "2026-11-10T08:48:41.809Z: two short setup presses, not used for scoring",
+      "assessment": "The candidate did not resolve U04. Keyup occurred before recorded focus loss. Browser data does not identify raw interrupt-IN report bytes or prove why the host released the key."
+    },
+    {
+      "id": "KEYBOARD-CONTROL-INPUT-CAPTURE-01",
+      "result": "Current keyboard Input state retains RIGHT across observed reconnect hold; not an interrupt-IN trace",
+      "user_report_paraphrase": "Completed requested reconnect; retained right physically for 20 seconds, then released and repressed",
+      "log_path": ".local/logs/p4-u04-keyboard-control-2026-11-10-01.jsonl",
+      "log_sha256": "d7aee7c426c059f0097b6195dbd5870ca0db77a6e35c27c0fd2bbe997151d56f",
+      "capture_exit_code": 0,
+      "samples": 483,
+      "unavailable": 56,
+      "all_successful_responses_have_eight_bytes": true,
+      "transitions": [
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 0.179165
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            79,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 32.515274
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 33.660214
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            79,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 33.890452
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 34.118396
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            79,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 38.185252
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 41.973483
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            79,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 96.474656
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 108.448395
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            79,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 109.810268
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "event": "sample",
+          "seconds": 115.256459
+        }
+      ],
+      "first_unavailable_seconds": 84.055282,
+      "last_unavailable_seconds": 96.249437,
+      "first_successful_after_reconnect_seconds": 96.474656,
+      "release_seconds": 108.448395,
+      "observed_right_after_first_success_seconds": 11.973739,
+      "later_repress_seconds": 5.446191,
+      "normal_control_observed_seconds": 3.788231,
+      "additional_short_presses_before_control": "Two earlier right intervals are preserved in transitions but not scored as the requested 5-second control",
+      "source_sha256_at_capture": {
+        "scripts/read_keyboard_control.c": "58d3be2dd6237a4979944f6d13f590e1fa03477c0b9237494172d2eb788a4943",
+        "scripts/read_keyboard_control.py": "7a5df6a5c9accc54c16a9edf7eca3b30feb802799e6c7a8b485644e0cb0ecdaa"
+      },
+      "request": {
+        "bmRequestType": 161,
+        "bRequest": 1,
+        "wValue": 256,
+        "wIndex": 1,
+        "wLength": 8
+      },
+      "limits": "Active GET_REPORT(Input) reads, not passive interrupt-IN capture. USB recognition and full physical hold timing were not measured. The diagnostic traffic can influence USB scheduling. These samples show the staged keyboard state in the candidate; they do not prove interrupt packet delivery or OS/application handling."
+    },
+    {
+      "id": "KEYBOARD-TRACE-PREPARATION",
+      "result": "Host tests, MCU build and subsequent verified upload PASS",
+      "mode": "sfc-keyboard-trace",
+      "compile_flag": "UIAP_SNES_USB_TRACE=1 in both compiler.c.extra_flags and compiler.cpp.extra_flags",
+      "build": {
+        "bin_bytes": 5608,
+        "bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+        "elf_sha256": "fffd7c6bbaa3e711f6ee1488f06748f470cd1228e3a4ad22c210598caf191a75",
+        "cli_text_bytes": 5448,
+        "init_bytes": 160,
+        "static_ram_bytes": 204
+      },
+      "core_manifest": {
+        "base_package": "UIAP_HID:ch32v@1.2.15",
+        "source_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+        "patches": [
+          {
+            "path": "patches/uiap-1.2.15-coherent-keyboard.patch",
+            "sha256": "365757368d92b2425e3c3b786d65d3d498dc74d00a66a17f0d1c0bfed41a8e5f"
+          },
+          {
+            "path": "patches/uiap-1.2.15-input-get-report.patch",
+            "sha256": "8a3b010009aedf3d507adee1bc46b1ae6b814ede1f62e1200b90b1518cfb6f4f"
+          }
+        ],
+        "unchanged_files": 728,
+        "changed_files": {
+          "cores/arduino/uiapusb.c": {
+            "original_sha256": "433239df8cb14219d0c633a2265e73d200e3aa4160ab4aee92fcbb683a7ade93",
+            "patched_sha256": "62f8dac2430b511b3c95ed5ac434dae167fefb91089c1739519cb96dbda63228"
+          },
+          "cores/arduino/uiapusb.h": {
+            "original_sha256": "1f891b6ebae695a52c1335037be16540a61a24417734f1368665622d7d4bf528",
+            "patched_sha256": "8063bdc0dff2ba25014cb7c2c44583dd0952cc39a8859745ae1ef8ad99eaea9f"
+          },
+          "cores/arduino/usb_config.h": {
+            "original_sha256": "ddbdd13c53ad3b81aaa75095f88d4230cea667927c566772d3aacdfd4fbc0993",
+            "patched_sha256": "92a862d202fc33bb5639bff47f926961f7b32caa4159bc80399670b687aa47c8"
+          }
+        }
+      },
+      "source_sha256": {
+        "scripts/build_firmware.sh": "499ee82a6b31f994e88c3cda2bd3d5c53bace3de4065b93a32fd56304210697e",
+        "tests/test_core_get_report.py": "79553380d4ce475abc5d885403ea0322308a2609ba497f38a7e02d0b7845067c",
+        "tests/core_get_report_test.c": "ea1c55b213582091f85d9fbf22fe8bf49a6430810d93f13b756ae6665f5de311",
+        "scripts/read_keyboard_control.c": "ccb31ce0fdad2395fce982c6ba343eead9b57f850bbc4dfe0cbf87c8797ad0dc",
+        "scripts/read_keyboard_control.py": "f72c8885cca85a5a8e1ae32d9676188feeaa708adaff5e83499c8228ea2cbed0"
+      },
+      "tests": "Actual trace callback and keyboard IN branch: first-slot byte, wrapping counter, EP2 ACK snapshot, stable EP0 copy, request direction/length, unchanged interrupt report bytes; normal and ASan/UBSan PASS. Existing coherent-core normal test PASS.",
+      "normal_build_unchanged_after_optional_instrumentation": {
+        "command": "bash scripts/build_firmware.sh sfc-keyboard",
+        "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+        "matches_uploaded_get_report_candidate": true
+      },
+      "read_only_request": {
+        "bmRequestType": 193,
+        "bRequest": 90,
+        "wValue": 0,
+        "wIndex": 1,
+        "wLength": 8
+      },
+      "reply_bytes": [
+        "84 (T)",
+        "1 (version)",
+        "first key slot offered to EP2",
+        "EP2 IN toggle",
+        "IN attempts low",
+        "IN attempts high",
+        "EP2 ACK count low",
+        "EP2 ACK count high"
+      ],
+      "limits": "Diagnostic code adds a few ISR operations and active control traffic. Counters wrap modulo 65536; first-slot byte does not represent the complete eight-byte keyboard packet. ACK is a USB protocol response, not proof of OS or Delta use.",
+      "boot_mode_attempts": [
+        {
+          "operation_reported": true,
+          "observed_mode": "1209:D004 / UIAPduino KBD+Mouse",
+          "write_attempted": false
+        },
+        {
+          "repeat_operation_requested": true,
+          "result": "Detected one B803; upload verified and application started"
+        }
+      ]
+    },
+    {
+      "id": "KEYBOARD-TRACE-UPLOAD-AND-CAPTURE-01",
+      "result": "Trace acquisition PASS; U04 still failed",
+      "upload": {
+        "started_at": "2026-11-10T18:02:38.401595+09:00",
+        "command": [
+          ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+          "--verbose",
+          "--flash-size",
+          "16384",
+          ".local/build/sfc-keyboard-trace/snes_controller.ino.bin"
+        ],
+        "matching_bootloaders": 1,
+        "target": {
+          "USB Product Name": "32V003",
+          "idVendor": 4617,
+          "idProduct": 47107,
+          "bcdDevice": 321
+        },
+        "sfc_connected": true,
+        "bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+        "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+        "finished_at": "2026-11-10T18:02:43.725897+09:00",
+        "exit_code": 0,
+        "stdout": "uiapflash: .local/build/sfc-keyboard-trace/snes_controller.ino.bin (5608 バイト -> 5632 バイトにパディング)\n  書き込み中... 2176 / 5632 バイト\n  書き込み中... 3840 / 5632 バイト\n  書き込み中... 4864 / 5632 バイト\nベリファイ OK (5632 バイト)\nアプリを起動しました\n書き込み完了\n",
+        "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+        "padded_bytes": 5632,
+        "bootloader_written": false,
+        "readback_verified": true,
+        "application_started": true,
+        "after": {
+          "observed_at": "2026-11-10T18:02:47.766577+09:00",
+          "devices": [
+            {
+              "USB Product Name": "UIAPduino KBD+Mouse",
+              "idVendor": 4617,
+              "idProduct": 53252,
+              "bcdDevice": 1
+            }
+          ],
+          "same_usb_location_as_bootloader": true
+        }
+      },
+      "upload_log": ".local/logs/p4-u04-trace-upload.json",
+      "upload_log_sha256": "3665a824956738f125509a8d5584287317ae655a20c66a3b3dd3d710edc40b82",
+      "write_range": {
+        "start": "0x08000000",
+        "end_inclusive": "0x080015FF",
+        "padded_bytes": 5632
+      },
+      "trace_log": ".local/logs/p4-u04-keyboard-trace-2026-11-10-01.jsonl",
+      "trace_log_sha256": "6d4e256d7de80833caffe8876fd4109f791ce8ba2fe7c51d734cab75347b155b",
+      "samples": 409,
+      "unavailable": 239,
+      "trace_collector_exit_code": 0,
+      "browser_collector_exit_code": 0,
+      "first_key_transitions": [
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            0,
+            0,
+            36,
+            9,
+            36,
+            9
+          ],
+          "event": "sample",
+          "first_key": 0,
+          "toggle": 0,
+          "in_attempts": 2340,
+          "ack_count": 2340,
+          "seconds": 0.370991
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            79,
+            0,
+            254,
+            25,
+            254,
+            25
+          ],
+          "event": "sample",
+          "first_key": 79,
+          "toggle": 0,
+          "in_attempts": 6654,
+          "ack_count": 6654,
+          "seconds": 34.886118
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            0,
+            0,
+            110,
+            26,
+            110,
+            26
+          ],
+          "event": "sample",
+          "first_key": 0,
+          "toggle": 0,
+          "in_attempts": 6766,
+          "ack_count": 6766,
+          "seconds": 35.781999
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            79,
+            0,
+            224,
+            27,
+            224,
+            27
+          ],
+          "event": "sample",
+          "first_key": 79,
+          "toggle": 0,
+          "in_attempts": 7136,
+          "ack_count": 7136,
+          "seconds": 38.743153
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            0,
+            0,
+            140,
+            30,
+            140,
+            30
+          ],
+          "event": "sample",
+          "first_key": 0,
+          "toggle": 0,
+          "in_attempts": 7820,
+          "ack_count": 7820,
+          "seconds": 44.215432
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            79,
+            1,
+            1,
+            0,
+            1,
+            0
+          ],
+          "event": "sample",
+          "first_key": 79,
+          "toggle": 1,
+          "in_attempts": 1,
+          "ack_count": 1,
+          "seconds": 101.498655
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            0,
+            1,
+            3,
+            4,
+            3,
+            4
+          ],
+          "event": "sample",
+          "first_key": 0,
+          "toggle": 1,
+          "in_attempts": 1027,
+          "ack_count": 1027,
+          "seconds": 109.716238
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            79,
+            0,
+            88,
+            4,
+            88,
+            4
+          ],
+          "event": "sample",
+          "first_key": 79,
+          "toggle": 0,
+          "in_attempts": 1112,
+          "ack_count": 1112,
+          "seconds": 110.398449
+        },
+        {
+          "result": "0x00000000",
+          "length": 8,
+          "bytes": [
+            84,
+            1,
+            0,
+            1,
+            145,
+            6,
+            145,
+            6
+          ],
+          "event": "sample",
+          "first_key": 0,
+          "toggle": 1,
+          "in_attempts": 1681,
+          "ack_count": 1681,
+          "seconds": 114.950347
+        }
+      ],
+      "counter_mismatches": 0,
+      "normal_browser_hold_seconds": 5.594,
+      "post_reconnect": {
+        "first_success_seconds": 101.498655,
+        "first_key": 79,
+        "first_in_attempts": 1,
+        "first_ack_count": 1,
+        "first_released_seconds": 109.716238,
+        "released_in_attempts": 1027,
+        "released_ack_count": 1027,
+        "observed_right_to_first_release_seconds": 8.217583,
+        "later_repress_seconds": 110.398449,
+        "later_release_seconds": 114.950347
+      },
+      "browser_log": ".local/logs/p4-u04-trace-mac-2026-11-10-01.jsonl",
+      "browser_log_sha256": "b0ba7d669459a96437e9342fa5f1102187598baa0428b5055984510b837f73b0",
+      "browser_events": [
+        {
+          "session": "2026-11-10T09:03:15.822Z",
+          "event": "start",
+          "seconds": 0.001,
+          "pressed": [],
+          "at": "2026-11-10T09:03:15.822Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T09:03:15.822Z",
+          "event": "focus_lost",
+          "seconds": 17.15,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:03:15.822Z",
+          "event": "window_blur",
+          "seconds": 17.15,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:03:35.456Z",
+          "event": "start",
+          "seconds": 0,
+          "pressed": [],
+          "at": "2026-11-10T09:03:35.456Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T09:03:35.456Z",
+          "event": "keydown",
+          "seconds": 1.751,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T09:03:35.456Z",
+          "event": "keyup",
+          "seconds": 2.616,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.865
+        },
+        {
+          "session": "2026-11-10T09:03:35.456Z",
+          "event": "focus_lost",
+          "seconds": 4.208,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "start",
+          "seconds": 0,
+          "pressed": [],
+          "at": "2026-11-10T09:03:39.845Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "keydown",
+          "seconds": 1.079,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "keyup",
+          "seconds": 6.673,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 5.594
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "focus_lost",
+          "seconds": 7.771,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "window_blur",
+          "seconds": 7.771,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:03:39.845Z",
+          "event": "focus_lost",
+          "seconds": 56.229,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:04:36.246Z",
+          "event": "start",
+          "seconds": 0.001,
+          "pressed": [],
+          "at": "2026-11-10T09:04:36.246Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T09:04:36.246Z",
+          "event": "keydown",
+          "seconds": 16.352,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T09:04:36.246Z",
+          "event": "keyup",
+          "seconds": 20.853,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 4.501
+        },
+        {
+          "session": "2026-11-10T09:04:36.246Z",
+          "event": "focus_lost",
+          "seconds": 25.714,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:04:36.246Z",
+          "event": "window_blur",
+          "seconds": 25.714,
+          "pressed": [],
+          "was_pressed": false
+        }
+      ],
+      "user_report_paraphrase": "Display released during held connection; physically retained right for 20 seconds, then released and repressed",
+      "assessment": "Following reconnect, the first key slot offered to EP2 remains 0x4F until the observed release. IN attempt and ACK counts progress together, from 1 to 1027 by the release sample, with no observed mismatch. This does not show stopped USB polling or loss of firmware keyboard state. Browser events in the final session appear to correspond only to the later repress (4.501 seconds); the exact initial display is being clarified with the user. USB protocol ACK does not prove OS/application acceptance, and the trace records only the first key slot, not passive full packet contents. Active diagnostic traffic and added ISR operations can affect timing. User subsequently clarified that the display stayed released until repress, consistent with the browser log.",
+      "clarified_user_report": "Display remained released until the later repress; no initial held-connection keydown was seen"
+    },
+    {
+      "id": "KEYBOARD-CLASS-SETUP-TRACE-PREPARED-NOT-UPLOADED",
+      "result": "Prepared and tested; upload watcher stopped at user request to reconsider model/reasoning",
+      "build": {
+        "mode": "sfc-keyboard-trace",
+        "bin_bytes": 5968,
+        "bin_sha256": "1fd1ed61cf74014beacef1cbd92d1d0a4b69313e9e304fc3aacee331ee2c28d6",
+        "static_ram_bytes": 468,
+        "cli_text_bytes": 5808,
+        "init_bytes": 160
+      },
+      "core_manifest": {
+        "base_package": "UIAP_HID:ch32v@1.2.15",
+        "source_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+        "patches": [
+          {
+            "path": "patches/uiap-1.2.15-coherent-keyboard.patch",
+            "sha256": "365757368d92b2425e3c3b786d65d3d498dc74d00a66a17f0d1c0bfed41a8e5f"
+          },
+          {
+            "path": "patches/uiap-1.2.15-input-get-report.patch",
+            "sha256": "99d3860c795aa381b3788e1317a999544a93e98eb8d607821bb436e6d8ff95f4"
+          }
+        ],
+        "unchanged_files": 728,
+        "changed_files": {
+          "cores/arduino/uiapusb.c": {
+            "original_sha256": "433239df8cb14219d0c633a2265e73d200e3aa4160ab4aee92fcbb683a7ade93",
+            "patched_sha256": "12a5d374ecfb65f3e9844a23685e18978624467ce36bb927687ca15a9e706fdf"
+          },
+          "cores/arduino/uiapusb.h": {
+            "original_sha256": "1f891b6ebae695a52c1335037be16540a61a24417734f1368665622d7d4bf528",
+            "patched_sha256": "8063bdc0dff2ba25014cb7c2c44583dd0952cc39a8859745ae1ef8ad99eaea9f"
+          },
+          "cores/arduino/usb_config.h": {
+            "original_sha256": "ddbdd13c53ad3b81aaa75095f88d4230cea667927c566772d3aacdfd4fbc0993",
+            "patched_sha256": "92a862d202fc33bb5639bff47f926961f7b32caa4159bc80399670b687aa47c8"
+          }
+        }
+      },
+      "tests": "Normal and ASan/UBSan actual-core routing, keyboard/mouse GET_REPORT, first-slot/IN/ACK snapshot and bounded class SETUP history tests PASS. Each configuration rerun sequentially after an initial overlapping test run, to avoid shared temporary output collisions.",
+      "normal_candidate_bin_still_identical": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+      "history_format": "Read-only C1/5A vendor control, wValue=1, wIndex=1, wLength=136. H/version/count/head header then up to 16 chronological 8-byte SETUP records: bmRequestType, bRequest, wValue LE16, wIndex LE16, IN count LE16. No report data payloads.",
+      "upload_attempted": false,
+      "watcher_stopped_with_sigint": true,
+      "watcher_exit_code": 130,
+      "source_sha256": {
+        "scripts/build_firmware.sh": "499ee82a6b31f994e88c3cda2bd3d5c53bace3de4065b93a32fd56304210697e",
+        "scripts/prepare_sfc_core.py": "4ac150aa870db15b87d837653e32ec9ae4b753e75b232dbb210e31cbb377a6a8",
+        "scripts/read_keyboard_control.c": "11a122862f09d23c95ac5469e042bd8abd9644f0de772d35b738eab30727102f",
+        "scripts/read_keyboard_control.py": "d64aa408f8275b7c1be85db05ccd9bf0a9d0081f847bc5cff90812b562de7fe5",
+        "tests/test_core_get_report.py": "79553380d4ce475abc5d885403ea0322308a2609ba497f38a7e02d0b7845067c",
+        "tests/core_get_report_test.c": "a63711cc3c3e9f64cdbaf5fc3c042fcc568452dea4b9fa0386a3efbe9fde2ac1"
+      }
+    },
+    {
+      "id": "REVIEW-AND-NATIVE-CAPTURE-PREPARATION",
+      "result": "User approved revised observation plan; no firmware write",
+      "findings": [
+        "Not-uploaded trace v2 builds its 136-byte history response before SETUP ACK; timing must be corrected before use. Host unit tests do not verify USB timing.",
+        "Previous browser observer discards repeat keydown events; updated observer records repeats, already_pressed and Unix milliseconds.",
+        "Periodic last-key snapshots cannot exclude an intervening transient neutral interrupt report. OS cause remains unproven."
+      ],
+      "collector": "scripts/read_keyboard_hid.c",
+      "capture_scope": "Non-exclusive IOHIDManager input-report callbacks for 1209:D004 usage page 1, usage 6; full eight-byte reports, attach/remove events, monotonic and Unix times. OS callbacks are not a passive USB wire capture.",
+      "preflight": {
+        "log": ".local/logs/p4-u04-native-keyboard-2026-11-10-01.jsonl",
+        "open_result": "0xe00002c5",
+        "symbol": "kIOReturnExclusiveAccess",
+        "samples": 0,
+        "exit_code": 5
+      },
+      "environment_observation": "Karabiner-Elements core service is running; user asked to quit temporarily for isolation. Causality not yet confirmed.",
+      "firmware_unchanged": true,
+      "karabiner_quit_user_report": true,
+      "retry_after_quit": {
+        "log": ".local/logs/p4-u04-native-keyboard-2026-11-10-02.jsonl",
+        "open_result": "0x00000000",
+        "matched_keyboards": 1,
+        "initial_full_reports": "Eight zero bytes received repeatedly",
+        "status": "RUNNING; normal right control trial requested",
+        "assessment": "Exclusive-access failure cleared after user quit Karabiner; no conclusion yet about U04 or iPhone behavior."
+      },
+      "normal_control_after_karabiner_quit": {
+        "user_report": "Right held about five seconds and released; browser display normal",
+        "browser_session": "2026-11-10T09:24:35.557Z",
+        "native_right_down_unix_ms": 1794302678177.967,
+        "native_right_up_unix_ms": 1794302684221.919,
+        "native_right_seconds": 6.043952,
+        "browser_right_seconds": 6.029,
+        "browser_focus_loss_after_release": true,
+        "incidental_input": "Brief UP report immediately after RIGHT release, also seen in browser; do not score as a perfectly isolated right-only trial. Earlier native presses precede the scored browser session.",
+        "assessment": "Normal right hold and release agree between OS input-report callbacks and browser; repeat events are now retained."
+      }
+    },
+    {
+      "id": "HELD-CONNECT-MAC-AFTER-KARABINER-QUIT",
+      "result": "PASS for observed held-connect continuity and release; requested 20 seconds not independently established",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "firmware_write_performed": false,
+      "karabiner": "User reported quit; non-exclusive HID open succeeded afterward",
+      "native_log": ".local/logs/p4-u04-native-keyboard-2026-11-10-02.jsonl",
+      "native_log_sha256": "a5f6090da35e84ee654ca7ccccf15198a226a51f99f00f9b077d670bb8b6a552",
+      "browser_log": ".local/logs/p4-u04-full-browser-2026-11-10-01.jsonl",
+      "browser_log_sha256": "58114082af275bcb3801b537cea67385c53d2f6829192ca5e75b0834efa8d656",
+      "collectors_exit_codes": {
+        "native": 0,
+        "browser": 0
+      },
+      "native_summary": {
+        "event": "finished",
+        "seconds": 142.249097,
+        "unix_ms": 1794302785765.678,
+        "samples": 16647,
+        "invalid": 0
+      },
+      "browser_session": "2026-11-10T09:25:37.459Z",
+      "attach_unix_ms": 1794302742100.216,
+      "first_post_attach_report": {
+        "event": "sample",
+        "seconds": 98.592141,
+        "unix_ms": 1794302742108.722,
+        "bytes": [
+          0,
+          0,
+          79,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "first_neutral_report": {
+        "event": "sample",
+        "seconds": 110.820439,
+        "unix_ms": 1794302754337.02,
+        "bytes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "observed_hold_seconds": 12.228298,
+      "held_samples": 1528,
+      "all_held_samples_equal_right": true,
+      "maximum_callback_gap_ms": 21.093,
+      "browser_nonrepeat_events": [
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "start",
+          "unix_ms": 1794302737460,
+          "seconds": 0,
+          "pressed": [],
+          "at": "2026-11-10T09:25:37.459Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "keydown",
+          "unix_ms": 1794302742165,
+          "seconds": 4.706,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "repeat": false,
+          "already_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "keyup",
+          "unix_ms": 1794302754351,
+          "seconds": 16.892,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 12.186
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "keydown",
+          "unix_ms": 1794302755229,
+          "seconds": 17.77,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "repeat": false,
+          "already_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "keyup",
+          "unix_ms": 1794302760268,
+          "seconds": 22.808,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 5.038
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "focus_lost",
+          "unix_ms": 1794302762307,
+          "seconds": 24.847,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T09:25:37.459Z",
+          "event": "window_blur",
+          "unix_ms": 1794302762307,
+          "seconds": 24.848,
+          "pressed": [],
+          "was_pressed": false
+        }
+      ],
+      "browser_repeat_keydowns": 196,
+      "browser_hold_seconds": 12.186,
+      "later_repress_native_seconds": 5.040312,
+      "later_repress_browser_seconds": 5.038,
+      "user_report": "After connection display became pressed and stayed pressed until physical release",
+      "limitations": [
+        "OS input callbacks are not a passive USB capture.",
+        "Native first report to release was 12.228298 seconds; browser hold was 12.186 seconds. Do not record a measured 20-second success.",
+        "One successful held-connect trial after Karabiner quit; no controlled re-enable comparison yet.",
+        "iPhone U04 remains unresolved; current GET_REPORT candidate has not yet been retested on iPhone."
+      ]
+    },
+    {
+      "id": "IPHONE-CURRENT-TRACE-V1-NORMAL-CONTROL",
+      "result": "PASS, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "firmware_write_performed": false,
+      "procedure": "Connect to iPhone with all buttons released, same cable; Delta GBA game, right about five seconds and release, then B once and release. No RESET.",
+      "user_report": "Right operation/release and B response normal",
+      "scope": "User-observed gameplay only; no phone HID capture or independent duration measurement."
+    },
+    {
+      "id": "IPHONE-CURRENT-TRACE-V1-HELD-CONNECT",
+      "result": "FAIL, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "firmware_write_performed": false,
+      "procedure": "Same iPhone/Delta/GBA/cable. Unplug released, wait three seconds, hold RIGHT while connecting without RESET, retain RIGHT for requested twenty seconds, release, then repress.",
+      "user_report": "Right did not respond until release/repress",
+      "scope": "User-observed gameplay; no phone HID capture or independent duration measurement. Current trace v1 includes GET_REPORT(Input).",
+      "assessment": "Mac success after Karabiner quit does not resolve iPhone U04. GET_REPORT-enabled current build still fails held-connect in Delta."
+    },
+    {
+      "id": "IPHONE-CURRENT-TRACE-V1-SAFARI-NORMAL-CONTROL",
+      "result": "PASS, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "viewer": "https://w3c.github.io/uievents/tools/key-event-viewer.html",
+      "procedure": "USB normally connected; Clear Table, focus text input, hold physical RIGHT about five seconds, release.",
+      "user_report": "keydown appeared, and keyup appeared on physical release",
+      "scope": "User-observed iPhone browser events only; no captured event log, independent duration measurement or USB trace."
+    },
+    {
+      "id": "IPHONE-CURRENT-TRACE-V1-SAFARI-HELD-CONNECT",
+      "result": "PASS, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "viewer": "https://w3c.github.io/uievents/tools/key-event-viewer.html",
+      "procedure": "Unplug released, wait three seconds, Clear Table and focus input; connect holding RIGHT without RESET, retain for requested twenty seconds without touching screen, release, then repress.",
+      "user_report": "keydown appeared at connection; keyup appeared only when physical RIGHT was released",
+      "scope": "User-observed iPhone browser events only; no captured event log, independent duration measurement or USB trace.",
+      "assessment": "Same current firmware succeeds in iPhone Safari but requires release/repress in Delta. Investigate Delta connection/input initialization path; not proof of a particular application or OS defect."
+    },
+    {
+      "id": "DELTA-173-KEYBOARD-SOURCE-REVIEW",
+      "result": "Version-branch-matched source supports an initialization hypothesis; runtime cause unproven",
+      "delta_branch": "v1.7.3",
+      "delta_root_tree": "0c692bc95ba94b126eb478f7fad8f8672decd0b6",
+      "delta_core_gitlink": "373bf07b7da6630dec661e876a63d685d61b9f9c",
+      "sources": [
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Game%20Controllers/Keyboard/KeyboardGameController.swift",
+          "blob_sha": "c94e7593ea30650e44590429735110486bea6fc3"
+        },
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Game%20Controllers/ExternalGameControllerManager.swift",
+          "blob_sha": "6a287e0e4343d99e54148ad986948c62946657c2"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/gamecontroller/gckeyboardinput"
+        },
+        {
+          "url": "https://developer.apple.com/documentation/gamecontroller/gckeyboardvaluechangedhandler"
+        }
+      ],
+      "findings": [
+        "On iOS 26 the referenced ExternalGameControllerManager selects GCKeyboard handling.",
+        "On connection, a KeyboardGameController is created and its initializer installs keyChangedHandler, mapping changes to activate/deactivate.",
+        "The inspected keyboard initializer does not poll already-held key states to initialize the new controller."
+      ],
+      "inference": "If the initial held state is established before its change handler/receiver is ready, continued unchanged RIGHT may not activate Delta until release/repress. Consistent with Safari PASS / Delta FAIL, but actual callback timing and GCKeyboard initial state have not been instrumented.",
+      "limitations": [
+        "The installed app binary has not been matched to this public branch.",
+        "No Delta app change or native iPhone GCKeyboard diagnostic was built or run.",
+        "A firmware-generated synthetic release/repress or arbitrary startup delay has not been added.",
+        "U04 remains open; adopting released-at-connect operation as an accepted limitation requires a user decision."
+      ]
+    },
+    {
+      "id": "USER-DECISION-DEFER-U04",
+      "result": "User explicitly chose to defer U04 and continue remaining practical tests",
+      "operating_procedure": "Connect USB with all physical buttons released; operate after connection.",
+      "acceptance": "U04 remains failed/unresolved and deferred, not converted to PASS. Root cause remains unproven.",
+      "firmware": "Continue current trace v1 for these trials; record its identity. Final normal build requires its own verification before claiming release readiness."
+    },
+    {
+      "id": "D08-APP-SWITCH-RELEASED-THREE-CYCLES",
+      "test_id": "D08",
+      "result": "PASS, user reported, all buttons released during switching",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "environment": "Same iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA game / cable",
+      "procedure": "USB remains connected. Release all SFC buttons, switch Delta to Safari for about five seconds, return to Delta, resume gameplay if needed, press/release left, right and B. Three cycles.",
+      "user_report": "All three cycles had normal operation and release, with no remapping required.",
+      "scope": "User-reported gameplay; no direct phone capture. Held-button switching and lock/unlock are not covered."
+    },
+    {
+      "id": "D09-LOCK-UNLOCK-RELEASED-THREE-CYCLES",
+      "test_id": "D09",
+      "result": "PASS for all-buttons-released condition, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "procedure": "USB left connected. Release all buttons, lock iPhone, wait about ten seconds, unlock and return to same Delta GBA game, press/release left/right/B. Three cycles, without RESET or USB replug.",
+      "user_report": "All three cycles normal; no remapping required and no warning displayed.",
+      "scope": "User-observed gameplay and notices. Electrical power continuity and USB re-enumeration were not measured. Held-button lock/unlock is not yet covered."
+    },
+    {
+      "id": "D09-RELEASE-WHILE-LOCKED-STUCK-RIGHT",
+      "test_id": "D09",
+      "result": "FAIL, user reported stale RIGHT after release while locked",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "procedure": "USB remains connected. Hold RIGHT in game, lock iPhone while held, release RIGHT while locked, wait about ten seconds, unlock and return to Delta; inspect input and try left/right/B.",
+      "user_report": "Right input remains. While operating another button right becomes inactive, but releasing the operated button makes right active again.",
+      "scope": "User-observed gameplay. Exact subsequent button identities/order, HID reports, power continuity and USB re-enumeration not captured.",
+      "assessment": "Separate failure from U04. Do not mark D09 fully passed or attribute to Delta solely from this observation."
+    },
+    {
+      "id": "USER-PREFERENCE-APPLICATION-SIDE-LIMITATION",
+      "result": "Conditional tolerance stated by user",
+      "user_preference": "A limitation is acceptable if confirmed to be a Delta-side defect.",
+      "scope": "Not unconditional acceptance of stale RIGHT or of a firmware fault. Delta causality remains unproven."
+    },
+    {
+      "id": "D09-STUCK-RIGHT-RECOVERY",
+      "test_id": "D09",
+      "result": "RECOVERED, user reported",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "procedure": "Foreground Delta; USB stays connected, no RESET. Release all other buttons, press RIGHT about one second, fully release, observe about three seconds.",
+      "user_report": "Right stopped after press/release and did not return.",
+      "assessment": "Recovery procedure confirmed for this incident; does not establish whether the lost release arose in firmware, OS/GameController or Delta."
+    },
+    {
+      "id": "D09-DELTA-173-RELEASE-ROUTING-SOURCE-REVIEW",
+      "result": "Source-supported application-side hypothesis; runtime causality not established",
+      "version_basis": "Delta public v1.7.3 branch Cores/DeltaCore gitlink; installed binary identity not independently verified",
+      "delta_core_commit": "373bf07b7da6630dec661e876a63d685d61b9f9c",
+      "sources": [
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Emulator%20Core/EmulatorCore.swift#L439",
+          "blob_sha": "6b5cb2fd32ec85dec3a04d9a0cfce8b0a86a7852",
+          "finding": "didDeactivate returns without calling emulatorBridge.deactivateInput when game views exist but none has keyboard focus (lines 444-452). pause/resume (188-226) do not explicitly reset inputs or reconcile current keyboard state."
+        },
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Model/GameControllerStateManager.swift#L75",
+          "blob_sha": "0cd51e4583350a4660b5c58f4c4387dbc7d3f079",
+          "finding": "For a non-sustained input, deactivate removes activatedInputs before notifying receivers. Duplicate deactivation is ignored if already absent. A receiver that drops this release can diverge from the controller state."
+        },
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/UI/Game/GameViewController.swift#L664",
+          "blob_sha": "c6de884c6ff045a659a4fe6c24e2547a660e08f4",
+          "finding": "willResignActive queues pause. The inspected pause/resume path delegates to EmulatorCore without explicit input reconciliation."
+        },
+        {
+          "url": "https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Extensions/UIScene%2BKeyboardFocus.swift#L24",
+          "blob_sha": "9aafa7b55414731b343a9d8c7036c6af2b4f4a71",
+          "finding": "hasKeyboardFocus uses an OS scene property with fallbacks; its actual value during this lock trial was not measured."
+        }
+      ],
+      "inference": "If release is delivered while the game scene lacks keyboard focus, the controller state may clear while emulator input remains active. Returning to foreground and pressing/releasing RIGHT again can deliver a new release and clear it. This matches the reported recovery; it is a conditional code-path explanation, not a captured execution trace.",
+      "limitations": "No iPhone HID/GCKeyboard callback trace, focus-value trace, or emulator input-state trace. OS suppression of the release or other paths remain possible. The other-button suppression behavior is not explained conclusively by this review. No claim that firmware or OS causes have been completely excluded.",
+      "action": "Keep D09 failed/open with suspected application-side cause and confirmed one-incident recovery. Do not change firmware based on this hypothesis; continue independent practical testing with all buttons released before lock/app changes."
+    },
+    {
+      "id": "D10-CONTINUOUS-GBA-THIRTY-MINUTES",
+      "test_id": "D10",
+      "result": "PASS, user reported under the instructed foreground/unlocked condition",
+      "firmware_bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "environment": "iPhone 17 / iOS 26.2 / Delta 1.7.3 / GBA シナモンふわふわ大作戦 / same USB-C cable",
+      "procedure": "Connect with all buttons released, keep Delta foreground and iPhone unlocked, play the same GBA game for at least 30 minutes. At the end release all buttons and check left/right/B press and release. Report actual duration, stuck/missed inputs, unintended disconnection, remapping or accessory warning; stop and report if abnormal.",
+      "duration_minutes_user_reported": 30,
+      "user_report": "実際のプレイ時間は30分ちょうど。異常や警告は発生していません。",
+      "scope": "User report in response to the complete D10 procedure. Final left/right/B checks were requested but not individually described in the reply. No independent timing, USB, reboot-counter, or phone-screen capture. Does not cover lock/app switching, unresolved U04/D09 conditions, or a different firmware binary."
+    }
+  ],
+  "open_issues": [
+    {
+      "test_id": "U04",
+      "status": "DEFERRED BY USER: unresolved; original acceptance criterion failed",
+      "symptom": "Current trace v1: Delta requires release/repress for initially held RIGHT. Earlier Safari premature-keyup observation is preserved in history but did not reproduce in the current iPhone Safari comparison.",
+      "root_cause": "UNDETERMINED",
+      "latest_diagnosis": "Current trace v1: Mac native/browser held-connect succeeds after Karabiner quit. iPhone normal RIGHT/release works in Delta and Safari. iPhone held-connect requires release/repress in Delta, but Safari emits initial keydown and keyup only on physical release according to user. Focus investigation on Delta connection/input initialization path; no specific app/OS root cause proven. Original iPhone Safari premature-keyup symptom is not reproduced with current firmware.",
+      "normal_connection_workaround": "Connect with all buttons released and operate after connection; U02 passed ten cycles under that procedure",
+      "source_assessment": {
+        "references": [
+          "firmware/snes_controller/snes_controller.ino",
+          "firmware/snes_controller/usb_backend.cpp",
+          "patches/uiap-1.2.15-coherent-keyboard.patch"
+        ],
+        "findings": [
+          "The loop stages the current SFC state about every 10 ms; it does not wait for a button transition before calling the setter",
+          "The patched keyboard IN callback selects and sends the latest complete report",
+          "Neutral is staged before USB begins, but this API does not confirm host receipt of that neutral state or application readiness"
+        ],
+        "limitation": "Initial integrated-source assessment only; no raw keyboard/control request trace. A subsequent temporary diagnostic reflash and GET_REPORT candidate reflash are recorded separately."
+      },
+      "user_decision": "Proceed with remaining practical tests using all-buttons-released connection procedure."
+    },
+    {
+      "test_id": "D09",
+      "status": "OPEN: release-while-locked criterion failed",
+      "symptom": "RIGHT remains after unlocking although released while locked; other-button operation suppresses it temporarily, then RIGHT returns after release.",
+      "root_cause": "UNDETERMINED",
+      "user_preference": "Acceptable if established as Delta-side defect; not yet established.",
+      "recovery": "User confirmed: with Delta foreground, press RIGHT once and fully release; stale RIGHT stops and does not return. USB connection retained, no RESET.",
+      "latest_diagnosis": "Delta 1.7.3 matched source has a focus guard that can discard release before emulator input is cleared. This is a strong conditional explanation consistent with press/release recovery, but runtime causality remains undetermined."
+    }
+  ],
+  "next_test": {
+    "scope": "Remaining P4 coverage and eventual final normal-firmware validation",
+    "result": "D10 completed: user reports exactly 30 minutes with no abnormalities or warnings. No new physical trial requested.",
+    "collector": {
+      "status": "STOPPED"
+    },
+    "resume_point": "Remaining Delta diagonal / 3+ inputs and 6/7-key tests need observable game behavior; SNES 12-input coverage remains deferred while user prefers GBA. U04 is deferred by user and D09 remains open. Current device still runs trace v1; final normal firmware requires separate upload/validation."
+  },
+  "remaining": [
+    "Diagonal and higher-count simultaneous inputs; six/seven-key behavior in Delta when observable",
+    "U04 deferred by user, unresolved: use all-buttons-released connection. Other held-state recovery conditions remain to be tested.",
+    "D09 release-while-locked remains failed/open despite confirmed recovery. Released-button lock/unlock passed three cycles; held-through-unlock is untested. D08 released-button switching passed three cycles; D10 continuous use passed for exactly 30 minutes by user report.",
+    "SNES all-twelve mapping and gameplay, including physical X / Y",
+    "Device-specific iPad testing",
+    "Final normal-firmware upload and validation distinct from current trace v1 results"
+  ],
+  "publication": {
+    "evidence_type": "User hardware-operation reports, supplied iPhone screenshot, agent-observed Mac browser/vendor HID logs, source tests, build and verified upload records; scopes distinguished per observation",
+    "phone_screen_or_usb_trace_observed_by_codex": false,
+    "personal_paths_or_device_identifiers_included": false
+  },
+  "current_device_firmware": {
+    "mode": "sfc-keyboard-trace",
+    "temporary_for": "U04 USB IN/ACK diagnosis",
+    "uploaded_at": "2026-11-10T18:02:43.725897+09:00",
+    "bin_sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+    "keyboard_output": "Same SFC mapping with opt-in first-slot/counter instrumentation",
+    "restore_mode": "sfc-keyboard",
+    "restore_bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+    "original_verified_keyboard_bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+    "build_directory_for_exact_uploaded_bin": ".local/build/sfc-keyboard-trace-v1"
+  },
+  "evidence_organization": {
+    "current_state_fields": [
+      "status",
+      "current_device_firmware",
+      "open_issues",
+      "next_test",
+      "remaining"
+    ],
+    "history_field": "observations: ordered trial history; earlier RUNNING/planned states describe their observation time, not active processes now",
+    "raw_artifacts": "Raw logs and BINs remain ignored under .local; public records contain selected observations and hashes, not independently downloadable full captures.",
+    "commit_review_record": "p4-commit-review-2026-11-10.json"
+  }
+}

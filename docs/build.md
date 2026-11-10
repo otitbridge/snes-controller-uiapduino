@@ -100,8 +100,9 @@ bash scripts/build_firmware.sh sfc-keyboard
 ```
 
 FQBNのUSBは `usb=kbd`、フラグは `SNES_SFC_KEYBOARD=1`、診断と単キー入力は0です。
-`prepare_sfc_core.py` が元の730ファイルと配布物を検証し、専用コピーの `uiapusb.c/.h` だけへ
-[パッチ](../patches/README.md) を適用します。元の導入済みコアは保持します。
+`prepare_sfc_core.py` が元の730ファイルと配布物を検証し、専用コピーの `uiapusb.c/.h` と `usb_config.h` へ
+[2つの管理パッチ](../patches/README.md) を順に適用します。元の導入済みコアは保持します。
+P4の現在のビルドはGET_REPORT(Input)応答を加えた検証候補です。U04は現候補だけでは解消せず、本人同意で未解決のまま保留しています。
 設定は `.local/sfc-arduino-cli.yaml`、生成先は `.local/build/sfc-keyboard/` です。
 この設定が指す `.local/sfc-arduino-data/` のコアで実際にコンパイルされたことも確認しています。
 起動・配線・実機確認は [統合版の手順](sfc-keyboard.md) を参照してください。
@@ -111,9 +112,19 @@ FQBNのUSBは `usb=kbd`、フラグは `SNES_SFC_KEYBOARD=1`、診断と単キ�
 ```sh
 python3 tests/test_core_keyboard.py
 SNES_HOST_SANITIZERS=1 python3 tests/test_core_keyboard.py
+python3 tests/test_core_get_report.py
+SNES_HOST_SANITIZERS=1 python3 tests/test_core_get_report.py
 ```
 
 ## PC上のロジックとバックエンドのテスト
+
+`bash scripts/build_firmware.sh sfc-keyboard-trace` は現在、未書き込みの履歴付き計測版（trace v2）を生成します。SETUP応答時間の懸念が解決するまで実機使用は保留です。基板上の初版（trace v1）を再生成するコマンドではありません。
+生成先は `.local/build/sfc-keyboard-trace/` で、通常版とは別です。
+`UIAP_SNES_USB_TRACE=1` をCとC++の両方へ渡し、[計測用の応答](../patches/README.md) を有効にします。
+Macでは `python3 scripts/read_keyboard_control.py 600` で現在のキーボードInput、
+`python3 scripts/read_keyboard_control.py 600 --trace` で計測値を最大600秒取得します。
+どちらも対象は `1209:D004` の1台だけで、インターフェースの占有、USBリセットや出力レポートの書き込みは行いません。
+取得値は能動的なcontrol応答で、受動的なInterrupt INキャプチャではありません。
 
 ```sh
 bash tests/run_host_tests.sh
@@ -146,3 +157,13 @@ P3では全65,536通りのシリアル入力をシフトレジスタモデルへ
 参照したV1.41ブートローダの [リンカ定義](https://github.com/YuukiUmeta-UIAP/rv003usb/blob/7ae2940676df0e1dcdad906ea7b1c9fff6c0b971/bootloader/ch32v003fun-usb-bootloader.ld) は物理 `0x1FFFF000` の別領域に配置されます。今回ブートローダの消去・書き込みは行っていません。実物のブートローダ全体のバイナリハッシュは未測定です。
 
 書き込み後は `1209:D004` のキーボード／マウスとして同じUSB接続位置へ再列挙されました。実行ログ・対象情報・BINのSHA-256・HID情報は [書き込み記録](evidence/p2-upload-neutral-2026-11-10.json) に保存しています。
+
+## Macの非排他的HID入力取得
+
+```sh
+mkdir -p .local/bin
+clang -std=c11 -Wall -Wextra -Werror scripts/read_keyboard_hid.c -framework IOKit -framework CoreFoundation -o .local/bin/read_keyboard_hid
+.local/bin/read_keyboard_hid 60
+```
+
+対象は `1209:D004` のキーボード1台、時間は1〜600秒です。control要求・書き込み・RESETは行いません。複数台・不正レポートで停止します。OSの入力コールバックであり、USB線上の全パケット取得ではありません。Karabiner稼働時に排他アクセスで失敗し、本人が終了後は成功した記録があります。ツールは他アプリを終了しません。

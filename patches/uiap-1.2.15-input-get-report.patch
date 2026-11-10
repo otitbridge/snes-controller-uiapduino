@@ -1,0 +1,173 @@
+--- a/cores/arduino/uiapusb.c
++++ b/cores/arduino/uiapusb.c
+@@ -92,6 +92,28 @@
+  */
+ static volatile uint8_t keyboard_report[2][8] = {{0}, {0}};
+ static volatile uint8_t keyboard_active = 0;
++#if UIAP_SNES_USB_TRACE && !defined(UIAP_WEBHID)
++/* Diagnostic only: first key slot offered to EP2, and IN attempt count. */
++static volatile uint8_t trace_first_key;
++static volatile uint16_t trace_in_count;
++/* Last 16 HID class SETUP requests; no data payload or device identifiers. */
++static volatile uint8_t trace_controls[16][8];
++static volatile uint8_t trace_control_head, trace_control_count;
++static void trace_note_control(uint16_t request, uint32_t value_index)
++{
++    volatile uint8_t *entry = trace_controls[trace_control_head];
++    entry[0] = request;
++    entry[1] = request >> 8;
++    entry[2] = value_index;
++    entry[3] = value_index >> 8;
++    entry[4] = value_index >> 16;
++    entry[5] = value_index >> 24;
++    entry[6] = trace_in_count;
++    entry[7] = trace_in_count >> 8;
++    trace_control_head = (trace_control_head + 1u) & 15u;
++    if (trace_control_count < 16) ++trace_control_count;
++}
++#endif
+ 
+ #ifdef UIAP_WEBHID
+ // ============================================================
+@@ -137,6 +159,10 @@
+         /* キーボード: ホストが解放を確認するまで同じ状態を保持 */
+         const uint8_t active = keyboard_active;
+         __asm__ __volatile__("" ::: "memory");
++#if UIAP_SNES_USB_TRACE && !defined(UIAP_WEBHID)
++        trace_first_key = keyboard_report[active][2];
++        ++trace_in_count;
++#endif
+         usb_send_data((uint8_t *)keyboard_report[active], 8, 0, sendtok);
+ #ifdef UIAP_WEBHID
+     } else if (endp == 3) {
+@@ -153,6 +179,103 @@
+     }
+ }
+ 
++#ifndef UIAP_WEBHID
++/* Project patch: GET_REPORT(Input) for the pure KBD+Mouse configuration.
++ * SETUP and control IN are separate interrupts. Preserve a snapshot in EP0
++ * storage: main may publish twice and reuse either keyboard slot between them.
++ * The setup callback itself runs in the USB ISR, so main cannot change the
++ * published keyboard slot during this copy.
++ */
++void usb_handle_hid_get_report_start(struct usb_endpoint *e, int reqLen,
++                                      uint32_t lValueLSBIndexMSB)
++{
++#if UIAP_SNES_USB_TRACE
++    trace_note_control(0x01a1, lValueLSBIndexMSB);
++#endif
++    static uint8_t control_report[8];
++    const uint16_t interface = lValueLSBIndexMSB >> 16;
++    const uint16_t value = lValueLSBIndexMSB;
++    uint8_t size;
++    e->opaque = 0;
++    e->max_len = 0;
++    if (value != 0x0100 || reqLen < 0) return; /* Input, report ID 0 */
++    if (interface == 1) {
++        const uint8_t active = keyboard_active;
++        __asm__ __volatile__("" ::: "memory");
++        size = 8;
++        for (uint8_t i = 0; i < size; ++i)
++            control_report[i] = keyboard_report[active][i];
++    } else if (interface == 0) {
++        size = 4;
++        for (uint8_t i = 0; i < size; ++i)
++            control_report[i] = mouse_report[i];
++    } else {
++        return;
++    }
++    e->opaque = control_report;
++    e->max_len = (reqLen < size) ? reqLen : size;
++}
++
++#if UIAP_SNES_USB_TRACE
++/* Project-specific read-only vendor request, used only in the trace build.
++ * C1/5A, wValue=0, wIndex=1; reply: T, version, first key slot, IN toggle,
++ * IN-attempt count LE16, EP2 ACK count LE16. Counts wrap modulo 65536.
++ * This records a byte offered to usb_send_data, not the full packet or OS use.
++ */
++void usb_handle_other_control_message(struct usb_endpoint *e, struct usb_urb *s,
++                                       struct rv003usb_internal *ist)
++{
++    static uint8_t trace_reply[8];
++    if ((s->wRequestTypeLSBRequestMSB & 0x60) == 0x20)
++        trace_note_control(s->wRequestTypeLSBRequestMSB, s->lValueLSBIndexMSB);
++    if (s->wRequestTypeLSBRequestMSB != 0x5ac1) return;
++    if (s->lValueLSBIndexMSB == 0x00010001) {
++        static uint8_t history[136];
++        for (uint16_t i = 0; i < sizeof(history); ++i) history[i] = 0;
++        history[0] = 'H'; history[1] = 1;
++        history[2] = trace_control_count;
++        history[3] = trace_control_head;
++        for (uint8_t i = 0; i < trace_control_count; ++i) {
++            const uint8_t slot = (trace_control_head + 16u - trace_control_count + i) & 15u;
++            for (uint8_t j = 0; j < 8; ++j)
++                history[8u + 8u * i + j] = trace_controls[slot][j];
++        }
++        e->opaque = history;
++        e->max_len = (s->wLength < sizeof(history)) ? s->wLength : sizeof(history);
++        return;
++    }
++    if (s->lValueLSBIndexMSB != 0x00010000) return;
++    const uint16_t attempts = trace_in_count;
++    const uint16_t acknowledgements = ist->eps[2].count;
++    trace_reply[0] = 'T';
++    trace_reply[1] = 1;
++    trace_reply[2] = trace_first_key;
++    trace_reply[3] = ist->eps[2].toggle_in;
++    trace_reply[4] = attempts;
++    trace_reply[5] = attempts >> 8;
++    trace_reply[6] = acknowledgements;
++    trace_reply[7] = acknowledgements >> 8;
++    e->opaque = trace_reply;
++    e->max_len = (s->wLength < 8) ? s->wLength : 8;
++}
++#endif
++
++/* No keyboard LEDs are used. Preserve the existing ignored SET_REPORT behavior;
++ * rv003usb's separate bootloader feature handling is unchanged.
++ */
++void usb_handle_hid_set_report_start(struct usb_endpoint *e, int reqLen,
++                                      uint32_t lValueLSBIndexMSB)
++{
++    (void)e;
++    (void)reqLen;
++#if UIAP_SNES_USB_TRACE
++    trace_note_control(0x0921, lValueLSBIndexMSB);
++#else
++    (void)lValueLSBIndexMSB;
++#endif
++}
++#endif // !UIAP_WEBHID
++
+ #ifdef UIAP_WEBHID
+ /*
+  * ホストが SET_REPORT (Feature) を送ってきた: バッファ準備
+--- a/cores/arduino/usb_config.h
++++ b/cores/arduino/usb_config.h
+@@ -126,10 +126,10 @@
+ #define RV003USB_HANDLE_USER_DATA  1
+ #define RV003USB_HID_FEATURES      1
+ #else
+-// KBD+Mouse のみ
++// KBD+Mouse のみ (GET_REPORT Input on EP0)
+ #define ENDPOINTS 3
+ #define RV003USB_HANDLE_USER_DATA  0
+-#define RV003USB_HID_FEATURES      0
++#define RV003USB_HID_FEATURES      1
+ #endif
+ 
+ #define USB_PORT D     // [A,C,D] GPIO Port to use with D+, D- and DPU
+@@ -141,7 +141,11 @@
+ #define RV003USB_OPTIMIZE_FLASH    1
+ #define RV003USB_EVENT_DEBUGGING   0
+ #define RV003USB_HANDLE_IN_REQUEST 1
++#if UIAP_SNES_USB_TRACE && !defined(UIAP_WEBHID)
++#define RV003USB_OTHER_CONTROL     1
++#else
+ #define RV003USB_OTHER_CONTROL     0
++#endif
+ #define RV003USB_USB_TERMINAL      0
+ 
+ // EXTI sharing: USB pins (D+=3, D-=4) are excluded from the mask.

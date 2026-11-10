@@ -27,15 +27,18 @@ def main():
     rel = Path('packages/UIAP_HID/hardware/ch32v/1.2.15')
     original = data / rel
     target = derived / rel
-    patch = root / 'patches/uiap-1.2.15-coherent-keyboard.patch'
+    patches = [root / 'patches/uiap-1.2.15-coherent-keyboard.patch',
+               root / 'patches/uiap-1.2.15-input-get-report.patch']
     manifest_path = root / '.local/sfc-core-manifest.json'
-    permitted = {Path('cores/arduino/uiapusb.c'), Path('cores/arduino/uiapusb.h')}
+    permitted = {Path('cores/arduino/uiapusb.c'), Path('cores/arduino/uiapusb.h'),
+                 Path('cores/arduino/usb_config.h')}
 
     with tempfile.TemporaryDirectory(prefix='sfc-core-', dir=root / '.local') as temp:
         prepared = Path(temp) / 'platform'
         shutil.copytree(original, prepared)
-        subprocess.run(['patch', '-p1', '--batch', '--forward', '--fuzz=0',
-                        '-i', str(patch)], cwd=prepared, check=True)
+        for patch in patches:
+            subprocess.run(['patch', '-p1', '--batch', '--forward', '--fuzz=0',
+                            '-i', str(patch)], cwd=prepared, check=True)
         before, after = files(original), files(prepared)
         if before.keys() != after.keys():
             raise SystemExit('Unexpected files in the derived core')
@@ -71,15 +74,15 @@ def main():
     manifest = {
         'base_package': 'UIAP_HID:ch32v@1.2.15',
         'source_commit': '9471a150c9837c9055ef62ef759a1a593eddf1b1',
-        'patch': str(patch.relative_to(root)),
-        'patch_sha256': sha(patch),
+        'patches': [{'path': str(patch.relative_to(root)), 'sha256': sha(patch)}
+                    for patch in patches],
         'unchanged_files': len(before) - len(changed),
         'changed_files': {str(p): {'original_sha256': sha(original / p),
                                  'patched_sha256': sha(target / p)}
                           for p in sorted(changed)},
     }
     manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
-    print('PASS: dedicated SFC core has exactly two patched files; original core retained')
+    print('PASS: dedicated SFC core has exactly three patched files; original core retained')
 
 
 if __name__ == '__main__':

@@ -10,12 +10,14 @@ snes_diagnostic=0
 snes_keyboard=0
 snes_usb=kbd
 snes_config=.local/arduino-cli.yaml
+snes_trace_flags=
 case "$snes_mode" in
   neutral) snes_test_input=0 ;;
   manual) snes_test_input=1 ;;
   sfc-diagnostic) snes_test_input=0; snes_diagnostic=1; snes_usb=kbdweb ;;
   sfc-keyboard) snes_test_input=0; snes_keyboard=1 ;;
-  *) printf 'Usage: bash scripts/build_firmware.sh [neutral|manual|sfc-diagnostic|sfc-keyboard]\n' >&2; exit 2 ;;
+  sfc-keyboard-trace) snes_test_input=0; snes_keyboard=1; snes_trace_flags=' -DUIAP_SNES_USB_TRACE=1' ;;
+  *) printf 'Usage: bash scripts/build_firmware.sh [neutral|manual|sfc-diagnostic|sfc-keyboard|sfc-keyboard-trace]\n' >&2; exit 2 ;;
 esac
 
 snes_cli=.local/bin/arduino-cli
@@ -31,6 +33,7 @@ fi
 
 "$snes_cli" --config-file "$snes_config" --no-color compile \
   --fqbn "UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=$snes_usb,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash" \
-  --build-property "compiler.cpp.extra_flags=-DSNES_HID_TEST_INPUT=$snes_test_input -DSNES_SFC_DIAGNOSTIC=$snes_diagnostic -DSNES_SFC_KEYBOARD=$snes_keyboard" \
+  --build-property "compiler.cpp.extra_flags=-DSNES_HID_TEST_INPUT=$snes_test_input -DSNES_SFC_DIAGNOSTIC=$snes_diagnostic -DSNES_SFC_KEYBOARD=$snes_keyboard$snes_trace_flags" \
+  --build-property "compiler.c.extra_flags=$snes_trace_flags" \
   --build-path "$snes_project_dir/.local/build/$snes_mode" \
   firmware/snes_controller

@@ -53,9 +53,9 @@ function render() {
   summary.textContent=`押下 ${downs}回／解放 ${ups}回／フォーカス喪失 ${blurs}回`;
 }
 function record(event,extra={}) {
-  const row={session,event,seconds:+((performance.now()-started)/1000).toFixed(3),
+  const row={session,event,unix_ms:Date.now(),seconds:+((performance.now()-started)/1000).toFixed(3),
     pressed:mapping.filter(m=>pressed.has(m[0])).map(m=>m[0]),...extra};
-  records.push(row); log.value=JSON.stringify(records,null,2);
+  records.push(row); log.value=JSON.stringify(records.slice(-100),null,2);
   saving=saving.then(async()=>{
     if (saveFailed) return;
     const response=await fetch('/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
@@ -73,9 +73,10 @@ function reset() {
 pad.addEventListener('keydown',e=>{
   if (!elements.has(e.code)) return;
   e.preventDefault();
-  if (e.repeat || pressed.has(e.code)) return;
-  pressed.set(e.code,performance.now()); ++downs;
-  record('keydown',{code:e.code,key:e.key,trusted:e.isTrusted});
+  const already_pressed=pressed.has(e.code);
+  if (!already_pressed) { pressed.set(e.code,performance.now()); ++downs; }
+  record('keydown',{code:e.code,key:e.key,trusted:e.isTrusted,
+    repeat:e.repeat,already_pressed});
 });
 pad.addEventListener('keyup',e=>{
   if (!elements.has(e.code)) return;

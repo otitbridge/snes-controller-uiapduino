@@ -1,0 +1,176 @@
+{
+  "stage": "P4 evidence organization and pre-commit review",
+  "date": "2026-11-10",
+  "base_commit": "8b456046f5fd361aea29bcfcd2445c4a4df88753",
+  "result": "PASS for documented host/build/integrity checks; practical acceptance remains partial",
+  "changes": "Consolidated current status and historical evidence; retained GET_REPORT candidate, optional unuploaded trace history, host tests, and macOS observation tools from the investigation.",
+  "physical_actions_in_this_review": {
+    "firmware_uploaded": false,
+    "new_hardware_trials": false,
+    "collectors_started": false
+  },
+  "commands": [
+    {
+      "command": "python3 scripts/prepare_sfc_core.py",
+      "exit_code": 0
+    },
+    {
+      "command": "bash tests/run_host_tests.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 tests/test_core_keyboard.py",
+      "exit_code": 0
+    },
+    {
+      "command": "SNES_HOST_SANITIZERS=1 python3 tests/test_core_keyboard.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 tests/test_core_get_report.py",
+      "exit_code": 0
+    },
+    {
+      "command": "SNES_HOST_SANITIZERS=1 python3 tests/test_core_get_report.py",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/build_firmware.sh sfc-keyboard",
+      "exit_code": 0
+    },
+    {
+      "command": "clang -std=c11 -Wall -Wextra -Werror scripts/read_keyboard_hid.c -framework IOKit -framework CoreFoundation -o .local/bin/read_keyboard_hid",
+      "exit_code": 0
+    },
+    {
+      "command": "clang -std=c11 -Wall -Wextra -Werror -Wno-deprecated-declarations scripts/read_keyboard_control.c -framework IOKit -framework CoreFoundation -o .local/bin/read_keyboard_control",
+      "exit_code": 0
+    },
+    {
+      "command": "bash -n scripts/build_firmware.sh",
+      "exit_code": 0
+    }
+  ],
+  "additional_checks": {
+    "python_syntax": "AST parse passed for prepare_sfc_core.py, read_keyboard_control.py and test_core_get_report.py",
+    "probe_javascript_syntax": "Extracted inline script parsed by JavaScriptCore via osascript new Function; not executed against the DOM. Node unavailable; used installed JavaScript engine.",
+    "evidence_json": "All evidence JSON parses; P4 observation IDs unique",
+    "local_markdown_links": "Relative file targets in changed Markdown exist; external URLs and anchors not revalidated",
+    "whitespace": "git diff --check excluding *.patch passed; unified patch context blank lines retain required prefix",
+    "public_content_scan": "Repository text scan found no absolute personal paths, common private-key/access-token patterns, or populated USB serial/location identifier fields. Manual review also performed; not a claim of exhaustive secret detection.",
+    "raw_artifact_exclusion": "All artifacts listed below are ignored by Git; no BIN/ELF or raw capture files included"
+  },
+  "source_integrity": "prepare_sfc_core verified six archives, all 730 installed upstream files and 12 reference blobs; exactly three derived files differ",
+  "normal_build": {
+    "bin_bytes": 5496,
+    "static_ram_bytes": 196,
+    "bin_sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+    "matches_previously_recorded_candidate": true
+  },
+  "verified_local_artifacts": {
+    ".local/logs/p4-u04-mac-comparison-2026-11-10-02.jsonl": {
+      "sha256": "50e2f003f394576a5db17a2fa8325e1618b1f804e3b46fc54e5ea255e87a698c",
+      "bytes": 2167
+    },
+    ".local/logs/p4-u04-sfc-startup-2026-11-10-01.jsonl": {
+      "sha256": "4bee2b630af195f4db75fbb5dc30b91390cfbada9eaa8a94e91bde6ec44d6d9e",
+      "bytes": 2127247
+    },
+    ".local/logs/p4-u04-sfc-startup-2026-11-10-02.jsonl": {
+      "sha256": "00c34fcc85eb3cc284e1f256f831ad01ff050d657937c6c2ff142562a923b9d8",
+      "bytes": 2537382
+    },
+    ".local/logs/p4-u04-get-report-mac-2026-11-10-01.jsonl": {
+      "sha256": "f9ba9377866dc2281352b31ae98bf5d8ea011d99cd3ed3e1d93bdeb9f25fcb99",
+      "bytes": 2850
+    },
+    ".local/logs/p4-u04-keyboard-control-2026-11-10-01.jsonl": {
+      "sha256": "d7aee7c426c059f0097b6195dbd5870ca0db77a6e35c27c0fd2bbe997151d56f",
+      "bytes": 62282
+    },
+    ".local/logs/p4-u04-trace-mac-2026-11-10-01.jsonl": {
+      "sha256": "b0ba7d669459a96437e9342fa5f1102187598baa0428b5055984510b837f73b0",
+      "bytes": 3001
+    },
+    ".local/logs/p4-u04-native-keyboard-2026-11-10-02.jsonl": {
+      "sha256": "a5f6090da35e84ee654ca7ccccf15198a226a51f99f00f9b077d670bb8b6a552",
+      "bytes": 1556891
+    },
+    ".local/logs/p4-u04-full-browser-2026-11-10-01.jsonl": {
+      "sha256": "58114082af275bcb3801b537cea67385c53d2f6829192ca5e75b0834efa8d656",
+      "bytes": 74043
+    },
+    ".local/build/sfc-keyboard-before-get-report/snes_controller.ino.bin": {
+      "sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+      "bytes": 5360
+    },
+    ".local/build/sfc-keyboard-trace-v1/snes_controller.ino.bin": {
+      "sha256": "e1c470d8a1e510b70e7984fb3f30742d05cc3fc9c7b959da5aba3af54df7e26d",
+      "bytes": 5608
+    },
+    ".local/build/sfc-keyboard-trace/snes_controller.ino.bin": {
+      "sha256": "1fd1ed61cf74014beacef1cbd92d1d0a4b69313e9e304fc3aacee331ee2c28d6",
+      "bytes": 5968
+    },
+    ".local/logs/p4-u04-diagnostic-upload.json": {
+      "sha256": "ac5ae9540acd2b4c2681c39e2a8b9104843a1c9802e8c4ea0a64a2a0fd6ae1ce",
+      "bytes": 1787
+    },
+    ".local/logs/p4-u04-get-report-upload.json": {
+      "sha256": "72403bf9bf3cd3cbd0aaffe1e31c024b34edc2500ad8309aecfd38b771028a19",
+      "bytes": 1911
+    },
+    ".local/logs/p4-u04-trace-upload.json": {
+      "sha256": "3665a824956738f125509a8d5584287317ae655a20c66a3b3dd3d710edc40b82",
+      "bytes": 1703
+    },
+    ".local/logs/p4-u04-keyboard-trace-2026-11-10-01.jsonl": {
+      "sha256": "6d4e256d7de80833caffe8876fd4109f791ce8ba2fe7c51d734cab75347b155b",
+      "bytes": 107153
+    },
+    ".local/build/sfc-keyboard/snes_controller.ino.bin": {
+      "sha256": "e08cd59d66d77f36901c2e8a255cca5f2c89e8ddabcc4dc6fa95ab96c1d4937e",
+      "bytes": 5496,
+      "rebuilt_in_this_review": true
+    }
+  },
+  "reviewed_files_sha256": {
+    "README.md": "462365b0d8c0a2e5a199ef92841613cdae69bc49b29d4c18a2df8ddb74df8a08",
+    "SNES_UIAPduino_CODEX_HANDOFF.md": "a2e8852826493550a94d2af9272b321bb53afcb2bbdd92aa96b49e133434276b",
+    "docs/build.md": "1d3f1bf7c3f0daf2a77d51ac9aed08624e8805f62ea92361e9bab075f10c6463",
+    "docs/evidence/README.md": "c8b9813d158bf0bf787c60cb5cd793c749679d10fe825a59d903562ee9187449",
+    "docs/evidence/p4-iphone-delta-2026-11-10.json": "1c49dd37ca875b1032c38e32ab45e00140aded67369ea4f73dcaac7cbcfd16a8",
+    "docs/known-issues.md": "16c5e80b9b8428aeb6c4c2824548676b17c0e3be5b5b577d14f8dfd156ec73d6",
+    "docs/minimal-hid.md": "26ff2ed644a97c22eda29c7f2a92e388459e0b9467e591bced7aa733c6aa439d",
+    "docs/provenance.md": "2287e3e3db87eb4ff79201ffe99c591224333d2c95ed3355703e37ecd3b70a3e",
+    "docs/sfc-keyboard.md": "aa9ef15ff899d5c49aefe6db1b02121a6ba951e28b0adae4c52086d18a137860",
+    "docs/validation.md": "6ff6c83c5db0c609af8a047172d6a49dc4501bc2df10a17d2acdd3c09c55429f",
+    "patches/README.md": "c6011ce32dc9e7200e71c3fde36ab64b719113e8b3ec49f0aaeb54a0ed83be54",
+    "patches/uiap-1.2.15-input-get-report.patch": "99d3860c795aa381b3788e1317a999544a93e98eb8d607821bb436e6d8ff95f4",
+    "scripts/build_firmware.sh": "499ee82a6b31f994e88c3cda2bd3d5c53bace3de4065b93a32fd56304210697e",
+    "scripts/prepare_sfc_core.py": "4ac150aa870db15b87d837653e32ec9ae4b753e75b232dbb210e31cbb377a6a8",
+    "scripts/read_keyboard_control.c": "11a122862f09d23c95ac5469e042bd8abd9644f0de772d35b738eab30727102f",
+    "scripts/read_keyboard_control.py": "d64aa408f8275b7c1be85db05ccd9bf0a9d0081f847bc5cff90812b562de7fe5",
+    "scripts/read_keyboard_hid.c": "992d9be2be587a184d97def3f1192404345c7597e676df0ceb1a6250797f2948",
+    "tests/core_get_report_test.c": "a63711cc3c3e9f64cdbaf5fc3c042fcc568452dea4b9fa0386a3efbe9fde2ac1",
+    "tests/sfc_keyboard_probe.html": "021165cf6c6105eb1c8791d8c6c35309cd608a4914670f33669bec8b3400d8cc",
+    "tests/test_core_get_report.py": "79553380d4ce475abc5d885403ea0322308a2609ba497f38a7e02d0b7845067c"
+  },
+  "hash_scope": "Final reviewed source/document bytes excluding this self-referential review file. Historical source hashes in P4 observations remain values from their trial time.",
+  "remaining_limits": [
+    "Current device is trace v1; rebuild is the normal candidate and was not uploaded.",
+    "Trace v2 history source remains opt-in and unuploaded; SETUP ACK timing concern requires correction/verification before use. Host tests do not establish USB timing.",
+    "U04 remains deferred by user and D09 release-while-locked remains failed/open; Delta causality is a hypothesis.",
+    "D10 PASS is exactly 30 minutes by user report, not an independently captured phone trace.",
+    "Delta diagonal / 3+ / 6-7-key coverage, SNES 12-input, iPad, final normal-firmware and enclosure validation remain."
+  ],
+  "publication": {
+    "raw_logs_or_binaries_included": false,
+    "personal_paths_or_device_identifiers_included": false,
+    "public_git_identity": "otitbridge <281535684+otitbridge@users.noreply.github.com>"
+  }
+}
