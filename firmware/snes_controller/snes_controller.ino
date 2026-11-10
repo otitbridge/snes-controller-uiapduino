@@ -9,8 +9,10 @@
 #include "snes_diagnostic.h"
 
 void setup() {
-#if SNES_SFC_DIAGNOSTIC
+#if SNES_SFC_DIAGNOSTIC || SNES_SFC_KEYBOARD
   SnesReader::begin();
+#endif
+#if SNES_SFC_DIAGNOSTIC
   SnesDiagnostic::begin();
 #else
 #if SNES_HID_TEST_INPUT
@@ -25,6 +27,9 @@ void loop() {
   SnesDiagnostic::stageSample(SnesReader::read());
 #else
   uint16_t desiredButtons = 0;
+#if SNES_SFC_KEYBOARD
+  desiredButtons = SnesReader::read().pressed;
+#endif
 #if SNES_HID_TEST_INPUT
   if (digitalRead(BoardConfig::kTestInputPin) == LOW) {
     desiredButtons = SnesHid::kB;

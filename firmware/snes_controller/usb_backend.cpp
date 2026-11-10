@@ -11,6 +11,10 @@
 
 #include "snes_hid_report.h"
 
+#if SNES_SFC_KEYBOARD && !defined(UIAP_SNES_COHERENT_KEYBOARD)
+#error "SFC keyboard requires the verified project-local coherent keyboard core."
+#endif
+
 #if !defined(UIAP_COMPOSITE_HID) || defined(UIAP_WEBHID_ONLY) || \
     defined(UIAP_NO_USB) || defined(UIAP_USB_TERMINAL)
 #error "Select the UIAPduino Keyboard+Mouse USB mode (usb=kbd)."

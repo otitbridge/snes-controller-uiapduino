@@ -4,7 +4,7 @@
 #include "board_config.h"
 #include "snes_reader.h"
 
-#if SNES_SFC_DIAGNOSTIC
+#if SNES_SFC_DIAGNOSTIC || SNES_SFC_KEYBOARD
 namespace SnesReader {
 namespace {
 struct ArduinoIO {

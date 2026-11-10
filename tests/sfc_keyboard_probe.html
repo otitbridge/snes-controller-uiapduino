@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>UIAPduino SFCキーボード試験</title>
+<style>
+body { max-width:900px; margin:24px auto; padding:0 20px; font:18px/1.6 system-ui; }
+button { font:inherit; padding:8px 16px; }
+#pad { border:3px solid #777; padding:20px; border-radius:8px; }
+#pad:focus { outline:4px solid #1769aa; }
+#keys { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+.key { border:1px solid #777; padding:8px; }
+.held { background:#d4f3d7; font-weight:bold; }
+#state { font-size:24px; font-weight:bold; }
+textarea { width:100%; box-sizing:border-box; height:160px; font:12px monospace; }
+</style>
+<h1>UIAPduino SFCキーボード試験</h1>
+<p>SFCだけを操作し、パソコンのキーは押さないでください。この画面を表示したまま試験します。
+記録はこのMac内の試験サーバーへ保存します。観測対象はブラウザのキーイベントです。</p>
+<button id="reset" type="button">記録を消して開始</button>
+<p id="connection">記録サーバーへ接続中</p>
+<div id="pad" tabindex="0" role="region" aria-label="SFC入力確認枠">
+  <p id="state">全解放</p><p id="focus">入力受付中</p>
+  <div id="keys"></div>
+  <p id="summary"></p>
+</div>
+<p id="session"></p>
+<label for="log">試験記録（Raw HIDレポートではありません）</label>
+<textarea id="log" readonly></textarea>
+<script>
+'use strict';
+const mapping = [
+  ['KeyZ','B','Z'],['KeyA','Y','A'],['Backspace','SELECT','Backspace'],['Enter','START','Enter'],
+  ['ArrowUp','上','↑'],['ArrowDown','下','↓'],['ArrowLeft','左','←'],['ArrowRight','右','→'],
+  ['KeyX','A','X'],['KeyS','X','S'],['KeyQ','L','Q'],['KeyW','R','W']
+];
+const pad=document.getElementById('pad'), state=document.getElementById('state');
+const summary=document.getElementById('summary'), focusText=document.getElementById('focus');
+const log=document.getElementById('log'), connection=document.getElementById('connection');
+const pressed=new Map(), elements=new Map();
+let session, started, records=[], downs=0, ups=0, blurs=0, stored=0, saveFailed=false, saving=Promise.resolve();
+for (const [code,button,key] of mapping) {
+  const item=document.createElement('div'); item.className='key';
+  item.textContent=`${button} → ${key}：解放`;
+  document.getElementById('keys').appendChild(item); elements.set(code,item);
+}
+function render() {
+  state.textContent=pressed.size ? `押下中：${mapping.filter(m=>pressed.has(m[0])).map(m=>m[1]).join('＋')}` : '全解放';
+  for (const [code,button,key] of mapping) {
+    elements.get(code).textContent=`${button} → ${key}：${pressed.has(code)?'押下中':'解放'}`;
+    elements.get(code).classList.toggle('held',pressed.has(code));
+  }
+  summary.textContent=`押下 ${downs}回／解放 ${ups}回／フォーカス喪失 ${blurs}回`;
+}
+function record(event,extra={}) {
+  const row={session,event,seconds:+((performance.now()-started)/1000).toFixed(3),
+    pressed:mapping.filter(m=>pressed.has(m[0])).map(m=>m[0]),...extra};
+  records.push(row); log.value=JSON.stringify(records,null,2);
+  saving=saving.then(async()=>{
+    if (saveFailed) return;
+    const response=await fetch('/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
+    if (!response.ok) throw new Error('save failed');
+    ++stored; connection.textContent=`Mac内へ保存済み：${stored}件（全セッション合計）`;
+  }).catch(()=>{saveFailed=true; connection.textContent='保存エラー：試験を中止してCodexへ知らせてください';});
+  render();
+}
+function reset() {
+  session=new Date().toISOString(); started=performance.now(); records=[];
+  pressed.clear(); downs=ups=blurs=0; pad.focus();
+  focusText.textContent='入力受付中'; document.getElementById('session').textContent=`試験開始：${session}`;
+  record('start',{at:session,user_agent:navigator.userAgent});
+}
+pad.addEventListener('keydown',e=>{
+  if (!elements.has(e.code)) return;
+  e.preventDefault();
+  if (e.repeat || pressed.has(e.code)) return;
+  pressed.set(e.code,performance.now()); ++downs;
+  record('keydown',{code:e.code,key:e.key,trusted:e.isTrusted});
+});
+pad.addEventListener('keyup',e=>{
+  if (!elements.has(e.code)) return;
+  e.preventDefault();
+  const since=pressed.get(e.code);
+  const held_seconds=since===undefined?null:+((performance.now()-since)/1000).toFixed(3);
+  pressed.delete(e.code); ++ups;
+  record('keyup',{code:e.code,key:e.key,trusted:e.isTrusted,held_seconds});
+});
+pad.addEventListener('focus',()=>{focusText.textContent='入力受付中';});
+pad.addEventListener('blur',()=>{
+  ++blurs; record('focus_lost',{was_pressed:pressed.size>0});
+  pressed.clear(); render(); focusText.textContent='判定中断：記録を消して開始してください';
+});
+window.addEventListener('blur',()=>{
+  if (document.activeElement===pad) {
+    ++blurs; record('window_blur',{was_pressed:pressed.size>0});
+    pressed.clear(); render(); focusText.textContent='判定中断：記録を消して開始してください';
+  }
+});
+document.getElementById('reset').addEventListener('click',reset);
+reset();
+</script>
+</html>

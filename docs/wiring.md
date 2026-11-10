@@ -56,7 +56,7 @@ bash scripts/build_firmware.sh sfc-diagnostic
 
 配線確認後、RESETを押してMacへUSB接続し、直後にRESETを離して書き込みモードへ入ります。書き込みのたびに `1209:B803`／`32V003` の対象が1台であることと、使用するBINのSHA-256を照合してから実行します。ブートローダ領域は書き換えません。
 
-**現在の基板にはSFC診断版を入れています。** 後日iPhone／Deltaの単キー確認を行う際は、SFCのCLOCK配線を外し、[最小HIDの手順](minimal-hid.md) に従って `manual` へ戻します。診断版のUSB認識をDelta対応の証拠にはしません。
+**現在の基板には[SFCキーボード統合版](sfc-keyboard.md)を入れています。** このページのvendor HID診断を再実行する際は `sfc-diagnostic` へ戻します。後日iPhone／Deltaの単キー確認を行う際は、SFCのCLOCK配線を外し、[最小HIDの手順](minimal-hid.md) に従って `manual` へ戻します。診断版のUSB認識をDelta対応の証拠にはしません。
 
 ## SFC未接続で確認した結果
 
@@ -99,4 +99,4 @@ macOSのIOKitでVID `1209`／PID `D004`、Usage Page `FF00`／Usage `1` の診�
 
 ## 次の段階
 
-この診断で配線と16ビット読み取りを確認した後、複数キー用の共有バッファ公開方法を整備してUSBキーボード出力へ接続します。iPhone／Deltaの確認は本人の希望により後日実施する残件です。
+入力診断を終え、複数キー用の共有バッファ公開を整備した [キーボード統合版](sfc-keyboard.md) をビルド・書き込みました。キーボードとしての実機結果は [validation.md](validation.md) に分けて記録します。iPhone／Deltaの確認は本人の希望により後日実施する残件です。

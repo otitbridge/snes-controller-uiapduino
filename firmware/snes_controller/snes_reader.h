@@ -34,7 +34,7 @@ Sample readFrame(IO& io) {
   return {raw, static_cast<uint16_t>((~raw) & 0x0FFFU)};
 }
 
-// Arduino adapter; available only in the explicit SFC diagnostic build.
+// Arduino adapter; available only in explicit SFC diagnostic/keyboard builds.
 void begin();
 Sample read();
 

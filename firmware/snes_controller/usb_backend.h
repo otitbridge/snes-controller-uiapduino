@@ -11,7 +11,8 @@ void begin();
 
 // Replace the core's latest keyboard state. This returns no transfer status:
 // the core setter does not acknowledge polling, host receipt, or application use.
-// Call from loop() only. Multi-key buffer publication is not atomic in core 1.2.15.
+// Call from loop() only. SFC keyboard builds require the project-local core patch
+// that publishes complete reports. Other modes retain upstream core 1.2.15.
 void stageButtons(uint16_t buttons);
 
 }  // namespace UsbBackend

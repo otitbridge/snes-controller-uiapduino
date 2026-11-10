@@ -1,0 +1,5364 @@
+{
+  "stage": "P3 SFC keyboard integration and coherent latest-state publication",
+  "recorded_at": "2026-11-10T16:18:31.056172+09:00",
+  "base_commit": "b2db0af6ba230eea9f4345e6e6b6e8ddb753e35c",
+  "source_sha256": {
+    "firmware/snes_controller/board_config.h": "622ae359610346d9160ccb2f8c27863f2ad70ca4eaa5cdb61fab5cd0a2009d39",
+    "firmware/snes_controller/snes_controller.ino": "7f7f3833e8ef631816ac6e1e183d5cde7c51cc07870194c94925ac6b05cf5d7a",
+    "firmware/snes_controller/snes_diagnostic.cpp": "62888b606054d5f07a8a0672617eeec89f369461bae64dfeed8ada3a394ff320",
+    "firmware/snes_controller/snes_diagnostic.h": "9604b44bf738121c041671f49721694d72688fcb659af1077891932b3458bbe7",
+    "firmware/snes_controller/snes_hid_report.h": "5ef5b2e278c329673e164e6c7193d63b4b104a99a8cc0924c0e7a938fc68a77e",
+    "firmware/snes_controller/snes_reader.cpp": "5a1e76afd34954590bc0943d128f9c94aad04ce35c03aaae40f4440acd529328",
+    "firmware/snes_controller/snes_reader.h": "7e48bcea77a9675cbfc2975a3cc469ee34d7e18d2c62609c09235fa72ed5821c",
+    "firmware/snes_controller/usb_backend.cpp": "7c03038436b09d9f8b9ddef1fe779f15bc3ea123be0d11ae91deac3842a6f28e",
+    "firmware/snes_controller/usb_backend.h": "d38cfeca0dc2fbf4cbdb39feed44ac60df7105ffe0c5d263a4785f0a271436b3",
+    "patches/uiap-1.2.15-coherent-keyboard.patch": "365757368d92b2425e3c3b786d65d3d498dc74d00a66a17f0d1c0bfed41a8e5f",
+    "scripts/build_firmware.sh": "96f217fe7bbd4569885875d16641ea6c5192ebd00773c1d2189e4806aa35a1ca",
+    "scripts/prepare_sfc_core.py": "85b4427d1dbdeef0db9bb10237e64ab5b20577e96ac3096eedc920eb73afb227",
+    "scripts/serve_keyboard_probe.py": "7cf06474644fa0cb200e9b3cdf8a0862f262fee17ea2a622eb6360e2c222ddad",
+    "scripts/verify_arduino_core.py": "b3a40e5b73182ca821c6392fd2d842438b1b91de6fa2ee37c102aaf06dc38c8e",
+    "tests/core_keyboard_test.c": "8479e24c335ea015506a11ae2ee7af088a8064552d3195b72b3c77b07c352c5c",
+    "tests/run_host_tests.sh": "7dfd2c354d3e78d843032ad35ce9693f1a2bedd011eb49ce4e18c0471cf4d782",
+    "tests/sfc_keyboard_probe.html": "3d9928c0718b47e51c8d4457752592ac4923196182cd8a7ef9712a1382b4f1a0",
+    "tests/sfc_keyboard_test.cpp": "98906bb3f4f7d7070486fa8473428578b4ea023d635325301239e420f3b35397",
+    "tests/test_core_keyboard.py": "3d411a1e221091df62dba883e90d4b6a1c6019fdefcb617f34b2871e7690cf40"
+  },
+  "hardware": {
+    "board": "User-reported UIAPduino V1.4 at default 5V setting",
+    "controller": "Same SFC controller as the reference M5StickS3 project; wired input diagnostic passed in p3-connected-sfc-2026-11-10.json",
+    "pins": {
+      "CLOCK": "UIAP 7 / PC5",
+      "LATCH": "UIAP 8 / PC6",
+      "DATA": "UIAP 9 / PC7",
+      "VCC": "UIAP 5V power pin",
+      "GND": "UIAP GND"
+    },
+    "measured_voltage": "NOT RECORDED"
+  },
+  "core": {
+    "base_package": "UIAP_HID:ch32v@1.2.15",
+    "source_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+    "patch": "patches/uiap-1.2.15-coherent-keyboard.patch",
+    "patch_sha256": "365757368d92b2425e3c3b786d65d3d498dc74d00a66a17f0d1c0bfed41a8e5f",
+    "unchanged_files": 729,
+    "changed_files": {
+      "cores/arduino/uiapusb.c": {
+        "original_sha256": "433239df8cb14219d0c633a2265e73d200e3aa4160ab4aee92fcbb683a7ade93",
+        "patched_sha256": "511926357da82e23c5cdd6da25b974bf3e350d8eb831a95630fdc4f19bf634a2"
+      },
+      "cores/arduino/uiapusb.h": {
+        "original_sha256": "1f891b6ebae695a52c1335037be16540a61a24417734f1368665622d7d4bf528",
+        "patched_sha256": "8063bdc0dff2ba25014cb7c2c44583dd0952cc39a8859745ae1ef8ad99eaea9f"
+      }
+    }
+  },
+  "build": {
+    "command": [
+      "bash",
+      "scripts/build_firmware.sh",
+      "sfc-keyboard"
+    ],
+    "exit_code": 0,
+    "fqbn": "UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash",
+    "cpp_flags": "-DSNES_HID_TEST_INPUT=0 -DSNES_SFC_DIAGNOSTIC=0 -DSNES_SFC_KEYBOARD=1",
+    "cli_config": ".local/sfc-arduino-cli.yaml",
+    "derived_platform": ".local/sfc-arduino-data/packages/UIAP_HID/hardware/ch32v/1.2.15",
+    "all_70_core_variant_compiler_inputs_use_derived_platform": true,
+    "binary_path": ".local/build/sfc-keyboard/snes_controller.ino.bin",
+    "bin_bytes": 5360,
+    "bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+    "elf_sha256": "85b109aa6ca6b60e7bacd7b761958de7d391d8d1d383b59737ec2f59d68d2ba3",
+    "cli_flash_bytes": 5200,
+    "init_bytes": 160,
+    "static_ram_bytes": 188,
+    "nominal_flash_bytes": 16384,
+    "nominal_ram_bytes": 2048,
+    "stack_margin_measured": false
+  },
+  "compatibility_builds": {
+    "neutral": {
+      "exit_code": 0,
+      "sha256": "27f8d5e11dca454433b8b6eccff781035236165d22fe5e462c79b2b9841233bd",
+      "matches_previously_verified_binary": true
+    },
+    "manual": {
+      "exit_code": 0,
+      "sha256": "254251c3e42635c5795f7e42b8e94872541dd205eb29f0f32330f4e182a7c00d",
+      "matches_previously_verified_binary": true
+    },
+    "sfc-diagnostic": {
+      "exit_code": 0,
+      "sha256": "6d777773dab78f47c1ca1d42d1ddb67605a95e3be64af1bfdc72c2755ff9faeb",
+      "matches_previously_verified_binary": true
+    }
+  },
+  "tests": {
+    "host_normal": {
+      "exit_code": 0,
+      "stdout": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\nPASS: initial neutral staged before USB begins\nPASS: manual B/Z press, hold, release; no extra release between holds\nPASS: current-state mapping and partial release reach the setter\nPASS: six-key selection and recovery; no ASCII or Report ID added\nPASS: USB backend API contract only; no real USB transfer observed\nPASS: all 65536 serial frames, sample order, active LOW, tail masking and requested timing\nPASS: Arduino adapter pin roles and B-bit decoding\nPASS: diagnostic busy-buffer preservation and bounded sequence; no USB transfer claimed\nPASS: actual SFC keyboard sketch; all 4096 serial inputs, holds, partial release and six-key recovery reach USB setter\n",
+      "stderr": ""
+    },
+    "host_sanitized": {
+      "exit_code": 0,
+      "stdout": "PASS L01: neutral, 12 single buttons, and all-buttons golden report\nPASS L02: 4096 combinations (membership, priority, padding, uniqueness)\nPASS: all 65536 uint16_t inputs ignore the unused upper four bits\nPASS: repeated holds and results independent of intervening inputs\nPASS L03: overflow recovery and 24576 single-button release transitions\nPASS: all host report tests (no USB or MCU headers)\nPASS: initial neutral staged before USB begins\nPASS: manual B/Z press, hold, release; no extra release between holds\nPASS: current-state mapping and partial release reach the setter\nPASS: six-key selection and recovery; no ASCII or Report ID added\nPASS: USB backend API contract only; no real USB transfer observed\nPASS: all 65536 serial frames, sample order, active LOW, tail masking and requested timing\nPASS: Arduino adapter pin roles and B-bit decoding\nPASS: diagnostic busy-buffer preservation and bounded sequence; no USB transfer claimed\nPASS: actual SFC keyboard sketch; all 4096 serial inputs, holds, partial release and six-key recovery reach USB setter\n",
+      "stderr": ""
+    },
+    "core_interrupt_model_normal": {
+      "exit_code": 0,
+      "stdout": "PASS: upstream setter reproduces a mixed state under injected interruption\nPASS: actual core writer/reader; 147456 injected interruptions; only complete old/new states, repeated holds and clear\n",
+      "stderr": ""
+    },
+    "core_interrupt_model_sanitized": {
+      "exit_code": 0,
+      "stdout": "PASS: upstream setter reproduces a mixed state under injected interruption\nPASS: actual core writer/reader; 147456 injected interruptions; only complete old/new states, repeated holds and clear\n",
+      "stderr": ""
+    },
+    "compile_guards": [
+      {
+        "case": "invalid_keyboard",
+        "exit_code": 1,
+        "expected_error": "SNES_SFC_KEYBOARD must be 0 or 1",
+        "stderr": "In file included from <stdin>:2:\nfirmware/snes_controller/board_config.h:24:2: error: \"SNES_SFC_KEYBOARD must be 0 or 1.\"\n   24 | #error \"SNES_SFC_KEYBOARD must be 0 or 1.\"\n      |  ^\n1 error generated.\n"
+      },
+      {
+        "case": "keyboard_and_diagnostic",
+        "exit_code": 1,
+        "expected_error": "Select either SFC keyboard or SFC diagnostic",
+        "stderr": "In file included from <stdin>:2:\nfirmware/snes_controller/board_config.h:27:2: error: \"Select either SFC keyboard or SFC diagnostic mode.\"\n   27 | #error \"Select either SFC keyboard or SFC diagnostic mode.\"\n      |  ^\n1 error generated.\n"
+      },
+      {
+        "case": "keyboard_and_manual",
+        "exit_code": 1,
+        "expected_error": "Remove the PC5/GND jumper",
+        "stderr": "In file included from <stdin>:2:\nfirmware/snes_controller/board_config.h:30:2: error: \"Remove the PC5/GND jumper before using PC5 as the SFC CLOCK output.\"\n   30 | #error \"Remove the PC5/GND jumper before using PC5 as the SFC CLOCK output.\"\n      |  ^\n1 error generated.\n"
+      },
+      {
+        "case": "unpatched_core",
+        "exit_code": 1,
+        "expected_error": "requires the verified project-local coherent keyboard core",
+        "stderr": "firmware/snes_controller/usb_backend.cpp:15:2: error: \"SFC keyboard requires the verified project-local coherent keyboard core.\"\n   15 | #error \"SFC keyboard requires the verified project-local coherent keyboard core.\"\n      |  ^\n1 error generated.\n"
+      },
+      {
+        "case": "no_keyboard_usb",
+        "exit_code": 1,
+        "expected_error": "Keyboard+Mouse USB mode",
+        "stderr": "firmware/snes_controller/usb_backend.cpp:20:2: error: \"Select the UIAPduino Keyboard+Mouse USB mode (usb=kbd).\"\n   20 | #error \"Select the UIAPduino Keyboard+Mouse USB mode (usb=kbd).\"\n      |  ^\n1 error generated.\n"
+      }
+    ],
+    "core_interrupt_model_scope": "Actual core storage/setter/clear/USB reader extracted unchanged except insertion of simulated ISR reads between setter statements; one same-hart main writer, ISR reader. 147456 insertion points per configuration; not real USB timing or a multithread test."
+  },
+  "target_code_review": {
+    "artifact": ".local/logs/p3-keyboard-disassembly.txt",
+    "sha256": "51d1f497da58467c760835c6e925c86695af229f02e7de9e5731dfbd0573d1c1",
+    "writer": "UsbBackend::stageButtons: eight report byte stores at 0x134..0x15c precede one byte store of keyboard_active at 0x164",
+    "reader": "USB keyboard endpoint loads keyboard_active once at 0xc54, computes the selected slot and jumps to usb_send_data",
+    "interrupt_masking_added": false
+  },
+  "usb_contract": {
+    "startup": "Neutral staged before USB start; each loop reads current SFC state and stages complete 8-byte keyboard report",
+    "coherence": "Inactive slot filled, compiler barrier, volatile byte index publication; ISR snapshots index once and main cannot progress while ISR sends",
+    "transfer_acknowledgement": false,
+    "short_pulse_retention_guaranteed": false,
+    "six_key_policy": "First six pressed buttons in bit order; recompute remaining held keys when a slot becomes available"
+  },
+  "results": {
+    "firmware_build": "PASS",
+    "host_tests": "PASS normal and ASan/UBSan",
+    "core_snapshot_model": "PASS; upstream mixed-state regression reproduced by the same test",
+    "firmware_upload": "PASS on second attempt: readback verified and application started; initial communication failure retained",
+    "mac_sfc_keyboard_input": "PASS: all 12 individual mappings, left 43.089 s / right 36.649 s, chord and partial/full release",
+    "iphone_delta": "DEFERRED BY USER",
+    "mac_six_key_and_seven_key_recovery": "PASS on retest: B+Y+SELECT+START+L+R baseline, add/release UP; R suppressed and restored five times"
+  },
+  "publication": {
+    "raw_logs": ".local/logs/ (ignored)",
+    "redactions": "Absolute home/project paths, USB locations and transient handles omitted."
+  },
+  "upload_attempts": [
+    {
+      "started_at": "2026-11-10T16:06:34.584579+09:00",
+      "command": [
+        ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+        "--verbose",
+        "--flash-size",
+        "16384",
+        ".local/build/sfc-keyboard/snes_controller.ino.bin"
+      ],
+      "matching_bootloaders": 1,
+      "target": {
+        "USB Product Name": "32V003",
+        "idVendor": 4617,
+        "idProduct": 47107,
+        "bcdDevice": 321
+      },
+      "sfc_connected": true,
+      "bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+      "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+      "finished_at": "2026-11-10T16:06:36.224363+09:00",
+      "exit_code": 1,
+      "stdout": "uiapflash: .local/build/sfc-keyboard/snes_controller.ino.bin (5360 バイト -> 5376 バイトにパディング)\n  書き込み中... 1024 / 5376 バイト\n",
+      "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\nエラー: Feature Report の受信に失敗しました\nエラー: 0x08000540 の書き込みに失敗しました\n",
+      "padded_bytes": 5376,
+      "bootloader_written": false,
+      "readback_verified": false,
+      "application_started": false,
+      "interpretation": "FAILED at 0x08000540 with Feature Report receive error; user subsequently reported unplugging/replugging USB during this write. No verified completion or application start on this attempt.",
+      "user_reported_interruption": {
+        "source": "User message on 2026-11-10",
+        "report_ja": "これは私が途中でUSBを抜き差ししたためです。",
+        "interpretation": "USB unplug/replug during the initial write is user-reported; Codex observed the communication failure in the uploader log, not the physical unplug action."
+      }
+    },
+    {
+      "started_at": "2026-11-10T16:07:11.865524+09:00",
+      "command": [
+        ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+        "--verbose",
+        "--flash-size",
+        "16384",
+        ".local/build/sfc-keyboard/snes_controller.ino.bin"
+      ],
+      "matching_bootloaders": 1,
+      "target": {
+        "USB Product Name": "32V003",
+        "idVendor": 4617,
+        "idProduct": 47107,
+        "bcdDevice": 321
+      },
+      "sfc_connected": true,
+      "bin_sha256": "edc6c6cbf3e1992ebaa192af435bf7854040cff6a14db8f0762e6f15a924d674",
+      "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+      "finished_at": "2026-11-10T16:07:17.477325+09:00",
+      "exit_code": 0,
+      "stdout": "uiapflash: .local/build/sfc-keyboard/snes_controller.ino.bin (5360 バイト -> 5376 バイトにパディング)\n  書き込み中... 2368 / 5376 バイト\n  書き込み中... 3392 / 5376 バイト\n  書き込み中... 4416 / 5376 バイト\nベリファイ OK (5376 バイト)\nアプリを起動しました\n書き込み完了\n",
+      "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+      "padded_bytes": 5376,
+      "bootloader_written": false,
+      "readback_verified": true,
+      "application_started": true,
+      "after": {
+        "observed_at": "2026-11-10T16:07:21.526490+09:00",
+        "devices": [
+          {
+            "USB Product Name": "UIAPduino KBD+Mouse",
+            "idVendor": 4617,
+            "idProduct": 53252,
+            "bcdDevice": 1
+          }
+        ],
+        "same_usb_location_as_bootloader": true
+      },
+      "write_range": {
+        "start": "0x08000000",
+        "end_inclusive": "0x080014FF",
+        "bootloader_written": false
+      },
+      "transient_zero_length_read_diagnostics": 28
+    }
+  ],
+  "after_upload_hid": {
+    "observed_at": "2026-11-10T16:07:55.417006+09:00",
+    "hid_interfaces": [
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 2,
+        "MaxInputReportSize": 4,
+        "Transport": "USB"
+      },
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 6,
+        "MaxInputReportSize": 8,
+        "Transport": "USB"
+      }
+    ]
+  },
+  "mac_keyboard_test": {
+    "method": "Safari browser KeyboardEvent records saved by loopback collector; not Raw HID reports or device-source identification",
+    "os": "macOS 26.7.1",
+    "browser": "Safari 27.0",
+    "user_report": "User confirmed completing the prescribed SFC-only 12-button operation sequence",
+    "raw_log_path": ".local/logs/p3-keyboard-mac-2026-11-10.jsonl",
+    "single_button_session": {
+      "session": "2026-11-10T07:07:50.336Z",
+      "start": {
+        "session": "2026-11-10T07:07:50.336Z",
+        "event": "start",
+        "seconds": 0.001,
+        "pressed": [],
+        "at": "2026-11-10T07:07:50.336Z",
+        "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+      },
+      "first_test_event_seconds": 4.065,
+      "last_test_event_seconds": 19.797,
+      "result": "PASS: first 12 expected keydown/keyup pairs in order; all released after each; events trusted; no focus loss during the test window",
+      "buttons": [
+        {
+          "button": "B",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 4.32,
+          "pressed": [],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 0.255
+        },
+        {
+          "button": "Y",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 5.17,
+          "pressed": [],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.267
+        },
+        {
+          "button": "SELECT",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 6.328,
+          "pressed": [],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 0.298
+        },
+        {
+          "button": "START",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 7.104,
+          "pressed": [],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 0.215
+        },
+        {
+          "button": "UP",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 8.827,
+          "pressed": [],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.205
+        },
+        {
+          "button": "DOWN",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 9.388,
+          "pressed": [],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.232
+        },
+        {
+          "button": "LEFT",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 10.448,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.253
+        },
+        {
+          "button": "RIGHT",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 10.95,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.242
+        },
+        {
+          "button": "A",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 12.245,
+          "pressed": [],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 0.213
+        },
+        {
+          "button": "X",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 14.395,
+          "pressed": [],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.199
+        },
+        {
+          "button": "L",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 19.339,
+          "pressed": [],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 0.177
+        },
+        {
+          "button": "R",
+          "session": "2026-11-10T07:07:50.336Z",
+          "event": "keyup",
+          "seconds": 19.797,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.141
+        }
+      ]
+    },
+    "holds_partial_release_and_rollover": "PASS after documented rollover retest",
+    "hold_and_partial_release_session": {
+      "session": "2026-11-10T07:09:07.468Z",
+      "user_report": "User confirmed completion of the instructed left/right holds and partial/full release sequence",
+      "events": [
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "start",
+          "seconds": 0,
+          "pressed": [],
+          "at": "2026-11-10T07:09:07.468Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keydown",
+          "seconds": 0.629,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keyup",
+          "seconds": 43.718,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 43.089
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keydown",
+          "seconds": 45.095,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keyup",
+          "seconds": 81.744,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 36.649
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keydown",
+          "seconds": 83.323,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keydown",
+          "seconds": 83.566,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keydown",
+          "seconds": 83.572,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keyup",
+          "seconds": 91.148,
+          "pressed": [
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 7.581
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keyup",
+          "seconds": 97.336,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 14.013
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "keyup",
+          "seconds": 97.362,
+          "pressed": [],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 13.79
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "focus_lost",
+          "seconds": 100.64,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "window_blur",
+          "seconds": 100.641,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event": "focus_lost",
+          "seconds": 138.578,
+          "pressed": [],
+          "was_pressed": false
+        }
+      ],
+      "left_only_hold_seconds": 43.089,
+      "right_only_hold_seconds": 36.649,
+      "three_key_stable_seconds": 7.576,
+      "remaining_two_stable_seconds": 6.188,
+      "result": "PASS: left and right only each >=30 s; B/Z alone released while Y/A and RIGHT remained; final all released; no focus loss while held"
+    },
+    "first_rollover_attempt": {
+      "session": "2026-11-10T07:11:26.248Z",
+      "user_report": "User reported completing the prescribed RIGHT+B+Y+A+L+R, add/release START sequence",
+      "events": [
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "start",
+          "seconds": 0.001,
+          "pressed": [],
+          "at": "2026-11-10T07:11:26.248Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 1.934,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 2.634,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 3.049,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 4.227,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 4.368,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 1.734
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 5.88,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 6.136,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 8.219,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 3.992
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 8.392,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 2.256
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 8.769,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 8.803,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 14.61,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 34.291,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 19.681
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 39.543,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 30.74
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 39.586,
+          "pressed": [
+            "KeyA",
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 33.706
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 39.591,
+          "pressed": [
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 36.542
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 39.625,
+          "pressed": [
+            "KeyX"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 37.691
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 39.644,
+          "pressed": [],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 30.875
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "focus_lost",
+          "seconds": 44.597,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "window_blur",
+          "seconds": 44.598,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 59.947,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 60.315,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.368
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 60.606,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 60.867,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.261
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 61.156,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 61.758,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.602
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 62.706,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 63.624,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.918
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 63.94,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 64.262,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.322
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 64.67,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 64.907,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.236
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 65.102,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 65.281,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.179
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 65.518,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 65.743,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.225
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 65.96,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 66.159,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.199
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 66.493,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 66.697,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.204
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 66.986,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 67.401,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.415
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 67.741,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 67.96,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.219
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 68.281,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 68.521,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.241
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 68.813,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 69.039,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.226
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 69.44,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 69.618,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.178
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 69.85,
+          "pressed": [
+            "ArrowUp"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 70.033,
+          "pressed": [],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.183
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 70.245,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 70.427,
+          "pressed": [],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.182
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 70.539,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 70.697,
+          "pressed": [],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.158
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 70.808,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 71.029,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.221
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.143,
+          "pressed": [
+            "KeyS"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.162,
+          "pressed": [
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.35,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 71.356,
+          "pressed": [
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.213
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 71.379,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 0.217
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 71.6,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.249
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.631,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.674,
+          "pressed": [
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.677,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.733,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 71.872,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.138
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.892,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 71.977,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.047,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 72.087,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 0.195
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 72.095,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.048
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 72.103,
+          "pressed": [
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 0.126
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 72.111,
+          "pressed": [
+            "ArrowRight",
+            "KeyX"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.434
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 72.12,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 0.446
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.467,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.496,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.637,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.673,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 72.832,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 73.339,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyS"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 0.702
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 73.739,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.029,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 2.398
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 74.037,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.368,
+          "pressed": [
+            "KeyZ",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 1.872
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 74.404,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.48,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyX",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 1.807
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 74.56,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyX",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.611,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyX",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.574
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 74.62,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyX",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.733,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 1.901
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 74.738,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.753,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.133
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.778,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.218
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.795,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.057
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 74.853,
+          "pressed": [
+            "Backspace",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 2.386
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 75.191,
+          "pressed": [
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 75.508,
+          "pressed": [
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 75.607,
+          "pressed": [
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.099
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 75.681,
+          "pressed": [
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 1.277
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 75.703,
+          "pressed": [
+            "KeyQ"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 0.512
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 75.707,
+          "pressed": [],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 1.968
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.009,
+          "pressed": [
+            "Backspace"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.081,
+          "pressed": [
+            "Backspace",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.113,
+          "pressed": [
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 76.346,
+          "pressed": [
+            "Backspace",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.265
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.354,
+          "pressed": [
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 76.37,
+          "pressed": [
+            "Backspace",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.016
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.668,
+          "pressed": [
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.707,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.737,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 76.913,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 76.991,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.078
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 77.059,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.288,
+          "pressed": [
+            "KeyZ",
+            "KeyX",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 1.279
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.391,
+          "pressed": [
+            "KeyZ",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 0.332
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.46,
+          "pressed": [
+            "KeyZ",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 1.347
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.468,
+          "pressed": [
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 0.761
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.506,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.769
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 77.52,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.852
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 78.949,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 79.09,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.141
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.139,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 79.31,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.171
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.367,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 79.562,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.195
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.588,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 79.733,
+          "pressed": [],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.145
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.775,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 79.779,
+          "pressed": [],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.004
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.783,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 79.955,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.072,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.289
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.284,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.381,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.426
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.411,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.127
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.434,
+          "pressed": [
+            "ArrowUp"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.577,
+          "pressed": [],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.143
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.613,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.631,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.636,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.023
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.748,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 80.93,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.182
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 80.962,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 81.154,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.523
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 81.395,
+          "pressed": [
+            "ArrowUp",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 81.411,
+          "pressed": [
+            "ArrowUp"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.449
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 81.632,
+          "pressed": [
+            "ArrowUp",
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 81.757,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.362
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 81.906,
+          "pressed": [
+            "ArrowDown",
+            "ArrowLeft"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 81.957,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.325
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 82.132,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 82.2,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 0.294
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 82.753,
+          "pressed": [
+            "ArrowDown",
+            "ArrowRight"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 83.368,
+          "pressed": [
+            "ArrowDown"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 1.236
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 83.499,
+          "pressed": [
+            "ArrowDown",
+            "ArrowLeft"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 83.844,
+          "pressed": [
+            "ArrowLeft"
+          ],
+          "code": "ArrowDown",
+          "key": "ArrowDown",
+          "trusted": true,
+          "held_seconds": 1.091
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 84.155,
+          "pressed": [
+            "ArrowUp",
+            "ArrowLeft"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 84.271,
+          "pressed": [
+            "ArrowUp"
+          ],
+          "code": "ArrowLeft",
+          "key": "ArrowLeft",
+          "trusted": true,
+          "held_seconds": 0.772
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 84.518,
+          "pressed": [
+            "ArrowUp",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 84.548,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.393
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 84.986,
+          "pressed": [
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.012,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.036,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.518
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.305,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.381,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyW"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.441,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.455
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.483,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.516,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.715,
+          "pressed": [
+            "KeyZ",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.334
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.746,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.805,
+          "pressed": [
+            "KeyZ",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.059
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 85.879,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyX",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.887,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyX",
+          "key": "x",
+          "trusted": true,
+          "held_seconds": 0.372
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.92,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyW"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.437
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.955,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.65
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 85.984,
+          "pressed": [
+            "KeyZ"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 0.105
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 86.019,
+          "pressed": [],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 1.007
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 86.066,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 86.112,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 0.046
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 86.677,
+          "pressed": [
+            "KeyS"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 86.684,
+          "pressed": [
+            "KeyZ",
+            "KeyS"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 86.769,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyS"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 87.131,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 87.637,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 87.645,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 87.68,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.043
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 87.687,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 88.705,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyS"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 1.574
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 88.712,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 88.808,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyS"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.096
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 88.814,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 1.127
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 89.197,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 89.229,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 89.384,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.155
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 89.393,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 90.247,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 0.854
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 90.255,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 90.34,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 1.143
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 90.487,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyS"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.232
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 90.597,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 3.92
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 91.117,
+          "pressed": [
+            "KeyA",
+            "Enter"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 4.432
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 91.429,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 3.784
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 91.943,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 91.948,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 92.37,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyQ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 93.014,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keydown",
+          "seconds": 93.375,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.448,
+          "pressed": [
+            "KeyZ",
+            "Backspace",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 6.679
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.686,
+          "pressed": [
+            "KeyZ",
+            "KeyS",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 1.738
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.703,
+          "pressed": [
+            "KeyZ",
+            "KeyS",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.328
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.711,
+          "pressed": [
+            "KeyZ",
+            "KeyQ"
+          ],
+          "code": "KeyS",
+          "key": "s",
+          "trusted": true,
+          "held_seconds": 0.697
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.732,
+          "pressed": [
+            "KeyZ"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 1.362
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "keyup",
+          "seconds": 93.773,
+          "pressed": [],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 1.83
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event": "focus_lost",
+          "seconds": 107.829,
+          "pressed": [],
+          "was_pressed": false
+        }
+      ],
+      "result": "NOT ESTABLISHED: intended initial six-key state was not observed; R/W released before START was added and did not recover after START release",
+      "cause": "Not measured. Retest requested with UP+RIGHT+B+Y+L+R to reduce physical actuation difficulty."
+    },
+    "second_rollover_attempt": {
+      "session": "2026-11-10T07:13:14.328Z",
+      "user_report": "User reported operating UP+RIGHT+B+Y+L+R, add/release START",
+      "events": [
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "start",
+          "seconds": 0.001,
+          "pressed": [],
+          "at": "2026-11-10T07:13:14.328Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 1.926,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 2.076,
+          "pressed": [
+            "ArrowUp",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 3.061,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.985
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 5.103,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 5.109,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 5.219,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 5.402,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.183
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 6.219,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 6.237,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 6.375,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 6.42,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.045
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 6.454,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 6.519,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.065
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 6.835,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 9.343,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 2.508
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 9.492,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 12.911,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 3.419
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 15.859,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 15.918,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.059
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 16.394,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 17.4,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 11.181
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 17.549,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 1.155
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 17.663,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 18.345,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.682
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 18.98,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 13.871
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 19.086,
+          "pressed": [
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 13.983
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 19.235,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 19.25,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 19.411,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 19.561,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.15
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 21.629,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 22.635,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 28.359,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 6.73
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 34.657,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 12.022
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 34.709,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyQ"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 32.783
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 34.716,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 28.479
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 34.724,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 15.489
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 34.75,
+          "pressed": [],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 15.5
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "focus_lost",
+          "seconds": 38.292,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "window_blur",
+          "seconds": 38.293,
+          "pressed": [],
+          "was_pressed": false
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 88.8,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 89.051,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.251
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 89.45,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 89.831,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.381
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 90.598,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 91.015,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.417
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 91.277,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 91.569,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.292
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 91.822,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 92.064,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.242
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 95.902,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 96.204,
+          "pressed": [
+            "KeyZ",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 97.13,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 102.096,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 6.194
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 102.42,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keydown",
+          "seconds": 102.547,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowUp",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 106.811,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 4.264
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 107.478,
+          "pressed": [
+            "KeyA",
+            "ArrowRight"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 11.274
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 107.515,
+          "pressed": [
+            "ArrowRight"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 10.385
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "keyup",
+          "seconds": 107.542,
+          "pressed": [],
+          "code": "ArrowRight",
+          "key": "ArrowRight",
+          "trusted": true,
+          "held_seconds": 5.122
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event": "focus_lost",
+          "seconds": 111.892,
+          "pressed": [],
+          "was_pressed": false
+        }
+      ],
+      "result": "Six-key state observed, but UP released before START; seven-key recovery not established in this trial",
+      "cause": "Physical actuation versus device behavior not independently measured; retested without a diagonal-direction baseline"
+    },
+    "rollover_retest": {
+      "session": "2026-11-10T07:15:06.362Z",
+      "user_report": "User confirmed six-button baseline B+Y+SELECT+START+L+R, adding/releasing UP while retaining the baseline, and seeing R disappear and return",
+      "baseline_buttons": [
+        "B",
+        "Y",
+        "SELECT",
+        "START",
+        "L",
+        "R"
+      ],
+      "added_button": "UP",
+      "six_key_codes": [
+        "Backspace",
+        "Enter",
+        "KeyA",
+        "KeyQ",
+        "KeyW",
+        "KeyZ"
+      ],
+      "seven_physical_buttons_output_codes": [
+        "ArrowUp",
+        "Backspace",
+        "Enter",
+        "KeyA",
+        "KeyQ",
+        "KeyZ"
+      ],
+      "scored_window_seconds": [
+        20.76,
+        48.17
+      ],
+      "events_through_trial_release": [
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "start",
+          "seconds": 0.001,
+          "pressed": [],
+          "at": "2026-11-10T07:15:06.362Z",
+          "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/27.0 Safari/605.1.15"
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 3.45,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 3.736,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 6.147,
+          "pressed": [
+            "KeyA"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 2.411
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 6.157,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 6.632,
+          "pressed": [
+            "KeyZ"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 3.182
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 6.638,
+          "pressed": [
+            "KeyZ",
+            "KeyA"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 7.286,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 7.551,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 11.498,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 12.366,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyW"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 4.815
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 12.842,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 5.556
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 13.766,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 13.796,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 14.869,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 18.877,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 5.081
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 19.211,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 5.445
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 19.287,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 19.87,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 0.583
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 19.959,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 20.76,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 22.761,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 11.263
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 22.765,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "ArrowUp",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 33.229,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 10.464
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 33.237,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 34.072,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.835
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 34.089,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "ArrowUp",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 34.582,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.493
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 34.591,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 34.984,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.393
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 34.99,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "ArrowUp",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 40.825,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 5.835
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 40.831,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 44.558,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 3.727
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 44.566,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "ArrowUp",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 46.225,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 1.659
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 46.229,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 46.987,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.758
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 46.997,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "ArrowUp",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 47.753,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ"
+          ],
+          "code": "ArrowUp",
+          "key": "ArrowUp",
+          "trusted": true,
+          "held_seconds": 0.756
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keydown",
+          "seconds": 47.762,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyQ",
+            "KeyW"
+          ],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 47.899,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Backspace",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "KeyQ",
+          "key": "q",
+          "trusted": true,
+          "held_seconds": 27.94
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 48.035,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "Enter",
+            "KeyW"
+          ],
+          "code": "Backspace",
+          "key": "Backspace",
+          "trusted": true,
+          "held_seconds": 27.275
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 48.065,
+          "pressed": [
+            "KeyZ",
+            "KeyA",
+            "KeyW"
+          ],
+          "code": "Enter",
+          "key": "Enter",
+          "trusted": true,
+          "held_seconds": 33.196
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 48.112,
+          "pressed": [
+            "KeyZ",
+            "KeyW"
+          ],
+          "code": "KeyA",
+          "key": "a",
+          "trusted": true,
+          "held_seconds": 41.474
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 48.154,
+          "pressed": [
+            "KeyW"
+          ],
+          "code": "KeyZ",
+          "key": "z",
+          "trusted": true,
+          "held_seconds": 41.997
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event": "keyup",
+          "seconds": 48.17,
+          "pressed": [],
+          "code": "KeyW",
+          "key": "w",
+          "trusted": true,
+          "held_seconds": 0.408
+        }
+      ],
+      "cycles": [
+        {
+          "r_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 22.761,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true,
+            "held_seconds": 11.263
+          },
+          "up_added_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 22.765,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true
+          },
+          "up_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 33.229,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true,
+            "held_seconds": 10.464
+          },
+          "r_restored_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 33.237,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true
+          },
+          "observed_up_hold_seconds": 10.464
+        },
+        {
+          "r_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 34.072,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true,
+            "held_seconds": 0.835
+          },
+          "up_added_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 34.089,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true
+          },
+          "up_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 34.582,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true,
+            "held_seconds": 0.493
+          },
+          "r_restored_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 34.591,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true
+          },
+          "observed_up_hold_seconds": 0.493
+        },
+        {
+          "r_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 34.984,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true,
+            "held_seconds": 0.393
+          },
+          "up_added_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 34.99,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true
+          },
+          "up_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 40.825,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true,
+            "held_seconds": 5.835
+          },
+          "r_restored_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 40.831,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true
+          },
+          "observed_up_hold_seconds": 5.835
+        },
+        {
+          "r_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 44.558,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true,
+            "held_seconds": 3.727
+          },
+          "up_added_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 44.566,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true
+          },
+          "up_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 46.225,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true,
+            "held_seconds": 1.659
+          },
+          "r_restored_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 46.229,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true
+          },
+          "observed_up_hold_seconds": 1.659
+        },
+        {
+          "r_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 46.987,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true,
+            "held_seconds": 0.758
+          },
+          "up_added_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 46.997,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "ArrowUp",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true
+          },
+          "up_removed_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keyup",
+            "seconds": 47.753,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ"
+            ],
+            "code": "ArrowUp",
+            "key": "ArrowUp",
+            "trusted": true,
+            "held_seconds": 0.756
+          },
+          "r_restored_event": {
+            "session": "2026-11-10T07:15:06.362Z",
+            "event": "keydown",
+            "seconds": 47.762,
+            "pressed": [
+              "KeyZ",
+              "KeyA",
+              "Backspace",
+              "Enter",
+              "KeyQ",
+              "KeyW"
+            ],
+            "code": "KeyW",
+            "key": "w",
+            "trusted": true
+          },
+          "observed_up_hold_seconds": 0.756
+        }
+      ],
+      "result": "PASS: five observed R/W suppress-and-recover cycles; other five selected keys maintained across each UP transition; final all released; no focus loss in scored window",
+      "subsequent_events_not_scored": {
+        "count": 80,
+        "reason": "After the trial and first focus loss, additional unscripted button events occurred. Retained in raw log, excluded from this pass decision."
+      }
+    },
+    "timing_scope": "Browser performance-clock intervals; not contact-to-host latency, waveform, or guaranteed minimum pulse retention",
+    "additional_pretrial_right_cycles": [
+      {
+        "session": "2026-11-10T07:07:50.336Z",
+        "event": "keyup",
+        "seconds": 69.073,
+        "pressed": [],
+        "code": "ArrowRight",
+        "key": "ArrowRight",
+        "trusted": true,
+        "held_seconds": 1.293
+      },
+      {
+        "session": "2026-11-10T07:09:00.501Z",
+        "event": "keyup",
+        "seconds": 5.802,
+        "pressed": [],
+        "code": "ArrowRight",
+        "key": "ArrowRight",
+        "trusted": true,
+        "held_seconds": 3.685
+      }
+    ],
+    "additional_pretrial_right_cycles_interpretation": "Outside accepted single-button and long-hold windows; retained but not used as >=30-second hold evidence",
+    "raw_log_sha256": "f5cd540996c3f165f96286d811e45c2d626930594f31fb0e361247f56a4fa0f7",
+    "raw_log_summary": {
+      "events": 460,
+      "sessions": [
+        {
+          "session": "2026-11-10T07:05:26.728Z",
+          "event_counts": {
+            "start": 1,
+            "focus_lost": 2,
+            "window_blur": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:07:50.336Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 13,
+            "keyup": 13,
+            "focus_lost": 3,
+            "window_blur": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:09:00.501Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 1,
+            "keyup": 1,
+            "focus_lost": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:09:07.468Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 5,
+            "keyup": 5,
+            "focus_lost": 2,
+            "window_blur": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:11:26.248Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 107,
+            "keyup": 107,
+            "focus_lost": 2,
+            "window_blur": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:13:14.328Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 29,
+            "keyup": 29,
+            "focus_lost": 2,
+            "window_blur": 1
+          }
+        },
+        {
+          "session": "2026-11-10T07:15:06.362Z",
+          "event_counts": {
+            "start": 1,
+            "keydown": 61,
+            "keyup": 61,
+            "focus_lost": 2,
+            "window_blur": 2
+          }
+        }
+      ]
+    },
+    "collector_stopped": true
+  },
+  "limitations": [
+    "Browser events do not identify the source device; SFC-only user procedure and confirmation associate events with this board.",
+    "Initial rollover trials did not preserve the intended baseline; recorded separately, not counted as recovery passes.",
+    "Coherent publication assumes one main-loop writer and same-hart USB ISR; no transfer acknowledgement or event queue added.",
+    "Short-pulse retention, boot-while-held, repeated reconnect, suspend/resume and iPhone/Delta operation not verified by these trials.",
+    "VDD/VCC, CLOCK/LATCH waveform, stack margin and enclosure installation not measured."
+  ]
+}

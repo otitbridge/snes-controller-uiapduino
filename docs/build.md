@@ -9,6 +9,7 @@
 | 全キー解放 `neutral`（既定） | 3116 | 2956 | 156 |
 | 手動スイッチ `manual` | 4084 | 3924 | 176 |
 | SFC診断 `sfc-diagnostic` | 5536 | 5376 | 256 |
+| SFCキーボード `sfc-keyboard`（専用パッチ） | 5360 | 5200 | 188 |
 
 コアのサイズ集計式が `.init` を含めていないため、CLIのFlash表示はBINより160バイト少なくなります。ELFの `.init=160` と `.text`、BINサイズを照合しました。CLI表示だけでFlash使用量を判断しません。
 
@@ -28,7 +29,7 @@ SFC診断版の設定・成果物・試験結果は [P3の記録](evidence/p3-sf
 | コアの参照コミット | `9471a150c9837c9055ef62ef759a1a593eddf1b1` |
 | コンパイラ | xPack RISC-V GCC 14.2.0-2（実行時表示14.2.0、macOS x86_64） |
 | USBモード | Keyboard+Mouse、`usb=kbd`。マウスは使用しない |
-| コアへのパッチ | なし |
+| コアへのパッチ | `neutral`／`manual`／`sfc-diagnostic` はなし。`sfc-keyboard` だけ専用コピーへ適用 |
 
 Arduino CLIは [公式リリース1.5.1](https://github.com/arduino/arduino-cli/releases/tag/v1.5.1) の配布物をSHA-256照合して使用します。既存Arduino IDE・PlatformIOの設定やシステムのPATHは変更しません。
 
@@ -90,7 +91,27 @@ FQBNは次のとおりです。フラグは `SNES_HID_TEST_INPUT=0`／`SNES_SFC_
 UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbdweb,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash
 ```
 
-SFCを読むのはこの明示的な診断ビルドだけです。キーボード側には全解放だけを設定し、16ビットの読み取り結果はvendor HIDへ出します。Macでの取得は `bash scripts/read_sfc_hid.sh 180` です。端子と線色の対応、単独vendor HID設定を使わない理由、現在の基板の状態は [配線・診断手順](wiring.md) を参照してください。
+この明示的な診断ビルドでは、キーボード側には全解放だけを設定し、16ビットの読み取り結果をvendor HIDへ出します。Macでの取得は `bash scripts/read_sfc_hid.sh 180` です。端子と線色の対応、単独vendor HID設定を使わない理由、現在の基板の状態は [配線・診断手順](wiring.md) を参照してください。
+
+## SFCキーボード統合版をビルドする
+
+```sh
+bash scripts/build_firmware.sh sfc-keyboard
+```
+
+FQBNのUSBは `usb=kbd`、フラグは `SNES_SFC_KEYBOARD=1`、診断と単キー入力は0です。
+`prepare_sfc_core.py` が元の730ファイルと配布物を検証し、専用コピーの `uiapusb.c/.h` だけへ
+[パッチ](../patches/README.md) を適用します。元の導入済みコアは保持します。
+設定は `.local/sfc-arduino-cli.yaml`、生成先は `.local/build/sfc-keyboard/` です。
+この設定が指す `.local/sfc-arduino-data/` のコアで実際にコンパイルされたことも確認しています。
+起動・配線・実機確認は [統合版の手順](sfc-keyboard.md) を参照してください。
+
+実際のコアの共有バッファ検査は別に実行します。
+
+```sh
+python3 tests/test_core_keyboard.py
+SNES_HOST_SANITIZERS=1 python3 tests/test_core_keyboard.py
+```
 
 ## PC上のロジックとバックエンドのテスト
 
@@ -103,11 +124,11 @@ SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh
 
 P1の全組み合わせテストに加え、P2ではUSB APIのテストダブルを使い、開始前の全解放、保持・解放・部分解放、Raw Usage IDの受け渡しを確認します。これは実際のUSB転送や割り込みのテストではありません。実際のコアAPIとの適合はMCU向けビルドで確認しています。
 
-P3では全65,536通りのシリアル入力をシフトレジスタモデルへ与え、16回のサンプル順・要求待機時間・反転・マスク、Arduinoアダプターの端子、診断APIのbusy中の上書き防止を確認します。
+P3では全65,536通りのシリアル入力をシフトレジスタモデルへ与え、16回のサンプル順・要求待機時間・反転・マスク、Arduinoアダプターの端子、診断APIのbusy中の上書き防止を確認します。統合版では実際のスケッチへ全4,096通りの入力を与え、USB setterまでの経路を確認します。
 
 ## USB契約と確認済みの書き込み方法
 
-`UsbBackend::stageButtons()` はvoidです。コアの状態バッファ更新だけを行い、ホスト受信や転送完了を返しません。コアの8バイト更新は一括公開ではないため、多キーの同時更新・短押し・復帰同期は [残件](known-issues.md) として扱います。
+`UsbBackend::stageButtons()` はvoidです。コアの状態バッファ更新だけを行い、ホスト受信や転送完了を返しません。元コアの8バイト更新は逐次ですが、`sfc-keyboard` の専用コピーでは完成した状態へ索引を切り替えます。短押し・復帰同期は引き続き [残件](known-issues.md) として扱います。
 
 [コアREADME](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/README.md) に従い、macOS向けの書き込み方式は `UIAPduino (USB)`／`uiapflash` です。今回の実物は書き込みモードで `32V003`／`1209:B803`／`bcdDevice=0x0141` として1台だけ検出されました。基板のボタンを押しながらUSBを接続し、接続後に離す操作でこのモードへ移行できています。
 
@@ -120,7 +141,7 @@ P3では全65,536通りのシリアル入力をシフトレジスタモデルへ
   .local/build/neutral/snes_controller.ino.bin
 ```
 
-実行したのは全キー解放版だけです。通常アプリ領域の `0x08000000`～`0x08000C3F`（パディング込み3136バイト）を差分書き込みし、2周目で全セクタ一致、アプリ起動、終了コード0を確認しました。途中に0バイトの受信診断がありましたが、最終の読み戻し検証は成功しています。
+このコマンド例の最初の実機記録は全キー解放版です。通常アプリ領域の `0x08000000`～`0x08000C3F`（パディング込み3136バイト）を差分書き込みし、2周目で全セクタ一致、アプリ起動、終了コード0を確認しました。途中に0バイトの受信診断がありましたが、最終の読み戻し検証は成功しています。その後の手動版・診断版・キーボード統合版の結果は [validation.md](validation.md) に記録しています。
 
 参照したV1.41ブートローダの [リンカ定義](https://github.com/YuukiUmeta-UIAP/rv003usb/blob/7ae2940676df0e1dcdad906ea7b1c9fff6c0b971/bootloader/ch32v003fun-usb-bootloader.ld) は物理 `0x1FFFF000` の別領域に配置されます。今回ブートローダの消去・書き込みは行っていません。実物のブートローダ全体のバイナリハッシュは未測定です。
 
