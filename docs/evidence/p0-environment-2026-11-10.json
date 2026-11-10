@@ -1,0 +1,198 @@
+{
+  "captured_at": "2026-11-10T14:07:52.650575+09:00",
+  "stage": "P0 environment and source inspection",
+  "results": [
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "uname",
+        "-sm"
+      ],
+      "exit_code": 0,
+      "stdout": "Darwin arm64\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "sw_vers"
+      ],
+      "exit_code": 0,
+      "stdout": "ProductName:\t\tmacOS\nProductVersion:\t\t26.7.1\nBuildVersion:\t\t25G241\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "clang++",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.9.6\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "/opt/homebrew/bin/git",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "git version 2.51.0\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "<HOME>/.platformio/penv/bin/pio",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "PlatformIO Core, version 6.2.0\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "/usr/libexec/PlistBuddy",
+        "-c",
+        "Print :CFBundleShortVersionString",
+        "/Applications/Arduino.app/Contents/Info.plist"
+      ],
+      "exit_code": 0,
+      "stdout": "1.8.2\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-uiapduino",
+      "command": [
+        "/usr/bin/arch",
+        "-x86_64",
+        "/usr/bin/uname",
+        "-m"
+      ],
+      "exit_code": 0,
+      "stdout": "x86_64\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-m5stick-s3",
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": "?? snes-controller-m5stick-s3.code-workspace\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-m5stick-s3",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "21b7ba91c6428b25d7b7ab116052443a9aced965\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-m5stick-s3",
+      "command": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/uiapduino",
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": " M .gitignore\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/uiapduino",
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "17143213cd146ae64405e600be66914405b31c12\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/uiapduino",
+      "command": [
+        "git",
+        "diff",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": ".gitignore\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/snes-controller-m5stick-s3",
+      "command": [
+        "shasum",
+        "-a",
+        "256",
+        "LICENSE",
+        "platformio.ini",
+        "src/main.cpp",
+        "src/keyboard_state.h",
+        "tests/usb-keyboard-state.test.cpp"
+      ],
+      "exit_code": 0,
+      "stdout": "6152c77324bf665a4fce84d324a2ac8e09ae898373b96d03754730e7e37a1b5b  LICENSE\nac45988a4cb4ae98cda71b4324df808cd81a056658f9bc09487f6bd0375bcc01  platformio.ini\n097824655f4a875ffe616e7f73edaa9f64d0b376da41d42fc3ea87541e847473  src/main.cpp\n814d0ca75e5c199dfa2dbe9c2698b0b1e62efa9145144fbfd660fa408cc7cf40  src/keyboard_state.h\n08c3d86aeea6435cc2ed1bbd4e213a026ff05c2ab604f6c45014b61a7eb5e937  tests/usb-keyboard-state.test.cpp\n",
+      "stderr": ""
+    },
+    {
+      "cwd": "<PROJECTS_DIR>/uiapduino",
+      "command": [
+        "shasum",
+        "-a",
+        "256",
+        ".gitignore",
+        "platformio.ini",
+        "src/main.cpp",
+        "src/funconfig.h",
+        ".pio/build/genericCH32V003F4P6/firmware.bin"
+      ],
+      "exit_code": 0,
+      "stdout": "b21c668f50f961545e521f158793150b64f939ced61664fd67b98ef2ae71576b  .gitignore\n65df1aafca734c69626da39f4ae2b70e919c326e327dc0f4abeb38ee12929c6c  platformio.ini\n4b0e4ea4232f2cd97d32d9de40729a7b32bd2ffc2a5c2eeea5311ccc6fec36e3  src/main.cpp\n28c62b434e4ec6983d054aa315913a8f3d0b9c6205ce968196ad8e9e372156f1  src/funconfig.h\nc3fdde3703e07bce15428bc4e1fbb94ecaa17e216fe160cf68f6e8ab979db98e  .pio/build/genericCH32V003F4P6/firmware.bin\n",
+      "stderr": ""
+    }
+  ],
+  "publication": {
+    "redacted": true,
+    "path_replacements": {
+      "<PROJECTS_DIR>": "Shared parent directory of the development projects",
+      "<HOME>": "Developer home directory"
+    },
+    "original_log": "Retained locally in ignored docs/evidence/local/",
+    "results_modified": false
+  }
+}

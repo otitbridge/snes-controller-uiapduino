@@ -1,0 +1,106 @@
+{
+  "captured_at": "2026-11-10T14:11:18.824581+09:00",
+  "file_comparisons": [
+    {
+      "path": "<PROJECTS_DIR>/snes-controller-m5stick-s3/LICENSE",
+      "initial_sha256": "6152c77324bf665a4fce84d324a2ac8e09ae898373b96d03754730e7e37a1b5b",
+      "review_sha256": "6152c77324bf665a4fce84d324a2ac8e09ae898373b96d03754730e7e37a1b5b",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/snes-controller-m5stick-s3/platformio.ini",
+      "initial_sha256": "ac45988a4cb4ae98cda71b4324df808cd81a056658f9bc09487f6bd0375bcc01",
+      "review_sha256": "ac45988a4cb4ae98cda71b4324df808cd81a056658f9bc09487f6bd0375bcc01",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/snes-controller-m5stick-s3/src/main.cpp",
+      "initial_sha256": "097824655f4a875ffe616e7f73edaa9f64d0b376da41d42fc3ea87541e847473",
+      "review_sha256": "097824655f4a875ffe616e7f73edaa9f64d0b376da41d42fc3ea87541e847473",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/snes-controller-m5stick-s3/src/keyboard_state.h",
+      "initial_sha256": "814d0ca75e5c199dfa2dbe9c2698b0b1e62efa9145144fbfd660fa408cc7cf40",
+      "review_sha256": "814d0ca75e5c199dfa2dbe9c2698b0b1e62efa9145144fbfd660fa408cc7cf40",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/snes-controller-m5stick-s3/tests/usb-keyboard-state.test.cpp",
+      "initial_sha256": "08c3d86aeea6435cc2ed1bbd4e213a026ff05c2ab604f6c45014b61a7eb5e937",
+      "review_sha256": "08c3d86aeea6435cc2ed1bbd4e213a026ff05c2ab604f6c45014b61a7eb5e937",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/uiapduino/.gitignore",
+      "initial_sha256": "b21c668f50f961545e521f158793150b64f939ced61664fd67b98ef2ae71576b",
+      "review_sha256": "415ddbccd2be88e7d212081cde3c4f9e53b650ef4316dd2459474f942afc5ecd",
+      "unchanged": false
+    },
+    {
+      "path": "<PROJECTS_DIR>/uiapduino/platformio.ini",
+      "initial_sha256": "65df1aafca734c69626da39f4ae2b70e919c326e327dc0f4abeb38ee12929c6c",
+      "review_sha256": "65df1aafca734c69626da39f4ae2b70e919c326e327dc0f4abeb38ee12929c6c",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/uiapduino/src/main.cpp",
+      "initial_sha256": "4b0e4ea4232f2cd97d32d9de40729a7b32bd2ffc2a5c2eeea5311ccc6fec36e3",
+      "review_sha256": "4b0e4ea4232f2cd97d32d9de40729a7b32bd2ffc2a5c2eeea5311ccc6fec36e3",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/uiapduino/src/funconfig.h",
+      "initial_sha256": "28c62b434e4ec6983d054aa315913a8f3d0b9c6205ce968196ad8e9e372156f1",
+      "review_sha256": "28c62b434e4ec6983d054aa315913a8f3d0b9c6205ce968196ad8e9e372156f1",
+      "unchanged": true
+    },
+    {
+      "path": "<PROJECTS_DIR>/uiapduino/.pio/build/genericCH32V003F4P6/firmware.bin",
+      "initial_sha256": "c3fdde3703e07bce15428bc4e1fbb94ecaa17e216fe160cf68f6e8ab979db98e",
+      "review_sha256": "c3fdde3703e07bce15428bc4e1fbb94ecaa17e216fe160cf68f6e8ab979db98e",
+      "unchanged": true
+    }
+  ],
+  "git_states": [
+    {
+      "directory": "snes-controller-m5stick-s3",
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": "?? snes-controller-m5stick-s3.code-workspace\n"
+    },
+    {
+      "directory": "uiapduino",
+      "command": [
+        "git",
+        "--no-optional-locks",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "stdout": " M .gitignore\n"
+    }
+  ],
+  "note": "Reference projects were read only by this task. uiapduino/.gitignore and src/main.cpp changed during inspection; snapshots are observations at different times, not an atomic repository snapshot. No attempt was made to restore these files.",
+  "checks": {
+    "json_records_consistent": true,
+    "reference_tag_matches_commit": true,
+    "firmware_compiled": false,
+    "local_document_links_valid": true,
+    "markdown_code_fences_balanced": true
+  },
+  "publication": {
+    "redacted": true,
+    "path_replacements": {
+      "<PROJECTS_DIR>": "Shared parent directory of the development projects",
+      "<HOME>": "Developer home directory"
+    },
+    "original_log": "Retained locally in ignored docs/evidence/local/",
+    "results_modified": false
+  }
+}

@@ -1,0 +1,15 @@
+# Local tools, build outputs, and editor settings
+/.local/
+/.pio/
+/build/
+/.vscode/
+*.code-workspace
+.DS_Store
+
+# Original machine-specific evidence; publish redacted copies instead
+/docs/evidence/local/
+
+# Local credentials and configuration
+.env
+.env.*
+!.env.example
