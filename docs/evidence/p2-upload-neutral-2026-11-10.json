@@ -1,0 +1,107 @@
+{
+  "stage": "P2 neutral firmware upload and macOS USB enumeration",
+  "started_at": "2026-11-10T14:38:26.386885+09:00",
+  "finished_at": "2026-11-10T14:38:30.486119+09:00",
+  "binary": {
+    "path": ".local/build/neutral/snes_controller.ino.bin",
+    "bytes": 3116,
+    "sha256": "27f8d5e11dca454433b8b6eccff781035236165d22fe5e462c79b2b9841233bd",
+    "build_record": "p2-build-2026-11-10.json"
+  },
+  "target_before_upload": {
+    "USB Product Name": "32V003",
+    "idVendor": 4617,
+    "idProduct": 47107,
+    "bcdDevice": 321
+  },
+  "matching_bootloaders": 1,
+  "bootloader_bcd_device": "0x0141",
+  "user_report": {
+    "board_revision": "V1.4",
+    "voltage_setting": "5V, factory default",
+    "bootloader_connection": "User reconnected the board in programming mode"
+  },
+  "uploader": {
+    "name": "uiapflash",
+    "version": "1.0.0",
+    "source_commit": "085bbf60e5c0450157d0c8fcf60800fecbd0f673",
+    "binary_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210",
+    "installed_binary_matches_verified_archive": true
+  },
+  "command": [
+    "<PROJECT_DIR>/.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+    "--verbose",
+    "--flash-size",
+    "16384",
+    "<PROJECT_DIR>/.local/build/neutral/snes_controller.ino.bin"
+  ],
+  "exit_code": 0,
+  "stdout": "uiapflash: <PROJECT_DIR>/.local/build/neutral/snes_controller.ino.bin (3116 バイト -> 3136 バイトにパディング)\n  書き込み中... 1024 / 3136 バイト\n  書き込み中... 2048 / 3136 バイト\n  書き込み中... 3072 / 3136 バイト\nベリファイ OK (3136 バイト)\nアプリを起動しました\n書き込み完了\n",
+  "stderr": "デバイスをオープンしました (1209:B803)\nhalt 完了\nFlash ロック解除完了\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n  受信長が 0 バイト (期待値 128)\n1 周目: 書き込みあり。ベリファイのためもう 1 周します\n2 周目: 全セクタ一致\n",
+  "transient_zero_length_read_diagnostics": 19,
+  "verification": {
+    "padded_bytes": 3136,
+    "all_sectors_matched": true,
+    "application_started": true,
+    "passes": 2
+  },
+  "write_range": {
+    "start": "0x08000000",
+    "end_inclusive": "0x08000C3F",
+    "sector_bytes": 64,
+    "bootloader_written": false
+  },
+  "reference_bootloader": {
+    "source_commit": "7ae2940676df0e1dcdad906ea7b1c9fff6c0b971",
+    "descriptor_revision": "0x0141",
+    "boot_region_physical_base": "0x1FFFF000",
+    "installed_bootloader_binary_hash_measured": false
+  },
+  "after_upload": {
+    "observed_at": "2026-11-10T14:38:48.990841+09:00",
+    "product": "UIAPduino KBD+Mouse",
+    "vid": "0x1209",
+    "pid": "0xD004",
+    "same_usb_location_as_bootloader": true,
+    "hid_interfaces": [
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "Manufacturer": "UIAP",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 2,
+        "Transport": "USB",
+        "MaxInputReportSize": 4
+      },
+      {
+        "Product": "UIAPduino KBD+Mouse",
+        "Manufacturer": "UIAP",
+        "VendorID": 4617,
+        "ProductID": 53252,
+        "PrimaryUsagePage": 1,
+        "PrimaryUsage": 6,
+        "Transport": "USB",
+        "MaxInputReportSize": 8
+      }
+    ]
+  },
+  "results": {
+    "firmware_upload": "PASS",
+    "readback_verification": "PASS",
+    "U01_pc_usb_enumeration": "PASS",
+    "real_key_press_hold_release": "NOT TESTED",
+    "iphone_delta": "NOT TESTED",
+    "ipad": "NOT TESTED",
+    "sfc_input": "NOT IMPLEMENTED"
+  },
+  "source_urls": [
+    "https://github.com/tarosay/uiapflash/blob/085bbf60e5c0450157d0c8fcf60800fecbd0f673/src/uiapflash.c",
+    "https://github.com/YuukiUmeta-UIAP/rv003usb/blob/7ae2940676df0e1dcdad906ea7b1c9fff6c0b971/bootloader/ch32v003fun-usb-bootloader.ld",
+    "https://github.com/YuukiUmeta-UIAP/rv003usb/blob/7ae2940676df0e1dcdad906ea7b1c9fff6c0b971/bootloader/usb_config.h"
+  ],
+  "publication": {
+    "redactions": "Project path replaced with <PROJECT_DIR>; transient device handles and USB location/address omitted.",
+    "raw_logs": "Retained under ignored .local/logs/"
+  }
+}

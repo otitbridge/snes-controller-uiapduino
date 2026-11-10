@@ -1,108 +1,108 @@
-# ビルド環境の準備方針と設定候補
+# ビルド方法と確認済み環境
 
-2026-11-10のP0調査結果と、P1のホストテスト手順です。MCU用の設定はソースで確認した候補と、後続のP2で実行する手順です。CLI・コアの導入、`board details`、MCU向けのコンパイルはまだ実施していません。
+2026-11-10、P2の最小HIDファームウェアをビルドし、全キー解放版の書き込み・読み戻し検証・MacでのUSB列挙まで確認しました。以下は実行済みの設定と再現手順です。実キーやDeltaでの入力確認は未実施です。
 
-## 使用する環境
+## 確認済みのサイズ
 
-純粋ロジックのテストには手元のApple clangを使用できます。MCU用のビルドはArduino CLIと `UIAP_HID:ch32v@1.2.15` を候補とします。既存のArduino IDE 1.8.2やPlatformIO設定は変更せず、新規作業領域内に専用のツール・データ・キャッシュを置く方針です。
+| モード | BINのバイト数 | CLIのFlash表示 | 静的RAM |
+| --- | ---: | ---: | ---: |
+| 全キー解放 `neutral`（既定） | 3116 | 2956 | 156 |
+| 手動スイッチ `manual` | 4084 | 3924 | 176 |
 
-コア1.2.15の依存コンパイラはxPack RISC-V GCC 14.2.0-2です。[パッケージ索引](https://github.com/tarosay/board_manager_files/blob/main/package_uiap_hid_index.json) にはmacOS向けGCC・openocd・beforeinstall・minichlinkはx86_64用、uiapflashはx86_64／arm64用のエントリがあります。Apple Silicon向けの依存解決と実行は導入時の確認事項です。Intelバイナリの実行自体はこのMacで確認できています。
+コアのサイズ集計式が `.init` を含めていないため、CLIのFlash表示はBINより160バイト少なくなります。ELFの `.init=160` と `.text`、BINサイズを照合しました。CLI表示だけでFlash使用量を判断しません。
 
-P2ではCLI本体の版とCPU種別も記録し、x86_64版CLIを使うなど、索引のツール構成に合う方法を選びます。RISC-Vという名前だけを理由に、既存ESP32用コンパイラを代用しません。
+ボード定義上の容量はFlash 16,384バイト／RAM 2,048バイトです。静的RAMの残量は、実際のスタック・ヒープ余裕を測った値ではありません。ブートローダの配置と実物の利用可能領域は書き込み前の確認事項です。
 
-## P1のPC上のテスト
+コマンド・バージョン・ソースと成果物のSHA-256は [P2のビルド記録](evidence/p2-build-2026-11-10.json) に保存しています。
 
-この部分は実装・実行済みです。プロジェクトのルートから次を実行できます。
+## 開発環境
+
+| 項目 | 使用したもの |
+| --- | --- |
+| ホスト | macOS 26.7.1、Apple Silicon |
+| Arduino CLI | 1.5.1、公式macOS x86_64版をRosetta経由で実行 |
+| パッケージ | `UIAP_HID:ch32v@1.2.15` |
+| コアの参照コミット | `9471a150c9837c9055ef62ef759a1a593eddf1b1` |
+| コンパイラ | xPack RISC-V GCC 14.2.0-2（実行時表示14.2.0、macOS x86_64） |
+| USBモード | Keyboard+Mouse、`usb=kbd`。マウスは使用しない |
+| コアへのパッチ | なし |
+
+Arduino CLIは [公式リリース1.5.1](https://github.com/arduino/arduino-cli/releases/tag/v1.5.1) の配布物をSHA-256照合して使用します。既存Arduino IDE・PlatformIOの設定やシステムのPATHは変更しません。
+
+## macOSで環境を準備する
+
+プロジェクトのルートから実行します。Bash、curl、tar、shasum、Python 3と、Apple Siliconではx86_64実行環境が必要です。初回はコアとツールチェーンをネットワークから取得します。
+
+```sh
+bash scripts/setup_arduino.sh
+```
+
+このスクリプトはmacOS向けです。他OSの自動セットアップは今回の対象にしていません。CLI・コア・依存ツール・設定・キャッシュはすべてGit対象外の `.local/` に置きます。すべてのCLI呼び出しで `--config-file .local/arduino-cli.yaml` を指定します。
+
+`setup_arduino.sh` はCLIの配布ハッシュを確認し、固定版コアを導入してから `verify_arduino_core.py` を実行します。コアと5種類の依存ツールのアーカイブ計6個について、[P0の索引記録](evidence/p0-upstream-2026-11-10.json) のSHA-256と照合します。加えて、配布ZIPの全730ファイルとインストールされた内容、参照コミットの12ファイルのblob SHAを照合済みです。
+
+検証だけをやり直す場合：
+
+```sh
+python3 scripts/verify_arduino_core.py
+```
+
+使用する [パッケージ索引](https://github.com/tarosay/board_manager_files/blob/main/package_uiap_hid_index.json) は可変です。固定版の取得物が記録と異なる場合、検証は失敗します。原本の索引と実行ログは手元の `.local/arduino-data/`、`.local/logs/` に保持しています。
+
+## 最小ファームウェアをビルドする
+
+全キー解放の既定版：
+
+```sh
+bash scripts/build_firmware.sh
+```
+
+手動スイッチ版：
+
+```sh
+bash scripts/build_firmware.sh manual
+```
+
+これらはコンパイルのみを行い、書き込みは行いません。`neutral` はGPIOを読まず全解放を維持します。`manual` は `SNES_HID_TEST_INPUT=1` でビルドし、PC5／GPIO_PIN_7のLOWをB→Zキーに変換します。試験用の配線・操作条件は [最小HIDの試験準備](minimal-hid.md) を参照してください。SFC読み取りは含みません。
+
+CLIの `board details` と実際のビルドで照合したFQBN：
+
+```text
+UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash
+```
+
+48MHz内部クロック、UARTなし、`-Os -flto`、C++14です。スクリプトはモードに応じて `compiler.cpp.extra_flags=-DSNES_HID_TEST_INPUT=0` または `1` を追加します。
+
+生成先は `.local/build/neutral/` と `.local/build/manual/` です。各ディレクトリに `snes_controller.ino.bin`、`.elf`、`.hex`、`.map`、`build.options.json`、`compile_commands.json` を保持します。
+
+## PC上のロジックとバックエンドのテスト
 
 ```sh
 bash tests/run_host_tests.sh
 SNES_HOST_SANITIZERS=1 bash tests/run_host_tests.sh
 ```
 
-既定のコンパイラは `c++` です。変更する場合は `CXX=clang++ bash tests/run_host_tests.sh` のように実行ファイルを指定します。通常はC++14／警告をエラー扱い／`-DNDEBUG -O2`、sanitizer指定時はAddressSanitizer／UndefinedBehaviorSanitizerを有効にします。sanitizer指定には、それらを利用できるホスト用ClangまたはGCCが必要です。
+既定コンパイラは `c++` です。`CXX=clang++ bash tests/run_host_tests.sh` のように実行ファイルを変更できます。C++14、`-Wall -Wextra -Werror -pedantic -DNDEBUG` を指定し、通常は `-O2`、sanitizer指定時は `-O1` とAddressSanitizer／UndefinedBehaviorSanitizerを使います。
 
-生成物はGit対象外の `.local/host-tests/` に置きます。Arduino・USB・MCUのヘッダや別プロジェクトのソースは不要です。確認済みの環境・結果・対象範囲は [validation.md](validation.md) に記録しています。
+P1の全組み合わせテストに加え、P2ではUSB APIのテストダブルを使い、開始前の全解放、保持・解放・部分解放、Raw Usage IDの受け渡しを確認します。これは実際のUSB転送や割り込みのテストではありません。実際のコアAPIとの適合はMCU向けビルドで確認しています。
 
-## ソースで確認したボード設定
+## USB契約と確認済みの書き込み方法
 
-[boards.txt](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/boards.txt) に基づく設定です。導入後のCLI表示との照合を残しています。
+`UsbBackend::stageButtons()` はvoidです。コアの状態バッファ更新だけを行い、ホスト受信や転送完了を返しません。コアの8バイト更新は一括公開ではないため、多キーの同時更新・短押し・復帰同期は [残件](known-issues.md) として扱います。
 
-| 項目 | 設定候補 | ソースでの意味 |
-| --- | --- | --- |
-| 基本FQBN | `UIAP_HID:ch32v:CH32V003` | パッケージ名、architecture、ボードIDから構成 |
-| ボード版 | `pnum=V14` | V1.4 |
-| クロック | `clock=48MHz_HSI` | 内部48MHz |
-| USB | `usb=kbd` | Keyboard+Mouse、`-DUIAP_COMPOSITE_HID` |
-| UART | `xserial=none` | HardwareSerialを組み込まない |
-| 最適化 | `opt=oslto` | `-Os -flto` |
-| デバッグ | `dbg=none` | `-DNDEBUG` |
-| Cランタイム | `rtlib=none` | ch32fun |
-| PWM | `pwm=default` | 追加リマップなし。アプリではPWMを使わない |
-| 書き込み方式 | `upload_method=uiapflash` | UIAPduino (USB)。実物との適合確認は別途必要 |
+[コアREADME](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/README.md) に従い、macOS向けの書き込み方式は `UIAPduino (USB)`／`uiapflash` です。今回の実物は書き込みモードで `32V003`／`1209:B803`／`bcdDevice=0x0141` として1台だけ検出されました。基板のボタンを押しながらUSBを接続し、接続後に離す操作でこのモードへ移行できています。
 
-完全なFQBN候補：
-
-```text
-UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash
-```
-
-この文字列はソース由来の候補であり、CLIや実機で確認済みのFQBNとは扱いません。
-
-## P2での環境準備とコンパイル
-
-次のコマンドはCLI導入後に実行する予定です。ここでは実行していません。CLIの配置・版を決め、専用設定ファイル `.local/arduino-cli.yaml` を作成してから使います。
-
-設定ファイルの作成例は以下です。プロジェクトのルートで実行すると、その配置に合わせた絶対パスを設定します。保存先は今回のプロジェクト内に限定します。[Arduino CLIの設定資料](https://docs.arduino.cc/arduino-cli/configuration/) に従い、data／downloads／user／build cacheを分けます。`.local/` はGit対象外です。
+以下はビルドとは別の、実物への書き込みコマンドです。`--list` で対象が1台であることを確認してから実行します。`uiapflash` はVID／PIDで対象を開くため、同じ書き込みモードの基板が複数ある状態では実行しません。
 
 ```sh
-snes_project_dir="$(pwd -P)"
-mkdir -p .local
-cat > .local/arduino-cli.yaml <<EOF
-board_manager:
-  additional_urls:
-    - https://github.com/tarosay/board_manager_files/raw/main/package_uiap_hid_index.json
-directories:
-  data: "${snes_project_dir}/.local/arduino-data"
-  downloads: "${snes_project_dir}/.local/arduino-downloads"
-  user: "${snes_project_dir}/.local/sketchbook"
-build_cache:
-  path: "${snes_project_dir}/.local/arduino-cache"
-EOF
+.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash --list
+.local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash \
+  --verbose --flash-size 16384 \
+  .local/build/neutral/snes_controller.ino.bin
 ```
 
-プロジェクトのルートで、CLIと設定ファイルの準備後に実行するコマンド：
+実行したのは全キー解放版だけです。通常アプリ領域の `0x08000000`～`0x08000C3F`（パディング込み3136バイト）を差分書き込みし、2周目で全セクタ一致、アプリ起動、終了コード0を確認しました。途中に0バイトの受信診断がありましたが、最終の読み戻し検証は成功しています。
 
-```sh
-arduino-cli version
-arduino-cli --config-file .local/arduino-cli.yaml core update-index
-arduino-cli --config-file .local/arduino-cli.yaml core install UIAP_HID:ch32v@1.2.15
-arduino-cli --config-file .local/arduino-cli.yaml core list
-arduino-cli --config-file .local/arduino-cli.yaml board details --fqbn UIAP_HID:ch32v:CH32V003 --full --json
-```
+参照したV1.41ブートローダの [リンカ定義](https://github.com/YuukiUmeta-UIAP/rv003usb/blob/7ae2940676df0e1dcdad906ea7b1c9fff6c0b971/bootloader/ch32v003fun-usb-bootloader.ld) は物理 `0x1FFFF000` の別領域に配置されます。今回ブートローダの消去・書き込みは行っていません。実物のブートローダ全体のバイナリハッシュは未測定です。
 
-導入時に配布ZIPのSHA-256と [上流確認記録](evidence/p0-upstream-2026-11-10.json) の値を照合し、インストールされたソース・コンパイラの版・各オプションを確認します。索引URLは変動するため、取得時の索引も保存します。
-
-P2で `firmware/snes_controller/` の最小スケッチを用意し、CLIのボード情報と上記FQBN候補の一致を確認できた後に実行するコンパイル例：
-
-```sh
-arduino-cli --config-file .local/arduino-cli.yaml compile \
-  --fqbn 'UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,dbg=none,rtlib=none,pwm=default,upload_method=uiapflash' \
-  --build-path .local/build/snes_controller \
-  firmware/snes_controller
-```
-
-コマンド構文はArduino公式の [core install](https://docs.arduino.cc/arduino-cli/commands-reference/arduino-cli_core_install)、[board details](https://docs.arduino.cc/arduino-cli/commands-reference/arduino-cli_board_details)、[compile](https://docs.arduino.cc/arduino-cli/commands-reference/arduino-cli_compile) を参照しています。実際に導入したCLIでもヘルプと結果を確認します。
-
-## USB初期化とサイズ確認
-
-コアの [main.cpp](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/cores/arduino/main.cpp) は `uiap_core_begin()` の後に `setup()` を呼びます。USB開始は別の `uiapusb_begin()` なので、最小ファームでもバックエンドで明示的に開始する設計にします。初期レポートは全解放とし、自動でキーを連打する試験にはしません。
-
-V1.4のボード定義はFlash 16,384バイト／RAM 2,048バイトです。[リンカスクリプト](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/system/CH32V00x/SRC/Ld/generated_ch32fun.ld) はFLASHを0x00000000から16K、RAMを2Kとして配置し、ヒープ上限をRAM末尾の448バイト下に定義しています。これを実機ブートローダと整合するアプリ領域の確定値や、実測スタック余裕とはみなしません。
-
-ビルド時にELF／BIN／map、SHA-256、Flash／静的RAM使用量を保存します。ブートローダの配置・予約領域と、USBバッファ・スタックを含む余裕は書き込み前に別途確認します。
-
-## 書き込み方式の確認状況
-
-[コアREADME](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/README.md) はmacOSで `UIAPduino (USB)` を選択するよう案内しています。[platform.txt](https://github.com/tarosay/arduino_core_ch32/blob/9471a150c9837c9055ef62ef759a1a593eddf1b1/platform.txt) に `uiapflash` のレシピ、索引に1.0.0のmacOS用配布物があることを確認しました。
-
-これは使用候補の特定までです。所有基板のブートローダ版、実際のUSBデバイス、アプリ領域、復旧手順は未確認のため、書き込みコマンドはまだ確定していません。
+書き込み後は `1209:D004` のキーボード／マウスとして同じUSB接続位置へ再列挙されました。実行ログ・対象情報・BINのSHA-256・HID情報は [書き込み記録](evidence/p2-upload-neutral-2026-11-10.json) に保存しています。

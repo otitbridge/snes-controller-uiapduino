@@ -18,3 +18,13 @@ fi
 "$snes_cxx" "${snes_flags[@]}" -Ifirmware/snes_controller \
   tests/hid_report_test.cpp -o "$snes_binary"
 "$snes_binary"
+
+snes_usb_binary="${snes_binary%hid_report_test*}usb_backend_test"
+if [[ "${SNES_HOST_SANITIZERS:-0}" == 1 ]]; then
+  snes_usb_binary+=_sanitized
+fi
+"$snes_cxx" "${snes_flags[@]}" -DUIAP_COMPOSITE_HID \
+  -Itests/fakes -Ifirmware/snes_controller \
+  tests/usb_backend_test.cpp firmware/snes_controller/usb_backend.cpp \
+  -o "$snes_usb_binary"
+"$snes_usb_binary"
