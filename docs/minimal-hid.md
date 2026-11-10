@@ -1,6 +1,8 @@
 # 最小HIDファームウェアの試験準備と書き込み結果
 
-P2でビルドしたUIAPduino単体の試作品です。2026-11-10に全キー解放版と手動単キー版の書き込み・読み戻し検証を行い、MacでUSB認識と、手動単キー版の押下・保持・解放を確認しました。この手動単キー版ではiPhone／Deltaを試験していません。その後の統合版では、iPhoneのGBAゲームでB操作3回の成功が本人から報告されました（[P4の結果](validation.md#p4のiphonedelta初期試験gba)）。
+> 開発記録：最小HIDの試験・作業履歴です。通常使用の手順は [導入ガイド](getting-started.md)、現在の試験結果は [検証結果](validation.md) を参照してください。
+
+P2でビルドしたUIAPduino単体の試作品です。2026-11-10に全キー解放版と手動単キー版の書き込み・読み戻し検証を行い、MacでUSB認識と、手動単キー版の押下・保持・解放を確認しました。この手動単キー版ではiPhone／Deltaを試験していません。その後の統合版では、iPhoneのGBAゲームでB操作3回の成功が本人から報告されました（[P4の結果](development/validation-history.md#p4のiphonedelta初期試験gba)）。
 
 その後、基板はSFC診断版を経て [SFCキーボード統合版](sfc-keyboard.md) へ書き換えています。このページの単キー試験を再開するときは、SFCのCLOCK配線を外して `manual` へ戻します。
 
