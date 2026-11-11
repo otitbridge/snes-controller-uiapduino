@@ -13,11 +13,11 @@ USBから給電するため、電池やBluetoothのペアリングは不要で�
 
 1. [必要な部品と内蔵構成](docs/hardware.md) を確認する。
 2. [配線表](docs/wiring.md#接続表) に従い、USBを外して5本を接続する。
-3. [導入手順](docs/getting-started.md) に従って通常版をビルド・書き込みする。
+3. [導入手順](docs/getting-started.md) に従って配布バイナリを書き込む（ソースからのビルドも可能）。
 4. Macで入力を確認し、Deltaでキーを割り当てる。
 5. [内蔵時の確認事項](docs/hardware.md#内蔵用部材と写真) を確認し、ケースを閉じた状態でも動作を確認する。
 
-開発・書き込み手順はmacOS向けです。Arduino CLIを使用します。
+書き込み手順はmacOS向けです。配布バイナリなら開発環境は不要です。ソースからビルドする場合はArduino CLIを使用します。
 
 ## ブラウザで動作確認
 
@@ -65,6 +65,12 @@ Deltaでは遊ぶシステムごとに割り当てます。GBAの10入力は同�
 
 同時出力は最大6キーです。7入力以上では固定の優先順で6キーを選び、解放で枠が空くと保持中の入力が戻ります。[優先順と動作例](docs/sfc-keyboard.md#同時押しと部分解放) を参照してください。
 
+## ビルド済み通常版を使う
+
+**[通常版をダウンロード（GitHub Releases）](https://github.com/otitbridge/snes-controller-uiapduino/releases/latest)**
+
+`snes-controller-uiapduino-v1.0.0.zip`には実機確認済みのBIN、照合用ハッシュ、書き込みツールの準備スクリプト、手順、ソースとライセンスをまとめています。クローンやArduino環境の構築は不要です。展開後は[配布版の書き込み手順](releases/v1.0.0/README.md)に従ってください。対象はUIAPduino V1.4・初期5V設定です。
+
 ## 通常版をビルドする
 
 プロジェクトのルートで実行します。初回はネットワークから開発環境を取得します。
@@ -105,4 +111,4 @@ bash scripts/build_firmware.sh sfc-keyboard
 - [ビルド・テスト手順](docs/build.md) / [USBコアの管理パッチ](patches/README.md)
 - [制作経緯・原因調査・引き継ぎ](docs/development/README.md) / [検証の証跡](docs/evidence/README.md)
 
-本プロジェクトのソースと文書は [MIT](LICENSE) です。移植元の著作権表示を保持しています。コア・ツール等の依存物には各々のライセンスが適用されます。ゲームROM、ローカルのビルド成果物・生ログは同梱していません。
+本プロジェクトのソースと文書は [MIT](LICENSE) です。移植元の著作権表示を保持しています。コア・ツール等の依存物には各々のライセンスが適用されます。ゲームROM・生ログは同梱していません。GitHub Releasesでは通常版BINをソース・依存物のライセンスとともに配布します。

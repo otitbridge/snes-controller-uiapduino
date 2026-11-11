@@ -2,7 +2,17 @@
 
 対象はUIAPduino V1.4・初期5V設定と、[配線表](wiring.md#接続表) のSFCコントローラーです。配線・書き込み・Macでの入力確認、iPhone／iPadのDelta設定、内蔵後の確認の順に進めます。
 
-## 1. 開発環境と通常版の準備
+## 1. 通常版の準備
+
+### 配布バイナリを使う（推奨）
+
+[GitHub Releases](https://github.com/otitbridge/snes-controller-uiapduino/releases/latest)から`snes-controller-uiapduino-v1.0.0.zip`を取得し、展開してください。クローン・Arduino CLI・コンパイラは不要です。
+
+[配布版の手順](../releases/v1.0.0/README.md)でファイルの照合、uiapflashの準備、配線確認、書き込みを行います。macOS用の単体ツールを使用し、Apple SiliconでもRosettaは不要です。書き込み後は、この文書の[4. Macで入力を確認する](#4-macで入力を確認する)へ進んでください。
+
+### ソースからビルドする
+
+以下の準備と第2・3節は、ソースからビルドする場合の手順です。
 
 このリポジトリを取得し、そのルートで次を実行します。macOS、Bash、Python 3、curl、tar、shasumが必要です。Apple Siliconではx86_64ツールを動かせる環境が必要で、確認環境ではRosettaを使用しました。
 

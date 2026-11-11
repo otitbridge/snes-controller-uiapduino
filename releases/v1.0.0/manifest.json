@@ -1,0 +1,14 @@
+{
+  "version": "v1.0.0",
+  "mode": "sfc-keyboard",
+  "filename": "snes-controller-uiapduino-v1.0.0.bin",
+  "size_bytes": 5496,
+  "sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+  "board": "UIAPduino V1.4, initial 5V setting",
+  "select_key": "Tab",
+  "flash_size_bytes": 16384,
+  "core": "UIAP_HID:ch32v@1.2.15",
+  "core_commit": "9471a150c9837c9055ef62ef759a1a593eddf1b1",
+  "compiler": "xPack RISC-V GCC 14.2.0-2",
+  "build_command": "bash scripts/build_firmware.sh sfc-keyboard"
+}
