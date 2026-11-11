@@ -7,9 +7,9 @@ USBから給電するため、電池やBluetoothのペアリングは不要で�
 
 ## はじめに
 
-![USB-Cケーブルを備えたSFCコントローラーの完成外観](docs/images/controller-exterior.jpg)
+[![USB-Cケーブルを備えたSFCコントローラーの完成外観](docs/images/controller-exterior.jpg)](https://x.com/ot_it_bridge/status/2120432280246391145)
 
-[筐体内部の配置写真](docs/hardware.md#内蔵用部材と写真) も掲載しています。
+[筐体内部の配置写真](docs/hardware.md#内蔵用部材と写真) も掲載しています。[Xでのポスト（動画）](https://x.com/ot_it_bridge/status/2120432280246391145)
 
 1. [必要な部品と内蔵構成](docs/hardware.md) を確認する。
 2. [配線表](docs/wiring.md#接続表) に従い、USBを外して5本を接続する。
