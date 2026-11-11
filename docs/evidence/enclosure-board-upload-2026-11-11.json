@@ -1,0 +1,62 @@
+{
+  "purpose": "内蔵用として別のUIAPduinoへ通常版をアップロード",
+  "board": {
+    "identity_basis": "ユーザーが別のUIAPduinoを接続したと申告。書き込み直前に対象ブートローダー1台を検出。",
+    "intended_use": "筐体への内蔵",
+    "boot_descriptor": {
+      "USB Product Name": "32V003",
+      "idVendor": 4617,
+      "idProduct": 47107,
+      "bcdDevice": 321
+    },
+    "sfc_wiring": "今回の書き込み時点では未確認",
+    "voltage_setting": "今回の基板では未確認"
+  },
+  "firmware": {
+    "mode": "sfc-keyboard",
+    "select_key": "Tab",
+    "trace_enabled": false,
+    "bin_bytes": 5496,
+    "bin_sha256": "43a82eb36c7df4d298dd01f6b25460117fab0207c9206382b5eeaf92379a9079",
+    "uploader_sha256": "84381d22d24eb49c478a319ec6fb94af1702d718745757cd72d51eb476c29210"
+  },
+  "upload": {
+    "started_at": "2026-11-11T00:14:14.950312+09:00",
+    "finished_at": "2026-11-11T00:14:22.192924+09:00",
+    "command": [
+      ".local/arduino-data/packages/UIAP_HID/tools/uiapflash/1.0.0/uiapflash",
+      "--verbose",
+      "--flash-size",
+      "16384",
+      ".local/build/sfc-keyboard/snes_controller.ino.bin"
+    ],
+    "matching_bootloaders": 1,
+    "exit_code": 0,
+    "padded_bytes": 5504,
+    "readback_verified": true,
+    "application_started": true,
+    "bootloader_written": false,
+    "after": {
+      "observed_at": "2026-11-11T00:14:26.240554+09:00",
+      "devices": [
+        {
+          "USB Product Name": "UIAPduino KBD+Mouse",
+          "idVendor": 4617,
+          "idProduct": 53252,
+          "bcdDevice": 1
+        }
+      ],
+      "same_usb_location_as_bootloader": true
+    }
+  },
+  "local_log": {
+    "path": ".local/logs/enclosure-board-upload-2026-11-11-01.json",
+    "sha256": "7bed7539ba7c09d68fd7e225eb279b40539f10f9b0fcb36ad6bf676fb56d2ad7"
+  },
+  "result": "PASS: 書き込み、全セクタ読み戻し一致、起動、同じUSB接続位置で通常モード1209:D004への列挙を確認。",
+  "scope": "この基板のボタン操作・iPhone/Delta動作・内蔵後の試験は未実施。従来基板の試験結果をこの個体の合格証跡として扱わない。内蔵作業の完了を意味しない。",
+  "publication": {
+    "raw_log_committed": false,
+    "excluded": "USB接続位置の値、一時的なデバイス識別子、絶対パス。接続位置の一致は真偽値のみ記録。"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-11",
+  "observation_method": "ユーザー報告。写真・現物の独立確認は未実施。",
+  "reported_result": "直前に通常版を書き込んだ別のUIAPduinoを、指定USBケーブルを差した状態でコントローラー内部に収められた。",
+  "upload_evidence": "enclosure-board-upload-2026-11-11.json",
+  "cable": {
+    "manufacturer": "株式会社アットキュー",
+    "model": "AT-PDCASTCC08",
+    "source": "https://atq.amebaownd.com/posts/53888832?categoryIds=2712238",
+    "source_checked_on": "2026-11-11",
+    "manufacturer_specifications": {
+      "connectors": "USB Type-C male to male",
+      "length": "約70cm",
+      "data": "USB 2.0、最大480Mbps",
+      "charging_rating": "PD最大60W (20V 3.0A)"
+    },
+    "same_as_previous_test_cable": "未確認"
+  },
+  "not_confirmed": [
+    "施工の詳細（固定具・絶縁材・配線経路・ケーブル保持・加工寸法）",
+    "今回の使用端末・ゲーム、保持時間、同時押しの組み合わせ、再接続回数",
+    "写真・独立した入力ログ・電気的な実測",
+    "内蔵後の30分連続使用、握り・ケーブル軽操作・発熱の個別結果",
+    "再書き込み用アクセス"
+  ],
+  "status": "案内した内蔵後の確認範囲は、本人報告で問題なし。詳細条件や独立測定は未記録。",
+  "original_controller_cable": "撤去済み（ユーザー報告）",
+  "post_assembly_check": {
+    "observation_method": "直前に案内した3項目の確認に対し、ユーザーが「内蔵後の確認 問題無しです」と報告。項目ごとの独立ログはない。",
+    "reported_result": "問題なし",
+    "instructed_scope": [
+      "絶縁・固定・配線の挟み込み・ボタンとの干渉",
+      "閉蓋後の全12ボタンの押し心地と戻り",
+      "通電後の全入力・長押し・同時押し・再接続"
+    ],
+    "configuration_reconfirmed": "USBケーブルを基板へ差した状態で収納。元のコントローラーケーブルは撤去。"
+  }
+}

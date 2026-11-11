@@ -53,3 +53,9 @@ P4の生ログ・BINも `.local/` に保持し、Gitには入れません。公�
 ## 文書整理後の参照先
 
 利用者向けの [検証結果](../validation.md) は試験範囲の要約です。従来の時系列本文は [検証履歴](../development/validation-history.md)、原因調査・旧ビルド・配線訂正等は [開発記録](../development/README.md) へ整理しました。公開JSONの結果・観測方法・過去の文書ハッシュは変更していません。`p6-documentation-review-2026-11-10.json` のハッシュも、その確認時点のスナップショットです。
+
+## 内蔵用の別基板への書き込み
+
+- [enclosure-board-upload-2026-11-11.json](enclosure-board-upload-2026-11-11.json)：別のUIAPduinoへ通常版（SELECT→Tab）を書き込み、読み戻し・起動・USB認識を確認。この記録は書き込み時点のもので、後続の内蔵後確認は次の報告に記載しています。
+
+- [enclosure-fit-2026-11-11.json](enclosure-fit-2026-11-11.json)：別基板とUSB-Cケーブルの収納・元ケーブル撤去・内蔵後確認に関する本人報告、メーカー公表のケーブル仕様、詳細条件の未記録範囲。
