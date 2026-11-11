@@ -57,6 +57,12 @@ shasum -a 256 .local/build/sfc-keyboard/snes_controller.ino.bin
 
 ## 4. Macで入力を確認する
 
+手軽に確認する場合は [公開の入力確認画面](https://otitbridge.github.io/snes-controller-uiapduino/) を開きます。ローカルサーバーは不要です。全ボタンを離して通常接続し、「記録を消して開始」を押してから全12ボタンを確認してください。入力ログの外部送信はなく、保存する場合は「ログをダウンロード」を押します。iPhone／iPadでも同じ画面を利用できますが、ブラウザでの結果とDeltaのゲーム操作確認は別に行います。
+
+### Mac内にログを自動保存する場合
+
+次のローカル記録サーバーを使用します。公開版と同じ試験画面で、ブラウザからのダウンロードも利用できます。
+
 ```sh
 python3 scripts/serve_keyboard_probe.py first-keyboard-check.jsonl
 ```

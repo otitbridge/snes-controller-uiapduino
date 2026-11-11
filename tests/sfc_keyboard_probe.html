@@ -2,6 +2,7 @@
 <html lang="ja">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="probe-storage" content="browser">
 <title>UIAPduino SFCキーボード試験</title>
 <style>
 body { max-width:900px; margin:24px auto; padding:0 20px; font:18px/1.6 system-ui; }
@@ -13,20 +14,67 @@ button { font:inherit; padding:8px 16px; }
 .held { background:#d4f3d7; font-weight:bold; }
 #state { font-size:24px; font-weight:bold; }
 textarea { width:100%; box-sizing:border-box; height:160px; font:12px monospace; }
+button { margin:4px 4px 4px 0; }
+.duration { display:block; font-size:14px; font-weight:normal; }
+#controller { display:block; width:100%; height:auto; margin:12px 0; }
+#controller .control { stroke:#484b53; stroke-width:3; }
+#controller .control.held { stroke:#087b40; stroke-width:8; filter:drop-shadow(0 0 6px #39cc79); }
+#controller .control.held .surface { fill:#a5f5bd; }
+#controller text { font-family:system-ui,sans-serif; text-anchor:middle; stroke:none; fill:#242832; }
+#controller .button-letter { fill:white; font-size:25px; font-weight:bold; }
+#controller .held .button-letter { fill:#133b24; }
+#controller .small-label { font-size:15px; font-weight:bold; }
+#controller .arrow { fill:#c2c5cc; stroke:none; }
+#controller .held .arrow { fill:#133b24; }
+#pad.interrupted #controller { opacity:.45; }
+details { margin-top:16px; }
+details summary { cursor:pointer; }
+@media (max-width:600px) { #keys { grid-template-columns:repeat(2,1fr); } body { padding:0 12px; font-size:16px; } }
 </style>
 <h1>UIAPduino SFCキーボード試験</h1>
-<p>SFCだけを操作し、パソコンのキーは押さないでください。この画面を表示したまま試験します。
-記録はこのMac内の試験サーバーへ保存します。観測対象はブラウザのキーイベントです。</p>
+<p>全ボタンを離してコントローラーをUSB接続し、「記録を消して開始」を押してください。
+この画面を前面に保ち、SFCの各ボタンを押して離します。通常版ファームウェア（SELECT→Tab）に対応しています。</p>
+<p>パソコン側のキーも反応するため、試験中はSFCだけを操作してください。
+観測対象はブラウザのキーイベントで、USB機器の接続や入力元を識別するものではありません。</p>
 <button id="reset" type="button">記録を消して開始</button>
-<p id="connection">記録サーバーへ接続中</p>
+<button id="download" type="button">ログをダウンロード</button>
+<p id="connection" role="status"></p>
 <div id="pad" tabindex="0" role="region" aria-label="SFC入力確認枠">
-  <p id="state">全解放</p><p id="focus">入力受付中</p>
-  <div id="keys"></div>
+  <p id="state">全解放</p><p id="focus">開始ボタンを押してください</p>
+  <svg id="controller" viewBox="0 0 760 340" role="img" aria-labelledby="controller-title controller-description">
+    <title id="controller-title">SFCコントローラーの入力状態</title>
+    <desc id="controller-description">左に十字キー、中央にSELECTとSTART、右に上からX・左右にYとA・下にB、上部にLとR。押下中のボタンは緑の太い枠で表示します。</desc>
+    <g class="control" data-code="KeyQ"><rect class="surface" x="68" y="22" width="190" height="48" rx="18" fill="#afb4bd"/><text x="163" y="53" class="small-label">L</text></g>
+    <g class="control" data-code="KeyW"><rect class="surface" x="502" y="22" width="190" height="48" rx="18" fill="#afb4bd"/><text x="597" y="53" class="small-label">R</text></g>
+    <path d="M150 57 H610 C691 57 744 111 744 190 C744 273 699 321 625 321 C569 321 530 292 492 282 H268 C230 292 191 321 135 321 C61 321 16 273 16 190 C16 111 69 57 150 57Z" fill="#dedfe3" stroke="#969ca7" stroke-width="4"/>
+    <circle cx="166" cy="189" r="91" fill="#c8cbd2"/>
+    <ellipse cx="590" cy="189" rx="114" ry="113" fill="#7e8490"/>
+    <text x="380" y="108" font-size="19" font-weight="bold" letter-spacing="2">SFC INPUT TEST</text>
+    <rect x="144" y="167" width="44" height="44" fill="#333841"/>
+    <g class="control" data-code="ArrowUp"><path class="surface" d="M145 167 V119 Q145 115 149 115 H183 Q187 115 187 119 V167Z" fill="#333841"/><path class="arrow" d="M166 129 L155 144 H177Z"/></g>
+    <g class="control" data-code="ArrowDown"><path class="surface" d="M145 211 V259 Q145 263 149 263 H183 Q187 263 187 259 V211Z" fill="#333841"/><path class="arrow" d="M166 249 L155 234 H177Z"/></g>
+    <g class="control" data-code="ArrowLeft"><path class="surface" d="M144 168 H96 Q92 168 92 172 V206 Q92 210 96 210 H144Z" fill="#333841"/><path class="arrow" d="M105 189 L120 178 V200Z"/></g>
+    <g class="control" data-code="ArrowRight"><path class="surface" d="M188 168 H236 Q240 168 240 172 V206 Q240 210 236 210 H188Z" fill="#333841"/><path class="arrow" d="M227 189 L212 178 V200Z"/></g>
+    <g class="control" data-code="Tab"><rect class="surface" x="290" y="203" width="67" height="23" rx="11" transform="rotate(-32 323 215)" fill="#525761"/></g>
+    <g class="control" data-code="Enter"><rect class="surface" x="387" y="203" width="67" height="23" rx="11" transform="rotate(-32 420 215)" fill="#525761"/></g>
+    <text class="small-label" x="323" y="258">SELECT</text><text class="small-label" x="420" y="258">START</text>
+    <g class="control" data-code="KeyS"><circle class="surface" cx="590" cy="121" r="29" fill="#225bbd"/><text class="button-letter" x="590" y="130">X</text></g>
+    <g class="control" data-code="KeyA"><circle class="surface" cx="522" cy="189" r="29" fill="#167655"/><text class="button-letter" x="522" y="198">Y</text></g>
+    <g class="control" data-code="KeyX"><circle class="surface" cx="658" cy="189" r="29" fill="#b63842"/><text class="button-letter" x="658" y="198">A</text></g>
+    <g class="control" data-code="KeyZ"><circle class="surface" cx="590" cy="257" r="29" fill="#edc840"/><text x="590" y="266" font-size="25" font-weight="bold">B</text></g>
+  </svg>
+  <p>押下中は緑の太枠で表示します。図は入力表示用です。</p>
+  <details><summary>キー名・保持時間を表示</summary><div id="keys"></div></details>
   <p id="summary"></p>
 </div>
 <p id="session"></p>
 <label for="log">試験記録（Raw HIDレポートではありません）</label>
 <textarea id="log" readonly></textarea>
+<p>表示は直近100件、ダウンロードは今回の記録全件（JSONL形式）です。
+記録を消す・ページを閉じる前に保存してください。フォーカスが外れたら、全ボタンを離して試験を再開します。
+キーボードで枠を離れる場合はEscを押してください。</p>
+<p><a href="https://github.com/otitbridge/snes-controller-uiapduino#キー割り当て">キー割り当て・使い方</a></p>
+<noscript>試験画面を使うにはJavaScriptを有効にしてください。</noscript>
 <script>
 'use strict';
 const mapping = [
@@ -37,18 +85,30 @@ const mapping = [
 const pad=document.getElementById('pad'), state=document.getElementById('state');
 const summary=document.getElementById('summary'), focusText=document.getElementById('focus');
 const log=document.getElementById('log'), connection=document.getElementById('connection');
+// Only the loopback recorder injects this mode. Static/file/Pages access never POSTs.
+const localRecording=document.querySelector('meta[name="probe-storage"]').content==='local'
+  && location.protocol==='http:' && location.hostname==='127.0.0.1';
 const pressed=new Map(), elements=new Map();
-let session, started, records=[], downs=0, ups=0, blurs=0, stored=0, saveFailed=false, saving=Promise.resolve();
+const controls=new Map([...document.querySelectorAll('#controller .control')].map(item=>[item.dataset.code,item]));
+let session, started, records=[], downs=0, ups=0, blurs=0, stored=0, saveFailed=false, saving=Promise.resolve(), interrupted=false;
+connection.textContent=localRecording ? 'このMacの記録サーバーへ保存します'
+  : '記録はこのブラウザ内だけに保持します。キー入力の外部送信は行いません。';
 for (const [code,button,key] of mapping) {
   const item=document.createElement('div'); item.className='key';
   item.textContent=`${button} → ${key}：解放`;
   document.getElementById('keys').appendChild(item); elements.set(code,item);
+  const duration=document.createElement('span'); duration.className='duration';
+  item.appendChild(duration);
 }
 function render() {
-  state.textContent=pressed.size ? `押下中：${mapping.filter(m=>pressed.has(m[0])).map(m=>m[1]).join('＋')}` : '全解放';
+  pad.classList.toggle('interrupted',interrupted);
+  state.textContent=interrupted ? '判定中断' : pressed.size ? `押下中：${mapping.filter(m=>pressed.has(m[0])).map(m=>m[1]).join('＋')}` : '全解放';
   for (const [code,button,key] of mapping) {
-    elements.get(code).textContent=`${button} → ${key}：${pressed.has(code)?'押下中':'解放'}`;
+    controls.get(code).classList.toggle('held',pressed.has(code));
+    elements.get(code).firstChild.textContent=`${button} → ${key}：${interrupted?'不明':pressed.has(code)?'押下中':'解放'}`;
     elements.get(code).classList.toggle('held',pressed.has(code));
+    elements.get(code).lastChild.textContent=pressed.has(code)
+      ? `保持：${((performance.now()-pressed.get(code))/1000).toFixed(1)}秒` : '';
   }
   summary.textContent=`押下 ${downs}回／解放 ${ups}回／フォーカス喪失 ${blurs}回`;
 }
@@ -56,23 +116,25 @@ function record(event,extra={}) {
   const row={session,event,unix_ms:Date.now(),seconds:+((performance.now()-started)/1000).toFixed(3),
     pressed:mapping.filter(m=>pressed.has(m[0])).map(m=>m[0]),...extra};
   records.push(row); log.value=JSON.stringify(records.slice(-100),null,2);
-  saving=saving.then(async()=>{
+  if (localRecording) saving=saving.then(async()=>{
     if (saveFailed) return;
     const response=await fetch('/events',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(row)});
     if (!response.ok) throw new Error('save failed');
     ++stored; connection.textContent=`Mac内へ保存済み：${stored}件（全セッション合計）`;
-  }).catch(()=>{saveFailed=true; connection.textContent='保存エラー：試験を中止してCodexへ知らせてください';});
+  }).catch(()=>{saveFailed=true; connection.textContent='自動保存に失敗しました。ログをダウンロードし、記録サーバーを確認してください。';});
   render();
 }
 function reset() {
   session=new Date().toISOString(); started=performance.now(); records=[];
-  pressed.clear(); downs=ups=blurs=0; pad.focus();
+  pressed.clear(); downs=ups=blurs=0; interrupted=false; pad.focus();
   focusText.textContent='入力受付中'; document.getElementById('session').textContent=`試験開始：${session}`;
   record('start',{at:session,user_agent:navigator.userAgent});
 }
 pad.addEventListener('keydown',e=>{
+  if (e.code==='Escape') { e.preventDefault(); document.getElementById('reset').focus(); return; }
   if (!elements.has(e.code)) return;
   e.preventDefault();
+  if (interrupted) return;
   const already_pressed=pressed.has(e.code);
   if (!already_pressed) { pressed.set(e.code,performance.now()); ++downs; }
   record('keydown',{code:e.code,key:e.key,trusted:e.isTrusted,
@@ -81,23 +143,34 @@ pad.addEventListener('keydown',e=>{
 pad.addEventListener('keyup',e=>{
   if (!elements.has(e.code)) return;
   e.preventDefault();
+  if (interrupted) return;
   const since=pressed.get(e.code);
   const held_seconds=since===undefined?null:+((performance.now()-since)/1000).toFixed(3);
   pressed.delete(e.code); ++ups;
   record('keyup',{code:e.code,key:e.key,trusted:e.isTrusted,held_seconds});
 });
-pad.addEventListener('focus',()=>{focusText.textContent='入力受付中';});
-pad.addEventListener('blur',()=>{
-  ++blurs; record('focus_lost',{was_pressed:pressed.size>0});
-  pressed.clear(); render(); focusText.textContent='判定中断：記録を消して開始してください';
-});
+pad.addEventListener('focus',()=>{focusText.textContent=interrupted?'全ボタンを離し、記録を消して開始してください':'入力受付中';});
+function interrupt(event) {
+  if (interrupted) return;
+  ++blurs; record(event,{was_pressed:pressed.size>0});
+  interrupted=true; pressed.clear(); render(); focusText.textContent='判定中断：全ボタンを離し、記録を消して開始してください';
+}
+pad.addEventListener('blur',()=>interrupt('focus_lost'));
 window.addEventListener('blur',()=>{
-  if (document.activeElement===pad) {
-    ++blurs; record('window_blur',{was_pressed:pressed.size>0});
-    pressed.clear(); render(); focusText.textContent='判定中断：記録を消して開始してください';
-  }
+  if (document.activeElement===pad) interrupt('window_blur');
+});
+document.addEventListener('visibilitychange',()=>{
+  if (document.hidden) interrupt('window_blur');
 });
 document.getElementById('reset').addEventListener('click',reset);
+document.getElementById('download').addEventListener('click',()=>{
+  const blob=new Blob([records.map(row=>JSON.stringify(row)).join('\n')+'\n'],{type:'application/x-ndjson;charset=utf-8'});
+  const url=URL.createObjectURL(blob), link=document.createElement('a');
+  link.href=url; link.download=`sfc-keyboard-${session.replace(/[:.]/g,'-')}.jsonl`;
+  document.body.appendChild(link); link.click(); link.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+setInterval(render,100);
 reset();
 </script>
 </html>

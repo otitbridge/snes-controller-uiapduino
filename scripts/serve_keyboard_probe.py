@@ -22,7 +22,10 @@ class Handler(BaseHTTPRequestHandler):
         if self.path != '/':
             self.send_error(404)
             return
-        body = (ROOT / 'tests/sfc_keyboard_probe.html').read_bytes()
+        body = (ROOT / 'tests/sfc_keyboard_probe.html').read_bytes().replace(
+            b'<meta name="probe-storage" content="browser">',
+            b'<meta name="probe-storage" content="local">',
+        )
         self.send_response(200)
         self.send_header('Content-Type', 'text/html; charset=utf-8')
         self.send_header('Content-Length', str(len(body)))

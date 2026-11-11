@@ -7,6 +7,7 @@
 | 知りたいこと | 資料 |
 | --- | --- |
 | 機能、構成図、キー割り当て、確認環境 | [README](../README.md) |
+| インストール不要の入力確認 | [ブラウザ試験画面](https://otitbridge.github.io/snes-controller-uiapduino/) |
 | 必要な部品と内蔵用の収納構成 | [部品と構成](hardware.md) |
 | 5本の配線と端子番号 | [配線](wiring.md) |
 | ビルド・Delta設定・内蔵後の確認 | [導入手順](getting-started.md) |
@@ -26,3 +27,11 @@
 自作ソース、テスト、補助スクリプト、コアへの管理パッチ、文書、公開用JSONを含みます。[MITライセンス](../LICENSE) と移植元の著作権表示を保持しています。コア・ツール等の依存物には各々のライセンスが適用されます。
 
 `.local/` のツール・ビルド成果物・生ログや、機器固有ログの `docs/evidence/local/` はGit対象外です。ゲームROM・BIOSは同梱していません。[内部配置と完成外観の写真](hardware.md#内蔵用部材と写真) を収録しています。SFC基板の接続点の接写と内蔵加工図は未収録です。組立後の確認結果は製作者報告として記録し、独立した入力ログは同梱していません。
+
+## 入力確認画面の公開方法
+
+GitHub Pagesには [12ボタン用の試験画面](../tests/sfc_keyboard_probe.html) だけを `index.html` として公開します。[単キー診断用](../tests/keyboard_probe.html) は開発資料としてリポジトリ内に残します。
+
+[公開ワークフロー](../.github/workflows/pages.yml) は、`main`で試験画面またはワークフローが更新されたときと、手動実行時に配信します。リポジトリのSettings → Pages → Build and deployment → Sourceは「GitHub Actions」を使用します。[GitHub公式の設定手順](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages) を参照してください。
+
+公開版は入力イベントを送信せず、ページ内に保持します。JSONLのダウンロードには試験開始日時・ブラウザ情報・入力イベントを含みます。Pythonのローカル記録サーバーで開いたときだけ、同じMacの `/events` へ自動保存します。直接HTMLファイルを開く場合もブラウザ内での記録とダウンロードを利用できます。
