@@ -27,6 +27,8 @@ USBから給電するため、電池やBluetoothのペアリングは不要で�
 
 入力ログはブラウザ内だけに保持し、「ログをダウンロード」で保存できます。ページを閉じると記録は失われます。Mac内へ自動保存したい場合は [ローカル記録手順](docs/getting-started.md#4-macで入力を確認する) を使用してください。
 
+Mac・iPhone・iPadで、実物のSFCコントローラーを使った公開ページの動作を確認しています。[確認範囲](docs/validation.md#公開ページでの実機確認) を参照してください。
+
 ## 機器構成図
 
 コントローラー内部のUIAPduinoとSFC基板を5本の配線で接続し、USB-CケーブルでiPhone／iPadへつなぎます。接続先のUSBからUIAPduinoへ給電し、UIAPduinoの5V端子からSFC基板へ給電します。

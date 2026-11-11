@@ -73,3 +73,7 @@ P4の生ログ・BINも `.local/` に保持し、Gitには入れません。公�
 ## 内蔵写真
 
 [enclosure-photos-2026-11-11.json](enclosure-photos-2026-11-11.json) は、後続で提供された内部配置・完成外観の写真と、その確認範囲を記録しています。[掲載先](../hardware.md#内蔵用部材と写真) で閲覧できます。以前の `enclosure-fit-2026-11-11.json` の「写真未確認」は記録当時の状態として保持しています。
+
+## 公開ページでの実機確認
+
+- [public-probe-validation-2026-11-11.json](public-probe-validation-2026-11-11.json)：Mac・iPhone・iPadの公開ページで、実物のSFCコントローラーを使い問題なしとの報告。個別の操作条件とブラウザの版は未記録。

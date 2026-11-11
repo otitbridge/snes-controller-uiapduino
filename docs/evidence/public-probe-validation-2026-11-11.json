@@ -1,0 +1,18 @@
+{
+  "reported_on": "2026-11-11",
+  "observation_method": "ユーザーによる実機確認報告",
+  "page_url": "https://otitbridge.github.io/snes-controller-uiapduino/",
+  "published_page_commit": "6b8c5475d423ac8ea29b278fc531f0143f350cd2",
+  "input_device": "実物のSFCコントローラー",
+  "results": [
+    {"device": "Mac", "result": "問題なし"},
+    {"device": "iPhone", "result": "問題なし"},
+    {"device": "iPad", "result": "問題なし"}
+  ],
+  "not_recorded": [
+    "今回のOS・ブラウザの版",
+    "個別の操作項目・回数・保持時間",
+    "ログのダウンロード結果・独立した入力ログ"
+  ],
+  "scope": "公開ページの実機確認。過去の環境情報を今回の試験条件として補完しない。Deltaの未解決事項やSNES実ゲームの未確認事項の判定は変更しない。"
+}

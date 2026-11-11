@@ -85,6 +85,12 @@ Tab通常版を搭載した内蔵構成について、以下を確認してい�
 
 後続の写真提供により、[内部配置と完成外観](hardware.md#内蔵用部材と写真) を確認しています。[写真の記録](evidence/enclosure-photos-2026-11-11.json) は従来の動作確認報告と分けています。写真は配置・外観の確認資料であり、電気的な測定や動作試験を追加したものではありません。
 
+## 公開ページでの実機確認
+
+2026-11-11、[公開の入力確認画面](https://otitbridge.github.io/snes-controller-uiapduino/) をMac・iPhone・iPadで開き、実物のSFCコントローラーで問題なく使えることを確認しています。実機操作者の報告に基づく結果です。
+
+対象ページは `6b8c547` で公開したSFC配置の12ボタン用画面です。[確認記録](evidence/public-probe-validation-2026-11-11.json) を参照してください。
+
 ## ビルド・ホストテスト
 
 通常構成とAddressSanitizer／UndefinedBehaviorSanitizerで、以下を検査しています。
