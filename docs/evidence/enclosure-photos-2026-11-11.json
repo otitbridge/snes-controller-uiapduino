@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-11",
+  "observation_method": "ユーザー提供の内部配置・完成外観の写真を目視確認。",
+  "related_report": "enclosure-fit-2026-11-11.json",
+  "observed": [
+    "UIAPduinoにUSB-Cケーブルを接続した状態で筐体内へ配置",
+    "筐体内のケーブルと接続線の取り回し",
+    "筐体上部からのケーブル引き出し",
+    "ケースを閉じたコントローラーの完成外観とUSB-Cプラグ"
+  ],
+  "scope": "配置・外観の確認。動作・導通・電圧・絶縁状態・固定強度の独立検証ではない。SFC基板の各接続点と番号を照合できる接写ではなく、既存の線色・番号表を変更しない。",
+  "processing": {
+    "original_dimensions": [
+      5712,
+      4284
+    ],
+    "published_dimensions": [
+      2048,
+      1536
+    ],
+    "method": "縦横比を維持して縮小しJPEGで保存。切り抜き・生成・内容の修正なし。EXIF/XMP/IPTC/コメントを公開用画像から除去。",
+    "original_storage": "元画像はGit対象外の.local/photo-originals/に保存。"
+  },
+  "images": [
+    {
+      "file": "../images/controller-interior.jpg",
+      "description": "内部配置",
+      "bytes": 787972,
+      "sha256": "ee28ac49d32912d5c7a50c872754ddda0da44483b4f3931f26a6455062286b86"
+    },
+    {
+      "file": "../images/controller-exterior.jpg",
+      "description": "完成外観",
+      "bytes": 701651,
+      "sha256": "94063d23c2b0372da8fc7a10b2733500d8eb07677fee9736eca8275fd5fc33ab"
+    }
+  ]
+}

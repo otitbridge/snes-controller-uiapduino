@@ -70,7 +70,7 @@ shasum -a 256 .local/build/sfc-keyboard/snes_controller.ino.bin
 
 コアのFlash集計は `.init` の160バイトを含まないため、CLI表示よりBINが160バイト大きくなります。ボード定義上の容量はFlash 16,384バイト／RAM 2,048バイトです。静的RAMの残量は実行時のスタック・ヒープ余裕の測定値ではありません。
 
-## USB契約と確認済みの書き込み方法
+## USB識別と書き込み方法
 
 通常版を使い、全ボタンを離してUSBを外します。RESETを押しながらMacへ接続し、接続直後にRESETを離します。
 
@@ -129,7 +129,7 @@ SNES_HOST_SANITIZERS=1 python3 tests/test_core_get_report.py
 bash scripts/build_firmware.sh sfc-diagnostic
 ```
 
-診断版のUSBは `usb=kbdweb`、`neutral`／`manual`／`sfc-diagnostic` は未改変コアを使います。生成先は `.local/build/モード名/` です。単キー試験の条件は [最小HIDの開発記録](minimal-hid.md)、SFC生データの取得は [配線と入力診断](wiring.md#入力診断) を参照してください。
+`sfc-diagnostic` のUSBは `usb=kbdweb`、`neutral`／`manual` は `usb=kbd` です。この3モードは未改変コアを使います。生成先は `.local/build/モード名/` です。単キー試験の条件は [最小HIDの開発記録](minimal-hid.md)、SFC生データの取得は [配線と入力診断](wiring.md#入力診断) を参照してください。
 
 ## Macの非排他的HID入力取得
 

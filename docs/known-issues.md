@@ -22,15 +22,11 @@ Deltaの解放処理が原因の候補ですが、実行時の状態は未取得
 
 旧版のBackspaceはMacとiPhone Safariで押下・解放を確認できましたが、Deltaでは入力が認識されませんでした。設定画面にBackspaceが表示されていても、実際の押下を受け付けるとは限りません。Tabへの変更後はGBAの設定・ゲーム操作・再接続を確認しています。
 
-Deltaは [iOS 26対応時に入力方式を変更](https://github.com/rileytestut/DeltaCore/commit/196afbcb03a0a06c9984b7d92a49049fcc2ff30a)しています。Delta 1.7.3の参照する [入力処理](https://github.com/rileytestut/DeltaCore/blob/373bf07b7da6630dec661e876a63d685d61b9f9c/DeltaCore/Game%20Controllers/Keyboard/KeyboardGameController.swift)にはTabの明示的な対応があり、Backspaceにはありません。この対応漏れが表面化した可能性がありますが、原因や発生時期は未確定です。
+Delta 1.7.3で確認し、2.0.1でも同じ症状が再現しています。[Issue #579](https://github.com/rileytestut/Delta/issues/579) に報告済みです。2.0.1再試験時の入力機器・OS詳細は未記録で、iPadの動作確認とは別の報告です。
 
 ### Delta 2.0.1の公開情報確認
 
-2026-11-11、[App Store](https://apps.apple.com/us/app/delta-game-emulator/id1048524688) で2.0.1の配信と変更履歴を確認しました。キーボード設定画面の刷新は記載されていますが、Backspaceの修正は明記されていません。
-
-確認時の [公開main](https://github.com/rileytestut/Delta/commit/8d768919b1fb6bf99ec2899b6e8e0146a8268637) は2.0（177）表記です。その参照するDeltaCoreの [KeyboardGameController.swift](https://github.com/rileytestut/DeltaCore/blob/869042a5699b19df3cf9f3369a950737ff818149/DeltaCore/Game%20Controllers/Keyboard/KeyboardGameController.swift) は、先に調べた1.7.3参照版と全文一致しました。Tabの明示対応があり、Backspaceの明示対応はありません。
-
-公開情報調査後、製作者からDelta 2.0.1でも同じ症状が再現したとの追加報告があり、otitbridgeから [Delta Issue #579](https://github.com/rileytestut/Delta/issues/579) を投稿しました。2.0.1再試験時の入力機器・OSの詳細は未記録です。1.7.3で取得したSafariとTabの比較結果を、2.0.1でも全項目再試験した結果とは扱いません。配信版2.0.1とのソースの一致と、実行時の原因は未確定です。現行ファームのSELECT出力はTabのまま維持しています。調査の識別情報は [証跡](evidence/delta-2.0.1-keyboard-review-2026-11-11.json) に記録しています。
+公開されている2.0のキーボード処理にはBackspaceの明示対応がなく、原因候補として調べています。配信版2.0.1とのソースの一致や実行時の原因は未確定です。参照コミット・比較結果は [調査記録](development/delta-keyboard-review.md) にまとめています。
 
 ## 同時押しと短押し
 
@@ -38,7 +34,7 @@ Deltaは [iOS 26対応時に入力方式を変更](https://github.com/rileytestu
 
 最小押下時間や高速連打の保証はありません。読み取った最新状態をUSB側へ渡す実装で、すべての短い押下を保存するキューや転送完了通知はありません。手操作での短押し試験の成功を、任意の速度の入力保証とは扱いません。
 
-## 動作確認の対象外
+## 未確認の範囲
 
 | 項目 | 現在の範囲 |
 | --- | --- |
