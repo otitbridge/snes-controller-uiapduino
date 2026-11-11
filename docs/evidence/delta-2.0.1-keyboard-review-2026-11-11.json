@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-11",
+  "method": "公開リリース情報とGitHubソースの読み取り。その後、ユーザーから2.0.1での実機再現報告を受領。",
+  "requested_version": "2.0.1",
+  "app_store": {
+    "url": "https://apps.apple.com/us/app/delta-game-emulator/id1048524688",
+    "observed_version": "2.0.1",
+    "notes": "キーボード設定画面刷新の記載あり。Backspace修正の明記なし。"
+  },
+  "public_source": {
+    "repository": "rileytestut/Delta",
+    "branch": "main",
+    "commit": "8d768919b1fb6bf99ec2899b6e8e0146a8268637",
+    "version": "2.0",
+    "build": "177",
+    "submodule_path": "Cores/DeltaCore",
+    "deltacore_commit": "869042a5699b19df3cf9f3369a950737ff818149",
+    "keyboard_path": "DeltaCore/Game Controllers/Keyboard/KeyboardGameController.swift",
+    "keyboard_git_blob_sha": "c94e7593ea30650e44590429735110486bea6fc3",
+    "previous_deltacore_commit": "373bf07b7da6630dec661e876a63d685d61b9f9c",
+    "file_text_equal_to_previous": true,
+    "finding": "GCKeyboardの変換でTabは明示対応。Backspaceの明示対応なし。既定分岐はdescription先頭トークンが1文字であることを要求。"
+  },
+  "limits": [
+    "公開mainは2.0表記で、配信版2.0.1と同一のソースと特定できていない。",
+    "変更履歴の記載がないことだけでは修正の有無を判定できない。",
+    "2.0.1の再現は本人報告。入力機器・OS詳細と実行時入力値は未記録。"
+  ],
+  "conclusion": "公開2.0の当該処理は以前の参照版と同一。2.0.1でも症状再現との本人報告を受領しIssueへ投稿。原因は未確定、Tabの現行マッピングを維持。",
+  "follow_up": {
+    "user_report": "Delta 2.0.1でも再現しました",
+    "issue_url": "https://github.com/rileytestut/Delta/issues/579",
+    "author": "otitbridge",
+    "issue_title": "Backspace not recognized as keyboard controller input (reproduced in 1.7.3 and 2.0.1)",
+    "scope": "1.7.3の詳細比較、2.0.1の再現申告、公開ソースに基づく原因仮説を区別して投稿。"
+  }
+}

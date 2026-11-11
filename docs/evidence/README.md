@@ -58,4 +58,12 @@ P4の生ログ・BINも `.local/` に保持し、Gitには入れません。公�
 
 - [enclosure-board-upload-2026-11-11.json](enclosure-board-upload-2026-11-11.json)：別のUIAPduinoへ通常版（SELECT→Tab）を書き込み、読み戻し・起動・USB認識を確認。この記録は書き込み時点のもので、後続の内蔵後確認は次の報告に記載しています。
 
-- [enclosure-fit-2026-11-11.json](enclosure-fit-2026-11-11.json)：別基板とUSB-Cケーブルの収納・元ケーブル撤去・内蔵後確認に関する本人報告、メーカー公表のケーブル仕様、詳細条件の未記録範囲。
+- [enclosure-fit-2026-11-11.json](enclosure-fit-2026-11-11.json)：別基板とUSB-Cケーブルの収納・元ケーブル撤去・内蔵後確認に関する本人報告、内蔵後の30分連続使用・握り込み・ケーブル軽操作の追加確認、メーカー公表のケーブル仕様、詳細条件の未記録範囲。
+
+## Delta更新版の公開情報調査
+
+- [delta-2.0.1-keyboard-review-2026-11-11.json](delta-2.0.1-keyboard-review-2026-11-11.json)：2.0.1の配信確認と公開2.0のキーボード処理比較。後続の2.0.1再現申告とDelta Issue #579への投稿も記録。原因は未確定。
+
+## iPadの動作確認
+
+- [ipad-validation-2026-11-11.json](ipad-validation-2026-11-11.json)：iPad Air（M2）／iPadOS 26.5／Delta 2.0.1での動作確認報告。個別試験条件は未記録。

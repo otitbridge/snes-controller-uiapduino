@@ -1,0 +1,19 @@
+{
+  "reported_on": "2026-11-11",
+  "observation_method": "ユーザーによる動作確認報告",
+  "user_report": "iPadですが、動作確認済みです。iPadOS 26.5, delta 2.0.1",
+  "environment": {
+    "device": "iPad",
+    "model": "iPad Air (M2)",
+    "os": "iPadOS 26.5",
+    "delta": "2.0.1"
+  },
+  "result": "動作確認済み",
+  "not_recorded": [
+    "使用ゲーム",
+    "ファームの識別情報",
+    "個別の試験内容・時間・回数"
+  ],
+  "scope": "iPadでの動作確認報告。iPhoneの全試験、U04・D09の再現または解消、Backspaceの個別試験を確認した結果とは扱わない。",
+  "model_follow_up": "iPadの型番はAir M2です。"
+}
