@@ -180,4 +180,107 @@ document.getElementById('download').addEventListener('click',()=>{
 setInterval(render,100);
 reset();
 </script>
+<section id="game" tabindex="0" aria-label="30秒ターゲットゲーム">
+<h2>30秒ターゲットゲーム</h2>
+<p>青いプレイヤーを動かして、黄色い的を集めよう。1個で1点！</p>
+<p>十字キー：移動 ／ A・B：ダッシュ ／ START：開始・一時停止<br>
+SELECT（Tab・Backspace）：タイトルへ ／ Esc：操作枠から出る</p>
+<button id="game-start" type="button">ゲームを開始</button>
+<p id="game-status" role="status">STARTでスタート</p>
+<p id="game-score"></p>
+<canvas id="game-canvas" width="720" height="360" aria-label="青い丸がプレイヤー、黄色い丸が的です"></canvas>
+<p>ゲーム中はこの枠で入力を受け付けます。入力ログの記録は上の確認枠で行います。枠を離れると自動で一時停止します。</p>
+</section>
+<style>
+#game { margin:32px 0; padding:20px; border:3px solid #777; border-radius:12px; }
+#game:focus { outline:4px solid #1769aa; }
+#game h2 { margin-top:0; }
+#game-canvas { display:block; width:100%; background:#101d30; border-radius:10px; }
+#game-score { font-weight:bold; font-variant-numeric:tabular-nums; }
+</style>
+<script>
+(() => {
+  const area=document.getElementById('game'), canvas=document.getElementById('game-canvas');
+  const ctx=canvas.getContext('2d'), status=document.getElementById('game-status');
+  const scoreText=document.getElementById('game-score'), start=document.getElementById('game-start');
+  const keys=new Set(), supported=new Set(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','KeyX','KeyZ','Enter','Tab','Backspace']);
+  const storageKey='sfc-target-best-v1';
+  let mode='title', score=0, best=0, remaining=30, x=360, y=180, tx=540, ty=180;
+  let dash=0, cooldown=0, previous=null, storageAvailable=true;
+  try { const saved=Number(localStorage.getItem(storageKey)); if(Number.isFinite(saved)&&saved>=0) best=Math.floor(saved); }
+  catch { storageAvailable=false; }
+  function target() {
+    do { tx=24+Math.random()*672; ty=24+Math.random()*312; }
+    while(Math.hypot(tx-x,ty-y)<90);
+  }
+  function begin() {
+    keys.clear(); score=0; remaining=30; x=360; y=180; dash=cooldown=0;
+    target(); mode='playing'; previous=null; area.focus(); draw();
+  }
+  function pause() { keys.clear(); dash=0; if(mode==='playing') mode='paused'; previous=null; draw(); }
+  function toggle() {
+    if(mode==='title'||mode==='over') begin();
+    else if(mode==='playing') pause();
+    else { keys.clear(); mode='playing'; previous=null; draw(); }
+  }
+  function finish() {
+    mode='over'; keys.clear();
+    if(score>best) { best=score; try {localStorage.setItem(storageKey,String(best));} catch {storageAvailable=false;} }
+  }
+  function update(dt) {
+    if(mode!=='playing') return;
+    const elapsed=Math.min(dt,remaining); remaining=Math.max(0,remaining-dt);
+    let dx=Number(keys.has('ArrowRight'))-Number(keys.has('ArrowLeft'));
+    let dy=Number(keys.has('ArrowDown'))-Number(keys.has('ArrowUp'));
+    const length=Math.hypot(dx,dy); if(length) {dx/=length;dy/=length;}
+    // Substeps avoid skipping a target during a dash or a slow frame.
+    let left=elapsed;
+    while(left>0) {
+      const step=Math.min(left,1/120); left-=step;
+      const speed=dash>0?520:210;
+      x=Math.max(14,Math.min(706,x+dx*speed*step)); y=Math.max(14,Math.min(346,y+dy*speed*step));
+      dash=Math.max(0,dash-step); cooldown=Math.max(0,cooldown-step);
+      if(Math.hypot(x-tx,y-ty)<26) {++score;target();}
+    }
+    if(remaining===0) finish();
+  }
+  function draw() {
+    ctx.clearRect(0,0,720,360);
+    ctx.strokeStyle='#23344d'; ctx.lineWidth=1;
+    for(let i=30;i<720;i+=30){ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i,360);ctx.stroke();}
+    for(let i=30;i<360;i+=30){ctx.beginPath();ctx.moveTo(0,i);ctx.lineTo(720,i);ctx.stroke();}
+    ctx.fillStyle='#ffd34e';ctx.beginPath();ctx.arc(tx,ty,12,0,Math.PI*2);ctx.fill();
+    ctx.strokeStyle='#fff1b0';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle=dash>0?'#b5efff':'#49b5ff';ctx.beginPath();ctx.arc(x,y,14,0,Math.PI*2);ctx.fill();
+    if(mode!=='playing') {
+      ctx.fillStyle='rgba(10,20,35,.75)';ctx.fillRect(0,0,720,360);
+      ctx.textAlign='center';ctx.fillStyle='#fff';ctx.font='bold 28px system-ui';
+      ctx.fillText(mode==='title'?'30秒で、いくつ集められる？':mode==='paused'?'一時停止':`終了！ ${score}点`,360,174);
+      ctx.font='18px system-ui';ctx.fillText('STARTで'+(mode==='paused'?'再開':'スタート'),360,212);
+    }
+    status.textContent=mode==='playing'?'黄色い的を集めよう！':mode==='paused'?'一時停止：枠を選び、STARTで再開':mode==='over'?`終了：${score}点。STARTでもう一度`:'STARTでスタート';
+    scoreText.textContent=`残り ${remaining.toFixed(1)}秒 ｜ 得点 ${score} ｜ ベスト ${best} ｜ ダッシュ ${cooldown>0?'充電中':'OK'}${storageAvailable?'':'（ベストは今回のみ）'}`;
+    start.textContent=mode==='playing'?'一時停止':mode==='paused'?'再開':'ゲームを開始';
+  }
+  start.addEventListener('click',()=>{toggle();area.focus();});
+  area.addEventListener('keydown',e=>{
+    if(e.target!==area) return;
+    if(e.code==='Escape') {e.preventDefault();pause();start.focus();return;}
+    if(!supported.has(e.code)) return;
+    e.preventDefault();
+    if(e.repeat||keys.has(e.code)) return;
+    keys.add(e.code);
+    if(e.code==='Enter') toggle();
+    else if(e.code==='Tab'||e.code==='Backspace') {mode='title';keys.clear();remaining=30;score=0;draw();}
+    else if(mode==='playing'&&(e.code==='KeyX'||e.code==='KeyZ')&&cooldown===0) {dash=.18;cooldown=.8;}
+  });
+  area.addEventListener('keyup',e=>{if(e.target===area&&supported.has(e.code)){e.preventDefault();keys.delete(e.code);}});
+  area.addEventListener('blur',pause);
+  window.addEventListener('blur',pause);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)pause();});
+  function frame(now) {if(previous!==null)update((now-previous)/1000);previous=now;draw();requestAnimationFrame(frame);}
+  draw();requestAnimationFrame(frame);
+})();
+</script>
+
 </html>
