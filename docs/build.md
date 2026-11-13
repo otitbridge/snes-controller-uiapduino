@@ -49,6 +49,10 @@ UIAP_HID:ch32v:CH32V003:pnum=V14,clock=48MHz_HSI,usb=kbd,xserial=none,opt=oslto,
 
 生成先は `.local/build/sfc-keyboard/` です。BIN、ELF、HEX、MAP、`build.options.json`、`compile_commands.json` を保存します。ビルドは実機への書き込みを行いません。
 
+## 開発ブランチの追加機能
+
+`feature/select-boot-keymap` では、起動時SELECT保持でBackspaceを選ぶ機能を追加しています。[仕様と実機確認項目](sfc-keyboard.md#起動時selectによる切り替え開発版)を参照してください。2026-11-12のビルドはBIN 5,628バイト、CLIのFlash表示5,468バイト、静的RAM196バイトです。ホストテスト（通常・sanitizer）とコアのテストは成功しました。2026-11-13に再ビルドし、UIAPduino V1.4へ書き込みました。5,632バイト（パディング込み）の読み戻し一致、アプリ起動、1209:D004としての再認識を確認し、ユーザーから動作に問題なしとの報告を受けました。BINのSHA-256は `c773032defe8247469fc3cfef0a421c0a80f03d07beb4fd816fa36cabf3ecb10` です。以下のv1.0.0のサイズ・ハッシュは公開済みバイナリの記録で、今回の生成物とは異なります。
+
 ## 成果物を確認する
 
 ```sh

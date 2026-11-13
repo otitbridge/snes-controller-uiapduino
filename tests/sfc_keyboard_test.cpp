@@ -13,6 +13,9 @@ namespace {
 uint16_t parallel = 0xffff;
 unsigned serialBit = 0, reads = 0, sets = 0, starts = 0, pins = 0;
 bool clockHigh = true;
+bool backspace = false;
+bool unstableBoot = false;
+unsigned suppressed = 0;
 uint8_t staged[8] = {};
 void check(bool ok, const char* message) {
   if (!ok) { fprintf(stderr, "FAIL: %s\n", message); exit(1); }
@@ -25,16 +28,21 @@ void sample(unsigned buttons) {
   check(sets == before + 1 && reads == 16, "one serial frame and one state per loop");
   const uint8_t usages[12] = {0x1d,0x04,0x2b,0x28,0x52,0x51,0x50,0x4f,0x1b,0x16,0x14,0x1a};
   uint8_t wanted[8] = {};
+  buttons &= ~suppressed;
   unsigned slot = 2;
   for (unsigned bit = 0; bit < 12 && slot < 8; ++bit)
-    if (buttons & (1u << bit)) wanted[slot++] = usages[bit];
+    if (buttons & (1u << bit)) wanted[slot++] = (bit == 2 && backspace) ? 0x2a : usages[bit];
   check(memcmp(staged, wanted, 8) == 0, "serial inputs reach the expected 8-byte keyboard state");
 }
 }
 
 void digitalWrite(uint32_t pin, uint32_t value) {
   check(pin == 7 || pin == 8, "only CLOCK/LATCH are driven");
-  if (pin == 8 && value == HIGH) serialBit = 0;
+  if (pin == 8 && value == HIGH) {
+    serialBit = 0;
+    if (unstableBoot && starts == 0 && reads < 48)
+      parallel = reads == 16 ? 0xffff : static_cast<uint16_t>(~4u);
+  }
   if (pin == 7) {
     if (!clockHigh && value == HIGH) ++serialBit;
     clockHigh = value == HIGH;
@@ -64,8 +72,20 @@ extern "C" void uiapkbd_keyboard_set(uint8_t modifier, uint8_t k0, uint8_t k1,
   ++sets;
 }
 
-int main() {
+int main(int argc, char**) {
+  backspace = argc == 2;
+  unstableBoot = argc > 2;
+  parallel = backspace ? static_cast<uint16_t>(~4u) : 0xffff;
   setup();
+  check(reads == 48, "three startup samples before USB");
+  if (backspace || unstableBoot) {
+    suppressed = 4;
+    for (unsigned i = 0; i < 100; ++i) sample(4);
+    sample(5); // Other buttons are usable while boot SELECT is suppressed.
+    sample(0);
+    suppressed = 0;
+    sample(4); sample(0); // First new SELECT press uses the selected mode.
+  }
   check(starts == 1 && pins == 3, "integrated sketch initializes SFC and USB");
   for (unsigned buttons = 0; buttons < 4096; ++buttons) sample(buttons);
   sample(0x83); sample(0x83); sample(0x82); sample(0);

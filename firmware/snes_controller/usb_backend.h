@@ -13,6 +13,6 @@ void begin();
 // the core setter does not acknowledge polling, host receipt, or application use.
 // Call from loop() only. SFC keyboard builds require the project-local core patch
 // that publishes complete reports. Other modes retain upstream core 1.2.15.
-void stageButtons(uint16_t buttons);
+void stageButtons(uint16_t buttons, bool selectBackspace = false);
 
 }  // namespace UsbBackend

@@ -50,3 +50,7 @@ fi
   firmware/snes_controller/usb_backend.cpp -x c++ firmware/snes_controller/snes_controller.ino \
   -o "$snes_keyboard_binary"
 "$snes_keyboard_binary"
+
+# Run in a fresh process to model power-on with SELECT held.
+"$snes_keyboard_binary" backspace
+"$snes_keyboard_binary" unstable boot

@@ -27,8 +27,8 @@ void begin() {
   uiapusb_begin();
 }
 
-void stageButtons(uint16_t buttons) {
-  const auto desired = SnesHid::makeReport(buttons);
+void stageButtons(uint16_t buttons, bool selectBackspace) {
+  const auto desired = SnesHid::makeReport(buttons, selectBackspace);
   uiapkbd_keyboard_set(desired.modifiers,
                        desired.keys[0], desired.keys[1], desired.keys[2],
                        desired.keys[3], desired.keys[4], desired.keys[5]);
