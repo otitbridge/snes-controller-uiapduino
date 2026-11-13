@@ -33,7 +33,8 @@ details summary { cursor:pointer; }
 </style>
 <h1>UIAPduino SFCキーボード試験</h1>
 <p>全ボタンを離してコントローラーをUSB接続し、「記録を消して開始」を押してください。
-この画面を前面に保ち、SFCの各ボタンを押して離します。通常版ファームウェア（SELECT→Tab）に対応しています。</p>
+この画面を前面に保ち、SFCの各ボタンを押して離します。SELECTはTab・Backspaceの両方に対応し、受信したキー名を詳細表示とログで確認できます。</p>
+<p>Backspaceモードを使う場合は、対応ファームウェアでSELECTを押したままUSB接続し、認識後に離してから試験を開始してください。公開済みv1.0.0はTabのみです。</p>
 <p>パソコン側のキーも反応するため、試験中はSFCだけを操作してください。
 観測対象はブラウザのキーイベントで、USB機器の接続や入力元を識別するものではありません。</p>
 <button id="reset" type="button">記録を消して開始</button>
@@ -78,7 +79,7 @@ details summary { cursor:pointer; }
 <script>
 'use strict';
 const mapping = [
-  ['KeyZ','B','Z'],['KeyA','Y','A'],['Tab','SELECT','Tab'],['Enter','START','Enter'],
+  ['KeyZ','B','Z'],['KeyA','Y','A'],['Tab','SELECT','Tab / Backspace'],['Enter','START','Enter'],
   ['ArrowUp','上','↑'],['ArrowDown','下','↓'],['ArrowLeft','左','←'],['ArrowRight','右','→'],
   ['KeyX','A','X'],['KeyS','X','S'],['KeyQ','L','Q'],['KeyW','R','W']
 ];
@@ -100,21 +101,27 @@ for (const [code,button,key] of mapping) {
   const duration=document.createElement('span'); duration.className='duration';
   item.appendChild(duration);
 }
+function activeCodes(code) {
+  return (code==='Tab' ? ['Tab','Backspace'] : [code]).filter(key=>pressed.has(key));
+}
+function accepts(code) { return code==='Backspace' || elements.has(code); }
 function render() {
   pad.classList.toggle('interrupted',interrupted);
-  state.textContent=interrupted ? '判定中断' : pressed.size ? `押下中：${mapping.filter(m=>pressed.has(m[0])).map(m=>m[1]).join('＋')}` : '全解放';
+  state.textContent=interrupted ? '判定中断' : pressed.size ? `押下中：${mapping.filter(m=>activeCodes(m[0]).length).map(m=>m[1]).join('＋')}` : '全解放';
   for (const [code,button,key] of mapping) {
-    controls.get(code).classList.toggle('held',pressed.has(code));
-    elements.get(code).firstChild.textContent=`${button} → ${key}：${interrupted?'不明':pressed.has(code)?'押下中':'解放'}`;
-    elements.get(code).classList.toggle('held',pressed.has(code));
-    elements.get(code).lastChild.textContent=pressed.has(code)
-      ? `保持：${((performance.now()-pressed.get(code))/1000).toFixed(1)}秒` : '';
+    const active=activeCodes(code), held=active.length>0;
+    const label=code==='Tab' && held ? active.join(' + ') : key;
+    controls.get(code).classList.toggle('held',held);
+    elements.get(code).firstChild.textContent=`${button} → ${label}：${interrupted?'不明':held?'押下中':'解放'}`;
+    elements.get(code).classList.toggle('held',held);
+    elements.get(code).lastChild.textContent=held
+      ? `保持：${((performance.now()-Math.min(...active.map(key=>pressed.get(key))))/1000).toFixed(1)}秒` : '';
   }
   summary.textContent=`押下 ${downs}回／解放 ${ups}回／フォーカス喪失 ${blurs}回`;
 }
 function record(event,extra={}) {
   const row={session,event,unix_ms:Date.now(),seconds:+((performance.now()-started)/1000).toFixed(3),
-    pressed:mapping.filter(m=>pressed.has(m[0])).map(m=>m[0]),...extra};
+    pressed:[...pressed.keys()],...extra};
   records.push(row); log.value=JSON.stringify(records.slice(-100),null,2);
   if (localRecording) saving=saving.then(async()=>{
     if (saveFailed) return;
@@ -132,7 +139,7 @@ function reset() {
 }
 pad.addEventListener('keydown',e=>{
   if (e.code==='Escape') { e.preventDefault(); document.getElementById('reset').focus(); return; }
-  if (!elements.has(e.code)) return;
+  if (!accepts(e.code)) return;
   e.preventDefault();
   if (interrupted) return;
   const already_pressed=pressed.has(e.code);
@@ -141,7 +148,7 @@ pad.addEventListener('keydown',e=>{
     repeat:e.repeat,already_pressed});
 });
 pad.addEventListener('keyup',e=>{
-  if (!elements.has(e.code)) return;
+  if (!accepts(e.code)) return;
   e.preventDefault();
   if (interrupted) return;
   const since=pressed.get(e.code);
